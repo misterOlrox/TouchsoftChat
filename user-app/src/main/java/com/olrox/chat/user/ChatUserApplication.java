@@ -1,13 +1,11 @@
 package com.olrox.chat.user;
 
 public class ChatUserApplication {
+    private final static String HOSTNAME = "localhost";
+    private final static int PORT = 50000;
+
     public static void main(String[] args) {
-        if (args.length < 2) return;
-
-        String hostname = args[0];
-        int port = Integer.parseInt(args[1]);
-
-        ChatUser client = new ChatUser(hostname, port);
+        ChatUser client = new ChatUser(HOSTNAME, PORT);
         client.execute();
     }
 }
