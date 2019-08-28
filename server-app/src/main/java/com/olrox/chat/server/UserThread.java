@@ -11,43 +11,44 @@ import java.net.Socket;
 public class UserThread extends Thread {
     private Socket socket;
     private Server server;
-    private PrintWriter writer;
+    private PrintWriter socketWriter;
 
     public UserThread(Socket socket, Server server) {
         this.socket = socket;
         this.server = server;
     }
 
+    // FIXME too many lines in "try"
     public void run() {
         try {
             InputStream input = socket.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+            BufferedReader socketReader = new BufferedReader(new InputStreamReader(input));
 
             OutputStream output = socket.getOutputStream();
-            writer = new PrintWriter(output, true);
+            socketWriter = new PrintWriter(output, true);
 
-            printUsers();
+            printGreeting();
 
-            String userName = reader.readLine();
-            server.addUserName(userName);
-
-            String serverMessage = "New user connected: " + userName;
-            server.broadcast(serverMessage, this);
-
-            String clientMessage;
-
-            do {
-                clientMessage = reader.readLine();
-                serverMessage = "[" + userName + "]: " + clientMessage;
-                server.broadcast(serverMessage, this);
-
-            } while (!clientMessage.equals("bye"));
-
-            server.removeUser(userName, this);
-            socket.close();
-
-            serverMessage = userName + " has quitted.";
-            server.broadcast(serverMessage, this);
+//            String userName = socketReader.readLine();
+//            server.addUserName(userName);
+//
+//            String serverMessage = "New user connected: " + userName;
+//            server.broadcast(serverMessage, this);
+//
+//            String clientMessage;
+//
+//            do {
+//                clientMessage = socketReader.readLine();
+//                serverMessage = "[" + userName + "]: " + clientMessage;
+//                server.broadcast(serverMessage, this);
+//
+//            } while (!clientMessage.equals("bye"));
+//
+//            server.removeUser(userName, this);
+//            socket.close();
+//
+//            serverMessage = userName + " has quitted.";
+//            server.broadcast(serverMessage, this);
 
         } catch (IOException ex) {
             System.out.println("Error in UserThread: " + ex.getMessage());
@@ -55,21 +56,14 @@ public class UserThread extends Thread {
         }
     }
 
-    /**
-     * Sends a list of online users to the newly connected user.
-     */
-    void printUsers() {
-        if (server.hasUsers()) {
-            writer.println("Connected users: " + server.getUsernames());
-        } else {
-            writer.println("No other users connected");
-        }
+    void printGreeting(){
+        socketWriter.println("Hello. Print \"/register [agent|client] YourName\" to register");
     }
 
     /**
      * Sends a message to the client.
      */
     void sendMessage(String message) {
-        writer.println(message);
+        socketWriter.println(message);
     }
 }
