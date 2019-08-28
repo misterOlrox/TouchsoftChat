@@ -45,6 +45,10 @@ public class Server {
             ex.printStackTrace();
         }
     }
+
+    public void register(User user){
+
+    }
 //
 //    /**
 //     * Delivers a message from one user to others (broadcasting)

@@ -3,8 +3,12 @@ package com.olrox.chat.server;
 public class User {
     private String username;
     private UserType type;
+    private boolean isOnline;
 
-    public User() {
+    public User(String username, UserType type, boolean isOnline) {
+        this.username = username;
+        this.type = type;
+        this.isOnline = isOnline;
     }
 
     public String getUsername() {

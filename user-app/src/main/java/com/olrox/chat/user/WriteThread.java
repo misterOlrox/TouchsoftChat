@@ -28,17 +28,17 @@ public class WriteThread extends Thread{
 
         Console console = System.console();
 
-        String username = console.readLine("\nEnter your name: ");
-        connection.getUser().setUsername(username);
-        writer.println(username);
-
         String text;
 
-        do {
-            text = console.readLine("[" + username + "]: ");
-            writer.println(text);
+        while (true) {
+            text = console.readLine();
 
-        } while (!text.equals("bye"));
+            if(text.equals("/exit")) {
+                break;
+            }
+
+            writer.println(text);
+        }
 
         try {
             socket.close();
