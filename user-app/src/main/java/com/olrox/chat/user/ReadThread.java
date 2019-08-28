@@ -9,11 +9,11 @@ import java.net.Socket;
 public class ReadThread extends Thread {
     private BufferedReader reader;
     private Socket socket;
-    private ChatUser user;
+    private Connection connection;
 
-    public ReadThread(Socket socket, ChatUser user) {
+    public ReadThread(Socket socket, Connection connection) {
         this.socket = socket;
-        this.user = user;
+        this.connection = connection;
 
         try {
             InputStream input = socket.getInputStream();
@@ -31,8 +31,9 @@ public class ReadThread extends Thread {
                 System.out.println("\n" + response);
 
                 // prints the username after displaying the server's message
-                if (user.getUserName() != null) {
-                    System.out.print("[" + user.getUserName() + "]: ");
+                String username = connection.getUser().getUsername();
+                if (username != null) {
+                    System.out.print("[" + username + "]: ");
                 }
             } catch (IOException ex) {
                 System.out.println("Error reading from server: " + ex.getMessage());

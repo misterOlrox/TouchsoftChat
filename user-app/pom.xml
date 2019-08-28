@@ -36,7 +36,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>com.olrox.chat.user.ChatUserApplication</mainClass>
+                            <mainClass>com.olrox.chat.user.UserApplication</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

@@ -9,11 +9,11 @@ import java.net.Socket;
 public class WriteThread extends Thread{
     private PrintWriter writer;
     private Socket socket;
-    private ChatUser user;
+    private Connection connection;
 
-    public WriteThread(Socket socket, ChatUser user) {
+    public WriteThread(Socket socket, Connection connection) {
         this.socket = socket;
-        this.user = user;
+        this.connection = connection;
 
         try {
             OutputStream output = socket.getOutputStream();
@@ -28,14 +28,14 @@ public class WriteThread extends Thread{
 
         Console console = System.console();
 
-        String userName = console.readLine("\nEnter your name: ");
-        user.setUserName(userName);
-        writer.println(userName);
+        String username = console.readLine("\nEnter your name: ");
+        connection.getUser().setUsername(username);
+        writer.println(username);
 
         String text;
 
         do {
-            text = console.readLine("[" + userName + "]: ");
+            text = console.readLine("[" + username + "]: ");
             writer.println(text);
 
         } while (!text.equals("bye"));
