@@ -6,12 +6,12 @@ import java.net.Socket;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ChatServer {
+public class Server {
     private int port;
-    private Set<String> userNames = new HashSet<>();
+    private Set<String> usernames = new HashSet<>();
     private Set<UserThread> userThreads = new HashSet<>();
 
-    public ChatServer(int port) {
+    public Server(int port) {
         this.port = port;
     }
 
@@ -51,28 +51,28 @@ public class ChatServer {
      * Stores username of the newly connected client.
      */
     void addUserName(String userName) {
-        userNames.add(userName);
+        usernames.add(userName);
     }
 
     /**
      * When a client is disconneted, removes the associated username and UserThread
      */
     void removeUser(String userName, UserThread aUser) {
-        boolean removed = userNames.remove(userName);
+        boolean removed = usernames.remove(userName);
         if (removed) {
             userThreads.remove(aUser);
             System.out.println("The user " + userName + " quitted");
         }
     }
 
-    Set<String> getUserNames() {
-        return this.userNames;
+    Set<String> getUsernames() {
+        return this.usernames;
     }
 
     /**
      * Returns true if there are other users connected (not count the currently connected user)
      */
     boolean hasUsers() {
-        return !this.userNames.isEmpty();
+        return !this.usernames.isEmpty();
     }
 }

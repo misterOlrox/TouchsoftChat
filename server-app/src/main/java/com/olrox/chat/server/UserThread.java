@@ -1,14 +1,19 @@
 package com.olrox.chat.server;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.Socket;
 
 public class UserThread extends Thread {
     private Socket socket;
-    private ChatServer server;
+    private Server server;
     private PrintWriter writer;
 
-    public UserThread(Socket socket, ChatServer server) {
+    public UserThread(Socket socket, Server server) {
         this.socket = socket;
         this.server = server;
     }
@@ -55,7 +60,7 @@ public class UserThread extends Thread {
      */
     void printUsers() {
         if (server.hasUsers()) {
-            writer.println("Connected users: " + server.getUserNames());
+            writer.println("Connected users: " + server.getUsernames());
         } else {
             writer.println("No other users connected");
         }

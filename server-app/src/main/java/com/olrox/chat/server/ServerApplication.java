@@ -1,10 +1,10 @@
 package com.olrox.chat.server;
 
-public class ChatServerApplication {
+public class ServerApplication {
     private final static int PORT = 50000;
 
     public static void main(String[] args) {
-        ChatServer server = new ChatServer(PORT);
+        Server server = new Server(PORT);
         server.execute();
     }
 }
