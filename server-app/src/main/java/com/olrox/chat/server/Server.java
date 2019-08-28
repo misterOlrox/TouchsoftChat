@@ -1,5 +1,8 @@
 package com.olrox.chat.server;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -9,6 +12,8 @@ import java.util.Queue;
 import java.util.Set;
 
 public class Server {
+
+    private final static Logger logger = LogManager.getLogger(Server.class);
 
     private int port;
 
@@ -27,12 +32,12 @@ public class Server {
     public void start() {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
 
-            System.out.println("Chat Server is listening on port " + port);
+            logger.info("Chat Server is listening on port " + port);
 
             while (true) {
                 Socket socket = serverSocket.accept();
 
-                System.out.println("New user connected");
+                logger.info("New user connected");
 
                 UserThread newUserThread = new UserThread(socket, this);
                 userThreads.add(newUserThread);
@@ -41,8 +46,7 @@ public class Server {
             }
 
         } catch (IOException ex) {
-            System.out.println("Error in the server: " + ex.getMessage());
-            ex.printStackTrace();
+            logger.error("Error in the server: ", ex);
         }
     }
 
