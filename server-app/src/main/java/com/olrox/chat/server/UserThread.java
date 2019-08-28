@@ -32,23 +32,25 @@ public class UserThread extends Thread {
 
             login();
 
+            while (true) {
+
+                String userMessage;
+                String serverMessage;
+
+                userMessage = socketReader.readLine();
+
+                if(userMessage.equals("/exit")){
+                    break;
+                }
 
 
-//            String userName = socketReader.readLine();
-//            server.addUserName(userName);
-//
-//            String serverMessage = "New user connected: " + userName;
-//            server.broadcast(serverMessage, this);
-//
-//            String clientMessage;
-//
-//            do {
-//                clientMessage = socketReader.readLine();
-//                serverMessage = "[" + userName + "]: " + clientMessage;
+
+                findChat();
+
+//                serverMessage = "[" + userName + "]: " + userMessage;
 //                server.broadcast(serverMessage, this);
-//
-//            } while (!clientMessage.equals("bye"));
-//
+            }
+
 //            server.removeUser(userName, this);
 //            socket.close();
 //
@@ -78,24 +80,24 @@ public class UserThread extends Thread {
                 String typeStr =  tokenizer.nextToken();
                 String username = tokenizer.nextToken();
 
-                UserType userType;
+                UserRole userRole;
 
                 try {
-                    userType = UserType.valueOf(typeStr.toUpperCase());
+                    userRole = UserRole.valueOf(typeStr.toUpperCase());
                 } catch (IllegalArgumentException ex) {
                     socketWriter.println("Sorry. You can't register as " + typeStr + ". Try again");
                     continue;
                 }
 
-                user = new User(username, userType, true);
+                user = new User(username, userRole, true);
 
                 socketWriter.println("You are successfully registered as "
-                        + userType.toString().toLowerCase()
+                        + userRole.toString().toLowerCase()
                         + " "
                         + username);
 
                 System.out.println("User was registered as "
-                        + userType.toString().toLowerCase()
+                        + userRole.toString().toLowerCase()
                         + " "
                         + username);
 
@@ -104,6 +106,16 @@ public class UserThread extends Thread {
             } else {
                 socketWriter.println("Sorry. You have a typo. Try again.");
             }
+        }
+    }
+
+    private void findChat(){
+        switch(user.getType()){
+            case AGENT:
+                break;
+            case CLIENT:
+
+                break;
         }
     }
 

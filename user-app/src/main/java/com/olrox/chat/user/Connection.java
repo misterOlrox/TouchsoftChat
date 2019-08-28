@@ -7,12 +7,10 @@ import java.net.UnknownHostException;
 public class Connection {
     private String hostname;
     private int port;
-    private User user;
 
     public Connection(String hostname, int port) {
         this.hostname = hostname;
         this.port = port;
-        this.user = new User();
     }
 
     public void start() {
@@ -45,13 +43,5 @@ public class Connection {
 
     public void setPort(int port) {
         this.port = port;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 }

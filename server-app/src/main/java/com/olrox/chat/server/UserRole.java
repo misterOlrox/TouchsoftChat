@@ -1,6 +1,6 @@
 package com.olrox.chat.server;
 
-public enum UserType {
+public enum UserRole {
     CLIENT,
     AGENT
 }

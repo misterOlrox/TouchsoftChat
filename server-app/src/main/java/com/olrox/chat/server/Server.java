@@ -46,8 +46,15 @@ public class Server {
         }
     }
 
-    public void register(User user){
-
+    public void getFreeAgent(User client){
+        while(!freeAgents.isEmpty()){
+            User freeAgent = freeAgents.poll();
+            if(freeAgent.isOnline()){
+                // TODO finish this
+                return;
+            }
+        }
+        freeClients.add(client);
     }
 //
 //    /**

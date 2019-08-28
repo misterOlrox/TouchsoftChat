@@ -30,10 +30,12 @@ public class ReadThread extends Thread {
                 String response = reader.readLine();
                 System.out.println(response);
 
-                // prints the username after displaying the server's message
-                String username = connection.getUser().getUsername();
+                // TODO ...
+                String username = null;
                 if (username != null) {
                     System.out.print("[" + username + "]: ");
+                } else {
+                    System.out.print(":");
                 }
             } catch (IOException ex) {
                 System.out.println("Error reading from server: " + ex.getMessage());

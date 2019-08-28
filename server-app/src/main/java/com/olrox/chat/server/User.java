@@ -2,10 +2,10 @@ package com.olrox.chat.server;
 
 public class User {
     private String username;
-    private UserType type;
+    private UserRole type;
     private boolean isOnline;
 
-    public User(String username, UserType type, boolean isOnline) {
+    public User(String username, UserRole type, boolean isOnline) {
         this.username = username;
         this.type = type;
         this.isOnline = isOnline;
@@ -19,11 +19,24 @@ public class User {
         this.username = username;
     }
 
-    public UserType getType() {
+    public UserRole getType() {
         return type;
     }
 
-    public void setType(UserType type) {
+    public void setType(UserRole type) {
         this.type = type;
     }
+
+    public boolean isOnline() {
+        return isOnline;
+    }
+
+    public void setOnline(boolean online) {
+        isOnline = online;
+    }
+
+    public void sendMessage(Message message, ClientAndAgentRoom chatRoom){
+
+    }
+
 }
