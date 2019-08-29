@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
     <Properties>
-        <Property name="logPath">server-app/target/server-app-logs</Property>
+        <Property name="logPath">logs/server-app-logs</Property>
         <Property name="rollingFileName">server-app</Property>
     </Properties>
     <Appenders>

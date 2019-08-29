@@ -9,7 +9,7 @@ public class ServerApplication {
     private final static Logger logger = LogManager.getLogger(ServerApplication.class);
 
     public static void main(String[] args) {
-        logger.info("Server Application is starting on port " + PORT);
+        logger.info("Server Application is starting.");
         Server server = new Server(PORT);
         server.start();
     }

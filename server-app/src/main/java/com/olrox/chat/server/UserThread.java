@@ -1,5 +1,8 @@
 package com.olrox.chat.server;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,6 +13,9 @@ import java.net.Socket;
 import java.util.StringTokenizer;
 
 public class UserThread extends Thread {
+
+    private final static Logger logger = LogManager.getLogger(UserThread.class);
+
     private User user;
     private Socket socket;
     private Server server;
@@ -58,8 +64,7 @@ public class UserThread extends Thread {
 //            server.broadcast(serverMessage, this);
 
         } catch (IOException ex) {
-            System.out.println("Error in UserThread: " + ex.getMessage());
-            ex.printStackTrace();
+            logger.error("Error in UserThread: ", ex);
         }
     }
 
@@ -96,7 +101,7 @@ public class UserThread extends Thread {
                         + " "
                         + username);
 
-                System.out.println("User was registered as "
+                logger.info("User was registered as "
                         + userRole.toString().toLowerCase()
                         + " "
                         + username);
