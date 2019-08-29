@@ -55,6 +55,10 @@ public class UserThread extends Thread {
                     break;
                 }
 
+                userMessage = "[" + user.getUsername() + "]: " + userMessage;
+
+                deliverMessage(userMessage, room);
+
 //                if(user.isFree()){
 //                    findChat();
 //                }
@@ -150,11 +154,11 @@ public class UserThread extends Thread {
     /**
      * Sends a message to the client.
      */
-    public void sendMessage(String message) {
+    public void getMessage(String message) {
         socketWriter.println(message);
     }
 
-    public void sendMessage(String text, ChatRoom room) {
+    public void deliverMessage(String text, ChatRoom room) {
         room.deliverMessage(text, this);
     }
 

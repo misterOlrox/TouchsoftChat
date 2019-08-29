@@ -29,10 +29,10 @@ public class ChatRoom {
         // TODO saving
         // FIXME NPE
         if(agentThread==from) {
-            clientThread.sendMessage(text);
+            clientThread.getMessage(text);
         }
         else {
-            agentThread.sendMessage(text);
+            agentThread.getMessage(text);
         }
 
     }
