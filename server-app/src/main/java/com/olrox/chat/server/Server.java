@@ -1,15 +1,13 @@
 package com.olrox.chat.server;
 
+import com.olrox.chat.server.user.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayDeque;
-import java.util.HashSet;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 
 public class Server {
 
@@ -50,16 +48,53 @@ public class Server {
         }
     }
 
-    public void getFreeAgent(User client){
-        while(!freeAgents.isEmpty()){
-            User freeAgent = freeAgents.poll();
-            if(freeAgent.isOnline()){
-                // TODO finish this
-                return;
-            }
-        }
-        freeClients.add(client);
+    private boolean hasFreeClient(){
+        return !freeClients.isEmpty();
     }
+
+    private boolean hasFreeAgent(){
+        return !freeAgents.isEmpty();
+    }
+
+//    public ChatRoom findChatRoom(User user){
+//        if(user.getChatRoom()!=null){
+//            return user.getChatRoom();
+//        }
+//
+//        switch(user.getRole()){
+//            case AGENT:
+//                if(!this.hasFreeClient()){
+//                    freeAgents.add(user);
+//                    user.setChatRoom(new ChatRoom(user));
+//                    return user.getChatRoom();
+//                }
+//                else{
+//                    User mate = freeClients.poll();
+//
+//                }
+//                break;
+//            case CLIENT:
+//                if(!this.hasFreeAgent()) {
+//                    freeClients.add(user);
+//                    return null;
+//                }
+//                else{
+//                    return freeAgents.poll();
+//                }
+//                break;
+//        }
+//    }
+//
+//    public void getFreeAgent(User client){
+//        while(!freeAgents.isEmpty()){
+//            User freeAgent = freeAgents.poll();
+//            if(freeAgent.isOnline()){
+//                // TODO finish this
+//                return;
+//            }
+//        }
+//        freeClients.add(client);
+//    }
 //
 //    /**
 //     * Delivers a message from one user to others (broadcasting)

@@ -1,7 +1,11 @@
 package com.olrox.chat.server;
 
+import com.olrox.chat.server.user.Agent;
+import com.olrox.chat.server.user.Client;
+import com.olrox.chat.server.user.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import sun.misc.Cleaner;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -49,9 +53,11 @@ public class UserThread extends Thread {
                     break;
                 }
 
+//                if(user.isFree()){
+//                    findChat();
+//                }
 
 
-                findChat();
 
 //                serverMessage = "[" + userName + "]: " + userMessage;
 //                server.broadcast(serverMessage, this);
@@ -82,29 +88,28 @@ public class UserThread extends Thread {
                 };
 
                 tokenizer.nextToken();
-                String typeStr =  tokenizer.nextToken();
+                String userType =  tokenizer.nextToken();
                 String username = tokenizer.nextToken();
 
-                UserRole userRole;
-
-                try {
-                    userRole = UserRole.valueOf(typeStr.toUpperCase());
-                } catch (IllegalArgumentException ex) {
-                    socketWriter.println("Sorry. You can't register as " + typeStr + ". Try again");
+                // FIXME factory?
+                if(userType.equals("agent")){
+                    user = new Agent(username);
+                } else if(userType.equals("client")){
+                    user = new Client(username);
+                } else {
+                    socketWriter.println("Sorry. You can't register as " + userType + ". Try again");
                     continue;
                 }
 
-                user = new User(username, userRole, true);
-
                 socketWriter.println("You are successfully registered as "
-                        + userRole.toString().toLowerCase()
+                        + user.getClass().getSimpleName().toLowerCase()
                         + " "
-                        + username);
+                        + user.getUsername());
 
                 logger.info("User was registered as "
-                        + userRole.toString().toLowerCase()
+                        + user.getClass().getSimpleName()
                         + " "
-                        + username);
+                        + user.getUsername());
 
                 break;
 
@@ -115,13 +120,7 @@ public class UserThread extends Thread {
     }
 
     private void findChat(){
-        switch(user.getType()){
-            case AGENT:
-                break;
-            case CLIENT:
 
-                break;
-        }
     }
 
     /**
