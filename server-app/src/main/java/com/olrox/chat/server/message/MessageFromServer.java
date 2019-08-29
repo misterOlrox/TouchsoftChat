@@ -41,4 +41,18 @@ public class MessageFromServer implements Message{
     public void setRecipient(User recipient) {
         this.recipient = recipient;
     }
+
+    @Override
+    public String show() {
+        return toString();
+    }
+
+    @Override
+    public String toString() {
+        return "MessageFromServer{" +
+                "text='" + text + '\'' +
+                ", sendTime=" + sendTime +
+                ", recipient=" + recipient +
+                '}';
+    }
 }

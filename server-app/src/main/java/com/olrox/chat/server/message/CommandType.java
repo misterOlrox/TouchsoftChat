@@ -2,6 +2,8 @@ package com.olrox.chat.server.message;
 
 public enum CommandType {
     MESSAGE("/message"),
+    REGISTER("/register"),
+    LEAVE("/leave"),
     EXIT("/exit");
 
     private String code;

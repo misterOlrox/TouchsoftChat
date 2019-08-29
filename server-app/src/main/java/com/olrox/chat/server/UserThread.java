@@ -1,8 +1,6 @@
 package com.olrox.chat.server;
 
-import com.olrox.chat.server.message.Message;
-import com.olrox.chat.server.message.MessageReader;
-import com.olrox.chat.server.message.MessageWriter;
+import com.olrox.chat.server.message.*;
 import com.olrox.chat.server.room.ChatRoom;
 import com.olrox.chat.server.user.Agent;
 import com.olrox.chat.server.user.Client;
@@ -10,12 +8,7 @@ import com.olrox.chat.server.user.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.StringTokenizer;
 
@@ -50,28 +43,30 @@ public class UserThread extends Thread {
             reader = new MessageReader(socket);
             writer = new MessageWriter(socket);
 
-            login();
+            MessageFromUser message;
 
-            connectToRoom();
+            while (true){
+                message = reader.readMessage();
 
-            while (true) {
+                CommandType command = message.getCommandType();
 
-                String userMessage;
-                String serverMessage;
-
-                userMessage = reader.readLine();
-
-                if(userMessage.equals("/exit")){
+                if(command == CommandType.EXIT) {
                     break;
                 }
 
-                userMessage = "[" + user.getUsername() + "]: " + userMessage;
-
-                deliverMessage(userMessage, room);
-
-//                serverMessage = "[" + userName + "]: " + userMessage;
-//                server.broadcast(serverMessage, this);
+                switch(command) {
+                    case MESSAGE:
+                        deliverMessage(message.getText(), room);
+                        break;
+                    case REGISTER:
+                        login();
+                        break;
+                }
             }
+
+            login();
+
+            connectToRoom();
 
             //server.removeUser(userName, this);
             socket.close();
@@ -85,10 +80,11 @@ public class UserThread extends Thread {
     }
 
     private void login() throws IOException {
-        socketWriter.println("\nHello");
+        writer.write("\nHello");
+        writer.write("Print \"/register [agent|client] YourName\" to register");
         while (true) {
-            socketWriter.println("Print \"/register [agent|client] YourName\" to register");
-            String response = socketReader.readLine();
+
+            String response = reader.readMessage().getText();
             if (response.startsWith("/register ")) {
                 StringTokenizer tokenizer = new StringTokenizer(response, " ");
 

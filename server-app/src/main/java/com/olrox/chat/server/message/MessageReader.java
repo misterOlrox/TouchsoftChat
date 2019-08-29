@@ -14,27 +14,13 @@ public class MessageReader {
         reader = new BufferedReader(new InputStreamReader(input));
     }
 
-    // TODO
-    public String readLine() throws IOException{
+    public MessageFromUser readMessage() throws IOException{
         String data = reader.readLine();
 
-        CommandType command = checkForCommand(data);
+        MessageFromUser message = new MessageFromUser(data);
 
-        return data;
-
+        return message;
     }
 
-    private CommandType checkForCommand(String string) {
-        if(!string.startsWith("/")) {
-            return null;
-        }
 
-        for(CommandType command : CommandType.values()){
-            if(string.startsWith(command.getCode())) {
-                return command;
-            }
-        }
-
-        return null;
-    }
 }

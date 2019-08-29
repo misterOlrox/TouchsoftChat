@@ -12,4 +12,12 @@ public class MessageWriter {
         OutputStream output = socket.getOutputStream();
         writer = new PrintWriter(output, true);
     }
+
+    public void write(Message message) {
+        writer.println(message.show());
+    }
+
+    public void write(String string) {
+        writer.println(string);
+    }
 }
