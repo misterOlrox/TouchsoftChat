@@ -27,6 +27,9 @@ public class ReadThread extends Thread {
     public void run() {
         while (true) {
             try {
+                if(socket.isClosed()){
+                    break;
+                }
                 String response = reader.readLine();
                 System.out.println(response);
 

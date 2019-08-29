@@ -1,6 +1,6 @@
 package com.olrox.chat.server.room;
 
-import com.olrox.chat.server.UserThread;
+import com.olrox.chat.server.user.UserThread;
 import com.olrox.chat.server.message.Message;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

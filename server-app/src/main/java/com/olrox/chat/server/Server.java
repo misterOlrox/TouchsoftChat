@@ -2,6 +2,7 @@ package com.olrox.chat.server;
 
 import com.olrox.chat.server.room.ChatRoom;
 import com.olrox.chat.server.room.ChatRooms;
+import com.olrox.chat.server.user.UserThread;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,7 +17,7 @@ public class Server {
     private final static Logger logger = LogManager.getLogger(Server.class);
 
     private int port;
-    private ChatRooms chatRooms;
+    private ChatRooms chatRooms = new ChatRooms();
     private Set<UserThread> userThreads = new HashSet<>();
 
     public Server(int port) {
@@ -44,7 +45,7 @@ public class Server {
         }
     }
 
-    public ChatRoom connectToRoom(UserThread thread) {
-        return chatRooms.connectToRoom(thread);
+    public void connectToRoom(UserThread thread) {
+        chatRooms.connectToRoom(thread);
     }
 }

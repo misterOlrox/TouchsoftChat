@@ -1,10 +1,11 @@
 package com.olrox.chat.server.room;
 
-import com.olrox.chat.server.UserThread;
+import com.olrox.chat.server.user.UserThread;
 import com.olrox.chat.server.message.MessageFromServer;
-import com.olrox.chat.server.user.Agent;
-import com.olrox.chat.server.user.Client;
 import com.olrox.chat.server.user.User;
+import com.olrox.chat.server.user.UserType;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDateTime;
 import java.util.ArrayDeque;
@@ -13,6 +14,8 @@ import java.util.HashSet;
 import java.util.Queue;
 
 public class ChatRooms {
+
+    private final static Logger logger = LogManager.getLogger(ChatRooms.class);
 
     private Collection<ChatRoom> allRooms = new HashSet<>();
 
@@ -47,31 +50,36 @@ public class ChatRooms {
     }
 
     // FIXME
-    public ChatRoom connectToRoom(UserThread userThread){
+    public void connectToRoom(UserThread userThread){
+        if(userThread.getRoom() != null) {
+            logger.debug("User " + userThread.getUser().getUsername() + " already in room.");
+            return;
+        }
+
         ChatRoom room = null;
 
         User user = userThread.getUser();
 
         MessageFromServer message = new MessageFromServer(user);
 
-        if(user instanceof Agent && !hasFreeClient()){
+        if(user.getType() == UserType.AGENT && !hasFreeClient()){
             room = new ChatRoom();
             room.setAgentThread(userThread);
             addRoomToFreeAgents(room);
             message.setText("Wait your client.");
         }
-        if(user instanceof Agent && hasFreeClient()){
+        if(user.getType() == UserType.AGENT && hasFreeClient()){
             room = pollClientRoom();
             room.setAgentThread(userThread);
             message.setText("You joined client " + room.getClientThread().getUser().getUsername());
         }
-        if(user instanceof Client && !hasFreeAgent()){
+        if(user.getType() == UserType.CLIENT && !hasFreeAgent()){
             room = new ChatRoom();
             room.setClientThread(userThread);
             addRoomToFreeClients(room);
             message.setText("Wait your agent.");
         }
-        if(user instanceof Client && hasFreeAgent()){
+        if(user.getType() == UserType.CLIENT && hasFreeAgent()){
             room = pollAgentRoom();
             room.setClientThread(userThread);
             message.setText("You joined agent " + room.getAgentThread().getUser().getUsername());
@@ -80,6 +88,6 @@ public class ChatRooms {
         message.setSendTime(LocalDateTime.now());
         room.saveMessage(message);
 
-        return room;
+        userThread.setRoom(room);
     }
 }
