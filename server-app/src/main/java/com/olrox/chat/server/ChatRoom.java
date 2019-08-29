@@ -5,8 +5,35 @@ import com.olrox.chat.server.user.Client;
 import com.olrox.chat.server.user.User;
 
 public class ChatRoom {
-    private Client client;
-    private Agent agent;
 
+    private UserThread clientThread;
+    private UserThread agentThread;
 
+    public UserThread getClientThread() {
+        return clientThread;
+    }
+
+    public void setClientThread(UserThread clientThread) {
+        this.clientThread = clientThread;
+    }
+
+    public UserThread getAgentThread() {
+        return agentThread;
+    }
+
+    public void setAgentThread(UserThread agentThread) {
+        this.agentThread = agentThread;
+    }
+
+    public void deliverMessage(String text, UserThread from) {
+        // TODO saving
+        // FIXME NPE
+        if(agentThread==from) {
+            clientThread.sendMessage(text);
+        }
+        else {
+            agentThread.sendMessage(text);
+        }
+
+    }
 }

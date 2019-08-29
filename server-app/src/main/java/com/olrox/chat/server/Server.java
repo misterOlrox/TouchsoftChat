@@ -1,5 +1,7 @@
 package com.olrox.chat.server;
 
+import com.olrox.chat.server.user.Agent;
+import com.olrox.chat.server.user.Client;
 import com.olrox.chat.server.user.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,10 +18,10 @@ public class Server {
     private int port;
 
     // TODO check if this is normal
-    private Queue<User> freeClients = new ArrayDeque<>();
+    private Queue<ChatRoom> freeClients = new ArrayDeque<>();
 
     // TODO check if this is normal
-    private Queue<User> freeAgents = new ArrayDeque<>();
+    private Queue<ChatRoom> freeAgents = new ArrayDeque<>();
 
     private Set<UserThread> userThreads = new HashSet<>();
 
@@ -48,12 +50,30 @@ public class Server {
         }
     }
 
-    private boolean hasFreeClient(){
+    // TODO new class ChatRooms
+
+    public boolean hasFreeClient(){
         return !freeClients.isEmpty();
     }
 
-    private boolean hasFreeAgent(){
+    public boolean hasFreeAgent(){
         return !freeAgents.isEmpty();
+    }
+
+    public ChatRoom pollClientRoom(){
+        return freeClients.poll();
+    }
+
+    public ChatRoom pollAgentRoom(){
+        return freeAgents.poll();
+    }
+
+    public void addRoomToFreeClients(ChatRoom room){
+        freeClients.add(room);
+    }
+
+    public void addRoomToFreeAgents(ChatRoom room) {
+        freeAgents.add(room);
     }
 
 //    public ChatRoom findChatRoom(User user){

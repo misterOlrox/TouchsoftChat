@@ -5,7 +5,6 @@ import com.olrox.chat.server.user.Client;
 import com.olrox.chat.server.user.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import sun.misc.Cleaner;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,6 +24,7 @@ public class UserThread extends Thread {
     private Server server;
     private BufferedReader socketReader;
     private PrintWriter socketWriter;
+    private ChatRoom room;
 
     public UserThread(Socket socket, Server server) {
         this.socket = socket;
@@ -41,6 +41,8 @@ public class UserThread extends Thread {
             socketWriter = new PrintWriter(output, true);
 
             login();
+
+            findChat();
 
             while (true) {
 
@@ -63,8 +65,8 @@ public class UserThread extends Thread {
 //                server.broadcast(serverMessage, this);
             }
 
-//            server.removeUser(userName, this);
-//            socket.close();
+            //server.removeUser(userName, this);
+            socket.close();
 //
 //            serverMessage = userName + " has quitted.";
 //            server.broadcast(serverMessage, this);
@@ -121,12 +123,48 @@ public class UserThread extends Thread {
 
     private void findChat(){
 
+        if(user instanceof Agent && !server.hasFreeClient()){
+            room = new ChatRoom();
+            room.setAgentThread(this);
+            server.addRoomToFreeAgents(room);
+            socketWriter.println("Wait your Client.");
+        }
+        if(user instanceof Agent && server.hasFreeClient()){
+            room = server.pollClientRoom();
+            room.setAgentThread(this);
+            socketWriter.println("You joined client " + room.getClientThread().getUser().getUsername());
+        }
+        if(user instanceof Client && !server.hasFreeAgent()){
+            room = new ChatRoom();
+            room.setClientThread(this);
+            server.addRoomToFreeClients(room);
+            socketWriter.println("Wait your Agent.");
+        }
+        if(user instanceof Client && server.hasFreeAgent()){
+            room = server.pollAgentRoom();
+            room.setClientThread(this);
+            socketWriter.println("You joined agent " + room.getAgentThread().getUser().getUsername());
+        }
     }
 
     /**
      * Sends a message to the client.
      */
-    private void sendMessage(String message) {
+    public void sendMessage(String message) {
         socketWriter.println(message);
     }
+
+    public void sendMessage(String text, ChatRoom room) {
+        room.deliverMessage(text, this);
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+
 }
