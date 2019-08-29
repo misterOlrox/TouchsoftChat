@@ -1,8 +1,5 @@
 package com.olrox.chat.server.user;
 
-import com.olrox.chat.server.ChatRoom;
-import com.olrox.chat.server.Message;
-
 public abstract class User {
     String username;
 

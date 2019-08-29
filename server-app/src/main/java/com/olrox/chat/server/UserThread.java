@@ -1,5 +1,6 @@
 package com.olrox.chat.server;
 
+import com.olrox.chat.server.room.ChatRoom;
 import com.olrox.chat.server.user.Agent;
 import com.olrox.chat.server.user.Client;
 import com.olrox.chat.server.user.User;
@@ -20,15 +21,23 @@ public class UserThread extends Thread {
     private final static Logger logger = LogManager.getLogger(UserThread.class);
 
     private User user;
+    private ChatRoom room;
     private Socket socket;
     private Server server;
     private BufferedReader socketReader;
     private PrintWriter socketWriter;
-    private ChatRoom room;
 
     public UserThread(Socket socket, Server server) {
         this.socket = socket;
         this.server = server;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     // FIXME too many lines in "try"
@@ -42,7 +51,7 @@ public class UserThread extends Thread {
 
             login();
 
-            findChat();
+            connectToRoom();
 
             while (true) {
 
@@ -58,12 +67,6 @@ public class UserThread extends Thread {
                 userMessage = "[" + user.getUsername() + "]: " + userMessage;
 
                 deliverMessage(userMessage, room);
-
-//                if(user.isFree()){
-//                    findChat();
-//                }
-
-
 
 //                serverMessage = "[" + userName + "]: " + userMessage;
 //                server.broadcast(serverMessage, this);
@@ -125,30 +128,11 @@ public class UserThread extends Thread {
         }
     }
 
-    private void findChat(){
+    private void connectToRoom(){
 
-        if(user instanceof Agent && !server.hasFreeClient()){
-            room = new ChatRoom();
-            room.setAgentThread(this);
-            server.addRoomToFreeAgents(room);
-            socketWriter.println("Wait your Client.");
-        }
-        if(user instanceof Agent && server.hasFreeClient()){
-            room = server.pollClientRoom();
-            room.setAgentThread(this);
-            socketWriter.println("You joined client " + room.getClientThread().getUser().getUsername());
-        }
-        if(user instanceof Client && !server.hasFreeAgent()){
-            room = new ChatRoom();
-            room.setClientThread(this);
-            server.addRoomToFreeClients(room);
-            socketWriter.println("Wait your Agent.");
-        }
-        if(user instanceof Client && server.hasFreeAgent()){
-            room = server.pollAgentRoom();
-            room.setClientThread(this);
-            socketWriter.println("You joined agent " + room.getAgentThread().getUser().getUsername());
-        }
+        room = server.connectToRoom(this);
+
+
     }
 
     /**
@@ -158,17 +142,11 @@ public class UserThread extends Thread {
         socketWriter.println(message);
     }
 
+    /**
+     * Sends a message to the chat room.
+     */
     public void deliverMessage(String text, ChatRoom room) {
         room.deliverMessage(text, this);
     }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
 
 }

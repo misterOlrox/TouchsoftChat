@@ -1,13 +1,17 @@
-package com.olrox.chat.server;
+package com.olrox.chat.server.message;
+
+import com.olrox.chat.server.user.User;
 
 import java.time.LocalDateTime;
 
-public class Message {
+public class MessageFromUser implements Message{
+    private User author;
     private String text;
     private boolean isViewed;
     private LocalDateTime sendTime;
 
-    public Message(String text) {
+    public MessageFromUser(User author, String text, User recipient) {
+        this.author = author;
         this.text = text;
         sendTime = LocalDateTime.now();
         isViewed = false;

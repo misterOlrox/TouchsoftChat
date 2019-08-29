@@ -1,7 +1,12 @@
-package com.olrox.chat.server;
+package com.olrox.chat.server.room;
 
+import com.olrox.chat.server.UserThread;
+import com.olrox.chat.server.message.Message;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChatRoom {
 
@@ -9,6 +14,9 @@ public class ChatRoom {
 
     private UserThread clientThread;
     private UserThread agentThread;
+
+    // TODO check if this is normal
+    private List<Message> messageList = new ArrayList<>();
 
     public UserThread getClientThread() {
         return clientThread;
@@ -24,6 +32,10 @@ public class ChatRoom {
 
     public void setAgentThread(UserThread agentThread) {
         this.agentThread = agentThread;
+    }
+
+    void saveMessage(Message message){
+        messageList.add(message);
     }
 
     public void deliverMessage(String text, UserThread from) {

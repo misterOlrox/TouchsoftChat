@@ -1,14 +1,14 @@
 package com.olrox.chat.server;
 
+import com.olrox.chat.server.room.ChatRoom;
+import com.olrox.chat.server.room.ChatRooms;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayDeque;
 import java.util.HashSet;
-import java.util.Queue;
 import java.util.Set;
 
 public class Server {
@@ -16,13 +16,7 @@ public class Server {
     private final static Logger logger = LogManager.getLogger(Server.class);
 
     private int port;
-
-    // TODO check if this is normal
-    private Queue<ChatRoom> freeClients = new ArrayDeque<>();
-
-    // TODO check if this is normal
-    private Queue<ChatRoom> freeAgents = new ArrayDeque<>();
-
+    private ChatRooms chatRooms;
     private Set<UserThread> userThreads = new HashSet<>();
 
     public Server(int port) {
@@ -50,29 +44,7 @@ public class Server {
         }
     }
 
-    // TODO new class ChatRooms
-
-    public boolean hasFreeClient(){
-        return !freeClients.isEmpty();
-    }
-
-    public boolean hasFreeAgent(){
-        return !freeAgents.isEmpty();
-    }
-
-    public ChatRoom pollClientRoom(){
-        return freeClients.poll();
-    }
-
-    public ChatRoom pollAgentRoom(){
-        return freeAgents.poll();
-    }
-
-    public void addRoomToFreeClients(ChatRoom room){
-        freeClients.add(room);
-    }
-
-    public void addRoomToFreeAgents(ChatRoom room) {
-        freeAgents.add(room);
+    public ChatRoom connectToRoom(UserThread thread) {
+        return chatRooms.connectToRoom(thread);
     }
 }
