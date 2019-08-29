@@ -1,5 +1,8 @@
 package com.olrox.chat.server;
 
+import com.olrox.chat.server.message.Message;
+import com.olrox.chat.server.message.MessageReader;
+import com.olrox.chat.server.message.MessageWriter;
 import com.olrox.chat.server.room.ChatRoom;
 import com.olrox.chat.server.user.Agent;
 import com.olrox.chat.server.user.Client;
@@ -24,8 +27,8 @@ public class UserThread extends Thread {
     private ChatRoom room;
     private Socket socket;
     private Server server;
-    private BufferedReader socketReader;
-    private PrintWriter socketWriter;
+    private MessageReader reader;
+    private MessageWriter writer;
 
     public UserThread(Socket socket, Server server) {
         this.socket = socket;
@@ -43,11 +46,9 @@ public class UserThread extends Thread {
     // FIXME too many lines in "try"
     public void run() {
         try {
-            InputStream input = socket.getInputStream();
-            socketReader = new BufferedReader(new InputStreamReader(input));
 
-            OutputStream output = socket.getOutputStream();
-            socketWriter = new PrintWriter(output, true);
+            reader = new MessageReader(socket);
+            writer = new MessageWriter(socket);
 
             login();
 
@@ -58,7 +59,7 @@ public class UserThread extends Thread {
                 String userMessage;
                 String serverMessage;
 
-                userMessage = socketReader.readLine();
+                userMessage = reader.readLine();
 
                 if(userMessage.equals("/exit")){
                     break;
@@ -134,6 +135,8 @@ public class UserThread extends Thread {
 
 
     }
+
+    private Message lastMessageToUser;
 
     /**
      * Sends a message to the client.
