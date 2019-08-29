@@ -46,13 +46,12 @@ public class UserThread extends Thread {
     public void run() {
 
         user = new User();
+        MessageFromUser message;
 
         try {
 
             reader = new MessageReader(socket);
             writer = new MessageWriter(socket);
-
-            MessageFromUser message;
 
             writer.write("\nHello");
 
@@ -144,6 +143,10 @@ public class UserThread extends Thread {
     /**
      * Sends a message to the client.
      */
+    public void getMessage(Message message) {
+        writer.write(message);
+    }
+
     public void getMessage(String message) {
         writer.write(message);
     }
@@ -154,9 +157,8 @@ public class UserThread extends Thread {
     public void deliverMessage(MessageFromUser message) throws IOException{
         if(user.getType() != UserType.UNAUTHORIZED) {
             connectToRoom();
-            // TODO
-            this.room.deliverMessage(message.getText(), this);
-        } else{
+            this.room.deliverMessage(message, this);
+        } else {
             login(message);
         }
     }

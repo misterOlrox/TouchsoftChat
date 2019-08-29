@@ -38,7 +38,7 @@ public class ChatRoom {
         messageList.add(message);
     }
 
-    public void deliverMessage(String text, UserThread from) {
+    public void deliverMessage(Message message, UserThread from) {
         // TODO saving
         if(agentThread==null || clientThread==null) {
             noCompanionMessage(from);
@@ -46,14 +46,14 @@ public class ChatRoom {
         }
 
         if(agentThread==from) {
-            logger.debug("Agent " + agentThread.getUser().getUsername() +" writes message: " + text);
-            logger.debug("Client " + clientThread.getUser().getUsername() + " receives message: " + text);
-            clientThread.getMessage(text);
+            logger.debug("Agent " + agentThread.getUser().getUsername() +" writes message: " + message);
+            logger.debug("Client " + clientThread.getUser().getUsername() + " receives message: " + message);
+            clientThread.getMessage(message);
         }
         else {
-            logger.debug("Client " + clientThread.getUser().getUsername() +" writes message: " + text);
-            logger.debug("Agent " + agentThread.getUser().getUsername() + " receives message: " + text);
-            agentThread.getMessage(text);
+            logger.debug("Client " + clientThread.getUser().getUsername() +" writes message: " + message);
+            logger.debug("Agent " + agentThread.getUser().getUsername() + " receives message: " + message);
+            agentThread.getMessage(message);
         }
 
     }
