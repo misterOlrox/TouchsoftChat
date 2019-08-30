@@ -46,19 +46,19 @@ public class ChatRoom {
         }
 
         if(agentThread==from) {
-            logger.debug("Agent " + agentThread.getUser().getUsername() +" writes message: " + message);
-            logger.debug("Client " + clientThread.getUser().getUsername() + " receives message: " + message);
-            clientThread.getMessage(message);
+            logger.debug("Agent " + agentThread.getUser().getName() +" writes message: " + message);
+            logger.debug("Client " + clientThread.getUser().getName() + " receives message: " + message);
+            clientThread.writeMessageFromUser(message);
         }
         else {
-            logger.debug("Client " + clientThread.getUser().getUsername() +" writes message: " + message);
-            logger.debug("Agent " + agentThread.getUser().getUsername() + " receives message: " + message);
-            agentThread.getMessage(message);
+            logger.debug("Client " + clientThread.getUser().getName() +" writes message: " + message);
+            logger.debug("Agent " + agentThread.getUser().getName() + " receives message: " + message);
+            agentThread.writeMessageFromUser(message);
         }
 
     }
 
     public void noCompanionMessage(UserThread userThread) {
-        userThread.getMessage("Wait for your companion");
+        userThread.writeAsServer("Wait for your companion");
     }
 }

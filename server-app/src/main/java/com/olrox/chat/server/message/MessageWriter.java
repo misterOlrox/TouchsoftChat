@@ -1,23 +1,7 @@
 package com.olrox.chat.server.message;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.net.Socket;
+public interface MessageWriter {
+    void write(String string);
 
-public class MessageWriter {
-    private PrintWriter writer;
-
-    public MessageWriter(Socket socket) throws IOException {
-        OutputStream output = socket.getOutputStream();
-        writer = new PrintWriter(output, true);
-    }
-
-    public void write(Message message) {
-        writer.println(message.show());
-    }
-
-    public void write(String string) {
-        writer.println(string);
-    }
+    void write(Message message);
 }

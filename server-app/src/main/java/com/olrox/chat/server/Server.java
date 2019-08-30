@@ -12,16 +12,18 @@ import java.net.Socket;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Server {
+public class Server implements Author {
 
     private final static Logger logger = LogManager.getLogger(Server.class);
 
-    private int port;
+    private final int port;
+    private final String name;
     private ChatRooms chatRooms = new ChatRooms();
     private Set<UserThread> userThreads = new HashSet<>();
 
-    public Server(int port) {
+    public Server(int port, String serverName) {
         this.port = port;
+        this.name = serverName;
     }
 
     public void start() {
@@ -43,6 +45,11 @@ public class Server {
         } catch (IOException ex) {
             logger.error("Error in the server: ", ex);
         }
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     public void connectToRoom(UserThread thread) {

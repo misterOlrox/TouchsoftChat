@@ -6,11 +6,12 @@ import org.apache.logging.log4j.Logger;
 public class ServerApplication {
 
     private final static int PORT = 50000;
+    private final static String SERVER_NAME = "Server";
     private final static Logger logger = LogManager.getLogger(ServerApplication.class);
 
     public static void main(String[] args) {
         logger.info("Server Application is starting.");
-        Server server = new Server(PORT);
+        Server server = new Server(PORT, SERVER_NAME);
         server.start();
     }
 }

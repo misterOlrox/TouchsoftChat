@@ -1,19 +1,21 @@
 package com.olrox.chat.server.user;
 
-public class User {
-    private String username;
+import com.olrox.chat.server.Author;
+
+public class User implements Author {
+    private String name;
     private UserType type;
 
     public User() {
         this.type = UserType.UNAUTHORIZED;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public UserType getType() {

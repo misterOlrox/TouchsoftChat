@@ -1,8 +1,8 @@
 package com.olrox.chat.server.room;
 
-import com.olrox.chat.server.user.UserThread;
-import com.olrox.chat.server.message.MessageFromServer;
+import com.olrox.chat.server.message.Message;
 import com.olrox.chat.server.user.User;
+import com.olrox.chat.server.user.UserThread;
 import com.olrox.chat.server.user.UserType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -52,7 +52,7 @@ public class ChatRooms {
     // FIXME
     public void connectToRoom(UserThread userThread){
         if(userThread.getRoom() != null) {
-            logger.debug("User " + userThread.getUser().getUsername() + " already in room.");
+            logger.debug("User " + userThread.getUser().getName() + " already in room.");
             return;
         }
 
@@ -60,7 +60,7 @@ public class ChatRooms {
 
         User user = userThread.getUser();
 
-        MessageFromServer message = new MessageFromServer(user);
+        Message message = new Message();
 
         if(user.getType() == UserType.AGENT && !hasFreeClient()){
             room = new ChatRoom();
@@ -71,7 +71,7 @@ public class ChatRooms {
         if(user.getType() == UserType.AGENT && hasFreeClient()){
             room = pollClientRoom();
             room.setAgentThread(userThread);
-            message.setText("You joined client " + room.getClientThread().getUser().getUsername());
+            message.setText("You joined client " + room.getClientThread().getUser().getName());
         }
         if(user.getType() == UserType.CLIENT && !hasFreeAgent()){
             room = new ChatRoom();
@@ -82,7 +82,7 @@ public class ChatRooms {
         if(user.getType() == UserType.CLIENT && hasFreeAgent()){
             room = pollAgentRoom();
             room.setClientThread(userThread);
-            message.setText("You joined agent " + room.getAgentThread().getUser().getUsername());
+            message.setText("You joined agent " + room.getAgentThread().getUser().getName());
         }
 
         message.setSendTime(LocalDateTime.now());

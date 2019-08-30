@@ -19,7 +19,8 @@ public class UserThread extends Thread {
     private Socket socket;
     private Server server;
     private MessageReader reader;
-    private MessageWriter writer;
+    private MessageWriter serverWriter;
+    private MessageWriter userWriter;
 
     public UserThread(Socket socket, Server server) {
         this.socket = socket;
@@ -46,18 +47,19 @@ public class UserThread extends Thread {
     public void run() {
 
         user = new User();
-        MessageFromUser message;
+        Message message;
 
         try {
 
             reader = new MessageReader(socket);
-            writer = new MessageWriter(socket);
+            serverWriter = new ServerMessageWriter(socket, server);
+            userWriter = new UserMessageWriter(socket);
 
-            writer.write("\nHello");
+            serverWriter.write("\nHello");
 
             while (true){
                 if(user.getType() == UserType.UNAUTHORIZED) {
-                    writer.write("Print \"/register [agent|client] YourName\" to register");
+                    serverWriter.write("Print \"/register [agent|client] YourName\" to register");
                     message = reader.readMessage();
                     CommandType command = message.getCommandType();
 
@@ -95,7 +97,7 @@ public class UserThread extends Thread {
         }
     }
 
-    private void login(MessageFromUser message) {
+    private void login(Message message) {
         String response = message.getText();
         CommandType command = message.getCommandType();
 
@@ -103,7 +105,7 @@ public class UserThread extends Thread {
             StringTokenizer tokenizer = new StringTokenizer(response, " ");
 
             if(tokenizer.countTokens()!=3) {
-                writer.write("Incorrect command.");
+                serverWriter.write("Incorrect command.");
                 return;
             };
 
@@ -111,28 +113,28 @@ public class UserThread extends Thread {
             String userType =  tokenizer.nextToken();
             String username = tokenizer.nextToken();
 
-            user.setUsername(username);
+            user.setName(username);
 
             if(userType.equals("agent")){
                 user.setType(UserType.AGENT);
             } else if(userType.equals("client")){
                 user.setType(UserType.CLIENT);
             } else {
-                writer.write("Sorry. You can't register as " + userType + ". Try again");
+                serverWriter.write("Sorry. You can't register as " + userType + ". Try again");
                 return;
             }
 
-            writer.write("You are successfully registered as "
+            serverWriter.write("You are successfully registered as "
                     + user.getClass().getSimpleName().toLowerCase()
                     + " "
-                    + user.getUsername());
+                    + user.getName());
 
             logger.info("User was registered as "
                     + user.getClass().getSimpleName()
                     + " "
-                    + user.getUsername());
+                    + user.getName());
         } else {
-            writer.write("Sorry. You have a typo. Try again.");
+            serverWriter.write("Sorry. You have a typo. Try again.");
         }
     }
 
@@ -143,20 +145,21 @@ public class UserThread extends Thread {
     /**
      * Sends a message to the client.
      */
-    public void getMessage(Message message) {
-        writer.write(message);
+    public void writeMessageFromUser(Message message) {
+        userWriter.write(message);
     }
 
-    public void getMessage(String message) {
-        writer.write(message);
+    public void writeAsServer(String message) {
+        serverWriter.write(message);
     }
 
     /**
      * Sends a message to the chat room.
      */
-    public void deliverMessage(MessageFromUser message) throws IOException{
+    public void deliverMessage(Message message) throws IOException{
         if(user.getType() != UserType.UNAUTHORIZED) {
             connectToRoom();
+            message.setAuthor(this.user);
             this.room.deliverMessage(message, this);
         } else {
             login(message);

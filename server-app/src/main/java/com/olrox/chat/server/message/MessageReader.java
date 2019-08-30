@@ -14,10 +14,10 @@ public class MessageReader {
         reader = new BufferedReader(new InputStreamReader(input));
     }
 
-    public MessageFromUser readMessage() throws IOException{
+    public Message readMessage() throws IOException{
         String data = reader.readLine();
 
-        MessageFromUser message = new MessageFromUser(data);
+        Message message = new Message(data);
 
         return message;
     }
