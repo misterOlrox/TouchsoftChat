@@ -32,12 +32,11 @@ public class WriteThread extends Thread{
 
         while (true) {
             text = in.nextLine();
+            writer.println(text);
 
             if(text.equals("/exit")) {
                 break;
             }
-
-            writer.println(text);
         }
 
         try {
@@ -45,5 +44,7 @@ public class WriteThread extends Thread{
         } catch (IOException ex) {
             System.out.println("Error writing to server: " + ex.getMessage());
         }
+
+        writer.println("You are exited from user-app.");
     }
 }

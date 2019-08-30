@@ -17,14 +17,7 @@ public class MessageReader {
     public Message readMessage() throws IOException{
         String data = reader.readLine();
 
-        Message message;
-
-        // FIXME ?
-        if(data == null) {
-            message = new Message("null");
-        } else {
-            message = new Message(data);
-        }
+        Message message = new Message(data);
 
         return message;
     }

@@ -28,6 +28,10 @@ public class Message {
     }
 
     private CommandType checkForCommand(String text) {
+        if(text == null) {
+            return CommandType.NULL;
+        }
+
         if(!text.startsWith("/")) {
             return CommandType.MESSAGE;
         }

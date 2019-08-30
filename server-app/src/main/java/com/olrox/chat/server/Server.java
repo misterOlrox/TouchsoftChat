@@ -58,4 +58,10 @@ public class Server implements Author {
     public void disconnectFromRoom(UserThread thread) {
         chatRooms.disconnect(thread);
     }
+
+    public void exitFromRooms(UserThread thread) {
+        chatRooms.exit(thread);
+        userThreads.remove(thread);
+        logger.info("Removed thread " + thread);
+    }
 }

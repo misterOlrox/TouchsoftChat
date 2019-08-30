@@ -27,20 +27,13 @@ public class ReadThread extends Thread {
     public void run() {
         while (true) {
             try {
-                if(socket.isClosed()){
-                    break;
-                }
                 if(reader.ready()) {
                     String response = reader.readLine();
+                    if(response == null){
+                        System.out.println("Response is null. Exiting.");
+                        break;
+                    }
                     System.out.println(response);
-                }
-
-                // TODO ...
-                String username = null;
-                if (username != null) {
-                    System.out.print("[" + username + "]: ");
-                } else {
-                    //System.out.print(":");
                 }
             } catch (IOException ex) {
                 System.out.println("Error reading from server: " + ex.getMessage());

@@ -6,23 +6,19 @@ import com.olrox.chat.server.user.UserType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayDeque;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 // TODO remake in Observer??? or remove
 public class ChatRooms {
 
     private final static Logger logger = LogManager.getLogger(ChatRooms.class);
 
-    private Collection<ChatRoom> allRooms = new HashSet<>();
+    // TODO check if this is normal
+    private Queue<ChatRoom> freeClients = new ConcurrentLinkedQueue<>();
 
     // TODO check if this is normal
-    private Queue<ChatRoom> freeClients = new ArrayDeque<>();
-
-    // TODO check if this is normal
-    private Queue<ChatRoom> freeAgents = new ArrayDeque<>();
+    private Queue<ChatRoom> freeAgents = new ConcurrentLinkedQueue<>();
 
     public boolean hasFreeClient(){
         return !freeClients.isEmpty();
@@ -86,8 +82,6 @@ public class ChatRooms {
         }
 
         userThread.setRoom(room);
-
-        this.allRooms.add(room);
     }
 
     public void disconnect(UserThread userThread) {
@@ -107,13 +101,16 @@ public class ChatRooms {
         ChatRoom currentRoom = userThread.getRoom();
 
         if(userThread == currentRoom.getClientThread() && currentRoom.getAgentThread() != null) {
-            currentRoom.getAgentThread().writeAsServer(userThread.getUser().getName() + " leaved.");
-            disconnectClient(userThread);
+            currentRoom.getAgentThread().writeAsServer(userThread.getUser().getName() + " exited.");
+            exitClient(currentRoom.getClientThread());
         }
         if(userThread == currentRoom.getAgentThread() && currentRoom.getClientThread() != null){
-            currentRoom.getClientThread().writeAsServer(userThread.getUser().getName() + " leaved.");
-            disconnectAgent(userThread);
+            currentRoom.getClientThread().writeAsServer(userThread.getUser().getName() + " exited.");
+            exitAgent(currentRoom.getAgentThread());
         }
+
+        logger.debug("EXITING: " + this);
+
     }
 
     private void disconnectClient(UserThread userThread){
@@ -124,20 +121,53 @@ public class ChatRooms {
         ChatRoom currentRoom = userThread.getRoom();
         currentRoom.setClientThread(null);
         freeAgents.add(currentRoom);
-        if(currentRoom.getAgentThread() == null) {
-            this.allRooms.remove(currentRoom);
-        }
+
         userThread.setRoom(null);
     }
 
     private void disconnectAgent(UserThread userThread) {
+        if(userThread == null) {
+            return;
+        }
+
         ChatRoom currentRoom = userThread.getRoom();
         currentRoom.setAgentThread(null);
         freeClients.add(currentRoom);
         connect(currentRoom.getClientThread());
-        if(currentRoom.getClientThread() == null) {
-            this.allRooms.remove(currentRoom);
-        }
+
         userThread.setRoom(null);
+    }
+
+    private void exitClient(UserThread userThread){
+        if(userThread == null) {
+            return;
+        }
+
+        ChatRoom currentRoom = userThread.getRoom();
+        currentRoom.setClientThread(null);
+
+        userThread.setRoom(null);
+
+
+    }
+
+    private void exitAgent(UserThread userThread) {
+        if(userThread == null) {
+            return;
+        }
+
+        ChatRoom currentRoom = userThread.getRoom();
+        currentRoom.setAgentThread(null);
+        connect(currentRoom.getClientThread());
+
+        userThread.setRoom(null);
+    }
+
+    @Override
+    public String toString() {
+        return "ChatRooms{" +
+                "freeClients=" + freeClients +
+                ", freeAgents=" + freeAgents +
+                '}';
     }
 }

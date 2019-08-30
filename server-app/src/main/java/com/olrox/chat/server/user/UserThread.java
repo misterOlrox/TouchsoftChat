@@ -57,11 +57,11 @@ public class UserThread extends Thread {
 
             serverWriter.write("Hello");
 
-            while (true){
+            while (command != CommandType.EXIT){
                 logger.debug("User's state: " + user.toString());
 
-                if(command == CommandType.EXIT) {
-                    logger.debug("User " + user +" exiting...");
+                if(command == CommandType.NULL) {
+                    logger.error("Server received null message from user");
                     break;
                 }
 
@@ -71,8 +71,6 @@ public class UserThread extends Thread {
                     command = message.getCommandType();
 
                     logger.debug("Current message from user: " + message);
-
-
 
                     if(command == CommandType.REGISTER) {
                         login(message);
@@ -102,6 +100,7 @@ public class UserThread extends Thread {
         } catch (IOException ex) {
             logger.error("Error in UserThread: ", ex);
         } finally {
+            exit();
             closeConnections();
         }
     }
@@ -150,6 +149,12 @@ public class UserThread extends Thread {
     private void leave() {
         if(room != null) {
             server.disconnectFromRoom(this);
+        }
+    }
+
+    private void exit(){
+        if(room != null) {
+            server.exitFromRooms(this);
         }
     }
 
