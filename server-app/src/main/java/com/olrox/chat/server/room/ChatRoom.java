@@ -1,5 +1,7 @@
 package com.olrox.chat.server.room;
 
+import com.olrox.chat.server.user.FreeUserState;
+import com.olrox.chat.server.user.UserState;
 import com.olrox.chat.server.user.UserThread;
 import com.olrox.chat.server.message.Message;
 import org.apache.logging.log4j.LogManager;

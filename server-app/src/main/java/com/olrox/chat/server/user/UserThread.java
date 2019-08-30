@@ -8,7 +8,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.StringTokenizer;
 
 public class UserThread extends Thread {
 
@@ -21,6 +20,7 @@ public class UserThread extends Thread {
     private MessageReader reader;
     private MessageWriter serverWriter;
     private MessageWriter userWriter;
+    private UserState userState = new UnauthorizedState();
 
     public UserThread(Socket socket, Server server) {
         this.socket = socket;
@@ -43,6 +43,14 @@ public class UserThread extends Thread {
         this.room = room;
     }
 
+    public UserState getUserState() {
+        return userState;
+    }
+
+    public void setUserState(UserState userState) {
+        this.userState = userState;
+    }
+
     public void run() {
 
         user = new User();
@@ -57,44 +65,12 @@ public class UserThread extends Thread {
 
             serverWriter.write("Hello");
 
-            while (command != CommandType.EXIT){
-                logger.debug("User's state: " + user.toString());
-
-                if(command == CommandType.NULL) {
-                    logger.error("Server received null message from user");
-                    break;
-                }
-
-                if(user.getType() == UserType.UNAUTHORIZED) {
-                    serverWriter.write("Print \"/register [agent|client] YourName\" to register");
-                    message = reader.readMessage();
-                    command = message.getCommandType();
-
-                    logger.debug("Current message from user: " + message);
-
-                    if(command == CommandType.REGISTER) {
-                        login(message);
-                    }
-
-                    if(user.getType() == UserType.AGENT) {
-                        connectToRoom();
-                    }
-                    continue;
-                }
-
+            while (true){
                 message = reader.readMessage();
 
                 logger.debug("Current message from user: " + message);
 
-                command = message.getCommandType();
-
-                switch(command) {
-                    case MESSAGE:
-                        sendToChat(message);
-                        break;
-                    case LEAVE:
-                        leave();
-                }
+                processMessageWithState(message);
             }
 
         } catch (IOException ex) {
@@ -102,47 +78,6 @@ public class UserThread extends Thread {
         } finally {
             exit();
             closeConnections();
-        }
-    }
-
-    private void login(Message message) {
-        String response = message.getText();
-        CommandType command = message.getCommandType();
-
-        if (command == CommandType.REGISTER) {
-            StringTokenizer tokenizer = new StringTokenizer(response, " ");
-
-            if(tokenizer.countTokens()!=3) {
-                serverWriter.write("Incorrect command.");
-                return;
-            };
-
-            tokenizer.nextToken();
-            String userType =  tokenizer.nextToken();
-            String username = tokenizer.nextToken();
-
-            user.setName(username);
-
-            if(userType.equals("agent")){
-                user.setType(UserType.AGENT);
-            } else if(userType.equals("client")){
-                user.setType(UserType.CLIENT);
-            } else {
-                serverWriter.write("Sorry. You can't register as " + userType + ". Try again");
-                return;
-            }
-
-            serverWriter.write("You are successfully registered as "
-                    + userType
-                    + " "
-                    + user.getName());
-
-            logger.info("User was registered as "
-                    + userType
-                    + " "
-                    + user.getName());
-        } else {
-            serverWriter.write("Sorry. You have a typo. Try again.");
         }
     }
 
@@ -158,8 +93,16 @@ public class UserThread extends Thread {
         }
     }
 
-    private void connectToRoom(){
-        server.connectToRoom(this);
+    public void findCompanion(){
+        server.findCompanion(this);
+    }
+
+    public boolean checkCompatibility(UserThread other) {
+        if(userState instanceof FreeUserState) {
+            return ((FreeUserState) userState).checkCompatibility(other);
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -182,15 +125,16 @@ public class UserThread extends Thread {
      */
     public void sendToChat(Message message) throws IOException{
         if(user.getType() != UserType.UNAUTHORIZED) {
-            connectToRoom();
+            findCompanion();
             message.setAuthor(this.user);
             this.room.deliverMessage(message, this);
-        } else {
-            login(message);
         }
+//        else {
+//            login(message);
+//        }
     }
 
-    private synchronized void closeConnections()  {
+    public synchronized void closeConnections()  {
         logger.debug("closeConnections() method Enter");
         if (socket != null){
             try {
@@ -215,5 +159,9 @@ public class UserThread extends Thread {
 
 
         logger.debug("closeConnections() method Exit");
+    }
+
+    public void processMessageWithState(Message message){
+        userState.processMessage(this, message);
     }
 }

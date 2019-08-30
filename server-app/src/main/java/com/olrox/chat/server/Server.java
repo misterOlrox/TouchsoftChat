@@ -51,8 +51,12 @@ public class Server implements Author {
         return name;
     }
 
-    public void connectToRoom(UserThread thread) {
-        chatRooms.connect(thread);
+    public void findCompanion(UserThread thread) {
+        for(UserThread otherThread : userThreads) {
+            if(otherThread.getRoom() == null){
+
+            }
+        }
     }
 
     public void disconnectFromRoom(UserThread thread) {
