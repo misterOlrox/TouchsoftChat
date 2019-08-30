@@ -43,7 +43,6 @@ public class UserThread extends Thread {
         this.room = room;
     }
 
-    // FIXME too many lines in "try"
     public void run() {
 
         user = new User();
@@ -55,7 +54,7 @@ public class UserThread extends Thread {
             serverWriter = new ServerMessageWriter(socket, server);
             userWriter = new UserMessageWriter(socket);
 
-            serverWriter.write("\nHello");
+            serverWriter.write("Hello");
 
             while (true){
                 if(user.getType() == UserType.UNAUTHORIZED) {
@@ -125,12 +124,12 @@ public class UserThread extends Thread {
             }
 
             serverWriter.write("You are successfully registered as "
-                    + user.getClass().getSimpleName().toLowerCase()
+                    + userType
                     + " "
                     + user.getName());
 
             logger.info("User was registered as "
-                    + user.getClass().getSimpleName()
+                    + userType
                     + " "
                     + user.getName());
         } else {
