@@ -15,7 +15,6 @@ public class ChatRoom {
     private UserThread clientThread;
     private UserThread agentThread;
 
-    // TODO check if this is normal
     private List<Message> messageList = new ArrayList<>();
 
     public UserThread getClientThread() {
@@ -39,18 +38,23 @@ public class ChatRoom {
     }
 
     public void deliverMessage(Message message, UserThread from) {
-        // TODO saving
-        if(agentThread==null || clientThread==null) {
-            noCompanionMessage(from);
+        if(agentThread==null && clientThread!=null) {
+            clientThread.writeAsServer("Wait for your companion");
+            saveMessage(message);
             return;
         }
 
-        if(agentThread==from) {
+        if(agentThread!=null && clientThread==null) {
+            agentThread.writeAsServer("Wait for your companion");
+            return;
+        }
+
+        if(agentThread == from) {
             logger.debug("Agent " + agentThread.getUser().getName() +" writes message: " + message);
             logger.debug("Client " + clientThread.getUser().getName() + " receives message: " + message);
             clientThread.writeMessageFromUser(message);
         }
-        else {
+        if (clientThread == from) {
             logger.debug("Client " + clientThread.getUser().getName() +" writes message: " + message);
             logger.debug("Agent " + agentThread.getUser().getName() + " receives message: " + message);
             agentThread.writeMessageFromUser(message);
@@ -58,7 +62,9 @@ public class ChatRoom {
 
     }
 
-    public void noCompanionMessage(UserThread userThread) {
-        userThread.writeAsServer("Wait for your companion");
+    public void deliverSavedMessages() {
+        for(Message message : messageList) {
+            agentThread.writeMessageFromUser(message);
+        }
     }
 }

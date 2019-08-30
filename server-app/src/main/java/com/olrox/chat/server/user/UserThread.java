@@ -67,6 +67,10 @@ public class UserThread extends Thread {
                     }
 
                     login(message);
+
+                    if(user.getType() == UserType.AGENT) {
+                        connectToRoom();
+                    }
                     continue;
                 }
 
@@ -149,6 +153,10 @@ public class UserThread extends Thread {
     }
 
     public void writeAsServer(String message) {
+        serverWriter.write(message);
+    }
+
+    public void writeAsServer(Message message) {
         serverWriter.write(message);
     }
 
