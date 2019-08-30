@@ -84,8 +84,10 @@ public class UserThread extends Thread {
 
                 switch(command) {
                     case MESSAGE:
-                        deliverMessage(message);
+                        sendToChat(message);
                         break;
+                    case LEAVE:
+                        leave();
                 }
             }
 
@@ -141,6 +143,12 @@ public class UserThread extends Thread {
         }
     }
 
+    private void leave() {
+        if(room != null) {
+            server.disconnectFromRoom(this);
+        }
+    }
+
     private void connectToRoom(){
         server.connectToRoom(this);
     }
@@ -163,7 +171,7 @@ public class UserThread extends Thread {
     /**
      * Sends a message to the chat room.
      */
-    public void deliverMessage(Message message) throws IOException{
+    public void sendToChat(Message message) throws IOException{
         if(user.getType() != UserType.UNAUTHORIZED) {
             connectToRoom();
             message.setAuthor(this.user);

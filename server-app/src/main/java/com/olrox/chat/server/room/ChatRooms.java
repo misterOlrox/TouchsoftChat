@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Queue;
 
+// TODO remake in Observer??? or remove
 public class ChatRooms {
 
     private final static Logger logger = LogManager.getLogger(ChatRooms.class);
@@ -48,9 +49,9 @@ public class ChatRooms {
     }
 
     // FIXME please
-    public void connectToRoom(UserThread userThread){
+    public void connect(UserThread userThread){
         if(userThread.getRoom() != null) {
-            logger.debug("User " + userThread.getUser().getName() + " already in room.");
+            logger.debug("User " + userThread.getUser().getName() + " already in room " + userThread.getRoom());
             return;
         }
 
@@ -87,5 +88,52 @@ public class ChatRooms {
         userThread.setRoom(room);
 
         this.allRooms.add(room);
+    }
+
+    public void disconnect(UserThread userThread) {
+        ChatRoom currentRoom = userThread.getRoom();
+
+        if(userThread == currentRoom.getClientThread() && currentRoom.getAgentThread() != null) {
+            currentRoom.getAgentThread().writeAsServer(userThread.getUser().getName() + " leaved.");
+        }
+        if(userThread == currentRoom.getAgentThread() && currentRoom.getClientThread() != null){
+            currentRoom.getClientThread().writeAsServer(userThread.getUser().getName() + " leaved.");
+        }
+
+        disconnectClient(currentRoom.getClientThread());
+    }
+
+    public void exit(UserThread userThread) {
+        ChatRoom currentRoom = userThread.getRoom();
+
+        if(userThread == currentRoom.getClientThread() && currentRoom.getAgentThread() != null) {
+            currentRoom.getAgentThread().writeAsServer(userThread.getUser().getName() + " leaved.");
+            disconnectClient(userThread);
+        }
+        if(userThread == currentRoom.getAgentThread() && currentRoom.getClientThread() != null){
+            currentRoom.getClientThread().writeAsServer(userThread.getUser().getName() + " leaved.");
+            disconnectAgent(userThread);
+        }
+    }
+
+    private void disconnectClient(UserThread userThread){
+        ChatRoom currentRoom = userThread.getRoom();
+        currentRoom.setClientThread(null);
+        freeAgents.add(currentRoom);
+        if(currentRoom.getAgentThread() == null) {
+            this.allRooms.remove(currentRoom);
+        }
+        userThread.setRoom(null);
+    }
+
+    private void disconnectAgent(UserThread userThread) {
+        ChatRoom currentRoom = userThread.getRoom();
+        currentRoom.setAgentThread(null);
+        freeClients.add(currentRoom);
+        connect(currentRoom.getClientThread());
+        if(currentRoom.getClientThread() == null) {
+            this.allRooms.remove(currentRoom);
+        }
+        userThread.setRoom(null);
     }
 }

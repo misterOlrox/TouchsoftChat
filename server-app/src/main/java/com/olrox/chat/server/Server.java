@@ -1,6 +1,5 @@
 package com.olrox.chat.server;
 
-import com.olrox.chat.server.room.ChatRoom;
 import com.olrox.chat.server.room.ChatRooms;
 import com.olrox.chat.server.user.UserThread;
 import org.apache.logging.log4j.LogManager;
@@ -53,6 +52,10 @@ public class Server implements Author {
     }
 
     public void connectToRoom(UserThread thread) {
-        chatRooms.connectToRoom(thread);
+        chatRooms.connect(thread);
+    }
+
+    public void disconnectFromRoom(UserThread thread) {
+        chatRooms.disconnect(thread);
     }
 }
