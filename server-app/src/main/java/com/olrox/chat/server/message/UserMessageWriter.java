@@ -21,4 +21,8 @@ public class UserMessageWriter implements MessageWriter{
     public void write(Message message) {
         writer.println(message.show());
     }
+
+    public void close() {
+        writer.close();
+    }
 }

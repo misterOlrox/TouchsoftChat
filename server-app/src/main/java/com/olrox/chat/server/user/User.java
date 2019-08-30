@@ -25,4 +25,12 @@ public class User implements Author {
     public void setType(UserType type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", type=" + type +
+                '}';
+    }
 }

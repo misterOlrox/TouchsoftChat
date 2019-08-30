@@ -30,8 +30,10 @@ public class ReadThread extends Thread {
                 if(socket.isClosed()){
                     break;
                 }
-                String response = reader.readLine();
-                System.out.println(response);
+                if(reader.ready()) {
+                    String response = reader.readLine();
+                    System.out.println(response);
+                }
 
                 // TODO ...
                 String username = null;

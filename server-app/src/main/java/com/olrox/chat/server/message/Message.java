@@ -89,7 +89,7 @@ public class Message {
     @Override
     public String toString() {
         return "Message{" +
-                "author=" + author.getName() +
+                "author=" + author +
                 ", text='" + text + '\'' +
                 ", commandType=" + commandType +
                 '}';

@@ -1,10 +1,10 @@
 package com.olrox.chat.user;
 
-import java.io.Console;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class WriteThread extends Thread{
     private PrintWriter writer;
@@ -26,12 +26,12 @@ public class WriteThread extends Thread{
 
     public void run() {
 
-        Console console = System.console();
+        Scanner in = new Scanner(System.in);
 
         String text;
 
         while (true) {
-            text = console.readLine();
+            text = in.nextLine();
 
             if(text.equals("/exit")) {
                 break;

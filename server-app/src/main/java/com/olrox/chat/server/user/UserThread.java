@@ -47,6 +47,7 @@ public class UserThread extends Thread {
 
         user = new User();
         Message message;
+        CommandType command = null;
 
         try {
 
@@ -57,16 +58,25 @@ public class UserThread extends Thread {
             serverWriter.write("Hello");
 
             while (true){
+                logger.debug("User's state: " + user.toString());
+
+                if(command == CommandType.EXIT) {
+                    logger.debug("User " + user +" exiting...");
+                    break;
+                }
+
                 if(user.getType() == UserType.UNAUTHORIZED) {
                     serverWriter.write("Print \"/register [agent|client] YourName\" to register");
                     message = reader.readMessage();
-                    CommandType command = message.getCommandType();
+                    command = message.getCommandType();
 
-                    if(command == CommandType.EXIT) {
-                        break;
+                    logger.debug("Current message from user: " + message);
+
+
+
+                    if(command == CommandType.REGISTER) {
+                        login(message);
                     }
-
-                    login(message);
 
                     if(user.getType() == UserType.AGENT) {
                         connectToRoom();
@@ -76,11 +86,9 @@ public class UserThread extends Thread {
 
                 message = reader.readMessage();
 
-                CommandType command = message.getCommandType();
+                logger.debug("Current message from user: " + message);
 
-                if(command == CommandType.EXIT) {
-                    break;
-                }
+                command = message.getCommandType();
 
                 switch(command) {
                     case MESSAGE:
@@ -91,14 +99,10 @@ public class UserThread extends Thread {
                 }
             }
 
-            //server.removeUser(userName, this);
-            socket.close();
-//
-//            serverMessage = userName + " has quitted.";
-//            server.broadcast(serverMessage, this);
-
         } catch (IOException ex) {
             logger.error("Error in UserThread: ", ex);
+        } finally {
+            closeConnections();
         }
     }
 
@@ -179,5 +183,32 @@ public class UserThread extends Thread {
         } else {
             login(message);
         }
+    }
+
+    private synchronized void closeConnections()  {
+        logger.debug("closeConnections() method Enter");
+        if (socket != null){
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if(reader != null) {
+            try {
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if(userWriter != null) {
+            userWriter.close();
+        }
+        if(serverWriter != null) {
+            serverWriter.close();
+        }
+
+
+        logger.debug("closeConnections() method Exit");
     }
 }

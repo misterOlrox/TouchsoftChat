@@ -117,6 +117,10 @@ public class ChatRooms {
     }
 
     private void disconnectClient(UserThread userThread){
+        if(userThread == null) {
+            return;
+        }
+
         ChatRoom currentRoom = userThread.getRoom();
         currentRoom.setClientThread(null);
         freeAgents.add(currentRoom);

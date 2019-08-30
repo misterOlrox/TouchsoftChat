@@ -26,4 +26,8 @@ public class ServerMessageWriter implements MessageWriter{
         message.setAuthor(author);
         writer.println(message.show());
     }
+
+    public void close() {
+        writer.close();
+    }
 }

@@ -17,10 +17,19 @@ public class MessageReader {
     public Message readMessage() throws IOException{
         String data = reader.readLine();
 
-        Message message = new Message(data);
+        Message message;
+
+        // FIXME ?
+        if(data == null) {
+            message = new Message("null");
+        } else {
+            message = new Message(data);
+        }
 
         return message;
     }
 
-
+    public void close() throws IOException {
+        reader.close();
+    }
 }
