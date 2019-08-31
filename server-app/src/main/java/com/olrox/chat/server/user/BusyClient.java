@@ -1,6 +1,6 @@
 package com.olrox.chat.server.user;
 
-import com.olrox.chat.server.Author;
+import com.olrox.chat.server.message.Author;
 import com.olrox.chat.server.UserThread;
 import com.olrox.chat.server.message.Message;
 
@@ -16,8 +16,8 @@ public class BusyClient implements User, Author {
 
     @Override
     public void register(Message message) {
-        thread.writeServerAnswer("You are client " + getName() + " chatting with agent " +
-                companion.getName() + ". You needn't to register.");
+        thread.writeServerAnswer("You are client " + this.getUsername() + " chatting with agent " +
+                companion.getUsername() + ". You needn't to register.");
     }
 
     @Override
@@ -32,20 +32,24 @@ public class BusyClient implements User, Author {
 
     @Override
     public void leave(Message message) {
+        this.thread.writeServerAnswer("You leaved agent " + companion.getUsername());
+        companion.getThread().writeServerAnswer("Client " + username + " leaved.");
 
+        this.setFree();
+        companion.setFree();
     }
 
+    @Override
     public String getUsername() {
         return username;
     }
 
-    @Override
-    public String getName() {
-        return getUsername();
-    }
-
     public void setCompanion(BusyAgent companion) {
         this.companion = companion;
+    }
+
+    public void setFree(){
+        this.thread.setUserStatus(new FreeClient(this));
     }
 
     public UserThread getThread() {

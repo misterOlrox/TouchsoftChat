@@ -4,7 +4,7 @@ import com.olrox.chat.server.message.CommandType;
 import com.olrox.chat.server.message.Message;
 import com.olrox.chat.server.message.MessageReader;
 import com.olrox.chat.server.message.MessageWriter;
-import com.olrox.chat.server.message.ServerMessageWriter;
+import com.olrox.chat.server.message.AuthoredMessageWriter;
 import com.olrox.chat.server.message.UserMessageWriter;
 import com.olrox.chat.server.user.UnauthorizedUser;
 import com.olrox.chat.server.user.User;
@@ -19,15 +19,13 @@ public class UserThread extends Thread {
     private final static Logger logger = LogManager.getLogger(UserThread.class);
 
     private Socket socket;
-    private Server server;
     private MessageReader reader;
     private MessageWriter serverWriter;
     private MessageWriter userWriter;
     private User user;
 
-    public UserThread(Socket socket, Server server) {
+    public UserThread(Socket socket) {
         this.socket = socket;
-        this.server = server;
     }
 
     public void run() {
@@ -36,7 +34,7 @@ public class UserThread extends Thread {
 
         try {
             reader = new MessageReader(socket);
-            serverWriter = new ServerMessageWriter(socket, server);
+            serverWriter = new AuthoredMessageWriter(socket, ServerApplication.SERVER_AS_AUTHOR);
             userWriter = new UserMessageWriter(socket);
             user = new UnauthorizedUser(this);
 
@@ -62,7 +60,6 @@ public class UserThread extends Thread {
                         break;
                 }
             }
-
         } catch (IOException ex) {
             logger.error("Error in UserThread: ", ex);
         } finally {
@@ -105,10 +102,6 @@ public class UserThread extends Thread {
         serverWriter.write(message);
     }
 
-    public MessageWriter getUserWriter() {
-        return userWriter;
-    }
-
     public synchronized void closeConnections()  {
         logger.debug("closeConnections() method Enter");
         if (socket != null){
@@ -136,11 +129,7 @@ public class UserThread extends Thread {
         logger.debug("closeConnections() method Exit");
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
+    public void setUserStatus(User user) {
         this.user = user;
     }
 }

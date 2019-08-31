@@ -1,17 +1,18 @@
 package com.olrox.chat.server;
 
+import com.olrox.chat.server.message.ServerAsAuthor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class ServerApplication {
+public class ServerApplication{
 
+    public final static ServerAsAuthor SERVER_AS_AUTHOR = new ServerAsAuthor("Server");
     private final static int PORT = 50000;
-    private final static String SERVER_NAME = "Server";
     private final static Logger logger = LogManager.getLogger(ServerApplication.class);
 
     public static void main(String[] args) {
         logger.info("Server Application is starting.");
-        Server server = new Server(PORT, SERVER_NAME);
+        Server server = new Server(PORT);
         server.start();
     }
 }

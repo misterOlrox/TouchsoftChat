@@ -18,6 +18,11 @@ public class FreeAgent implements User {
         this.username = username;
     }
 
+    public FreeAgent(BusyAgent busyAgent) {
+        this.thread = busyAgent.getThread();
+        this.username = busyAgent.getUsername();
+    }
+
     public void findCompanion(){
         logger.debug("Agent " + username + " trying to find client");
         if(ChatManager.hasFreeClient()){
@@ -55,8 +60,8 @@ public class FreeAgent implements User {
         busyClient.setCompanion(busyAgent);
         busyAgent.setCompanion(busyClient);
 
-        thread.setUser(busyAgent);
-        companion.getThread().setUser(busyClient);
+        thread.setUserStatus(busyAgent);
+        companion.getThread().setUserStatus(busyClient);
 
         thread.writeServerAnswer("Now you chatting with client " + companion.getUsername());
         companion.getThread().writeServerAnswer("Now you chatting with agent " + this.getUsername());

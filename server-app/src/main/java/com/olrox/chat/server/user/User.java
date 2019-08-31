@@ -1,6 +1,5 @@
 package com.olrox.chat.server.user;
 
-import com.olrox.chat.server.Author;
 import com.olrox.chat.server.message.Message;
 
 public interface User {

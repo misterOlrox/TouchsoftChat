@@ -42,12 +42,12 @@ public class UnauthorizedUser implements User {
             thread.writeServerAnswer(serverAnswer);
             logger.info(loggerInfo);
             FreeAgent agent = new FreeAgent(this, username);
-            thread.setUser(agent);
+            thread.setUserStatus(agent);
             agent.findCompanion();
         } else if(userType.equals("client")){
             thread.writeServerAnswer(serverAnswer);
             logger.info(loggerInfo);
-            thread.setUser(new FreeClient(this, username));
+            thread.setUserStatus(new FreeClient(this, username));
         } else {
             thread.writeServerAnswer("Sorry. You can't register as " + userType + ". Try again");
         }

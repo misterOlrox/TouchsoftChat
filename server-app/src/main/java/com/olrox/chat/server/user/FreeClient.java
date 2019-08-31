@@ -1,6 +1,6 @@
 package com.olrox.chat.server.user;
 
-import com.olrox.chat.server.Author;
+import com.olrox.chat.server.message.Author;
 import com.olrox.chat.server.UserThread;
 import com.olrox.chat.server.message.Message;
 import com.olrox.chat.server.ChatManager;
@@ -18,6 +18,11 @@ public class FreeClient implements User, Author {
         this.thread = user.getThread();
         this.username = username;
         thread.writeServerAnswer("Type your messages and we will find you an agent.");
+    }
+
+    public FreeClient(BusyClient busyClient) {
+        this.thread = busyClient.getThread();
+        this.username = busyClient.getUsername();
     }
 
     private void findCompanion(){
@@ -50,12 +55,8 @@ public class FreeClient implements User, Author {
         thread.writeServerAnswer("You aren't chatting.");
     }
 
-    public String getUsername() {
-        return username;
-    }
-
     @Override
-    public String getName() {
+    public String getUsername() {
         return username;
     }
 
@@ -66,8 +67,8 @@ public class FreeClient implements User, Author {
         busyClient.setCompanion(busyAgent);
         busyAgent.setCompanion(busyClient);
 
-        this.thread.setUser(busyClient);
-        companion.getThread().setUser(busyAgent);
+        this.thread.setUserStatus(busyClient);
+        companion.getThread().setUserStatus(busyAgent);
 
         thread.writeServerAnswer("Now you chatting with agent " + companion.getUsername());
         companion.getThread().writeServerAnswer("Now you chatting with client " + this.getUsername());

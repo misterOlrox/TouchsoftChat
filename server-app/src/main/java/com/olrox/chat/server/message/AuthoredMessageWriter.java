@@ -1,17 +1,15 @@
 package com.olrox.chat.server.message;
 
-import com.olrox.chat.server.Author;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class ServerMessageWriter implements MessageWriter{
+public class AuthoredMessageWriter implements MessageWriter{
     private PrintWriter writer;
     private Author author;
 
-    public ServerMessageWriter(Socket socket, Author author) throws IOException {
+    public AuthoredMessageWriter(Socket socket, Author author) throws IOException {
         OutputStream output = socket.getOutputStream();
         writer = new PrintWriter(output, true);
         this.author = author;

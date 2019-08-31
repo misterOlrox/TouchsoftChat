@@ -1,7 +1,5 @@
 package com.olrox.chat.server.message;
 
-import com.olrox.chat.server.Author;
-
 import java.time.LocalDateTime;
 
 public class Message {
@@ -87,7 +85,7 @@ public class Message {
 
     public String show() {
         //return toString();
-        return "[" + author.getName() + "] : " + text;
+        return "[" + author.getUsername() + "] : " + text;
     }
 
     @Override
