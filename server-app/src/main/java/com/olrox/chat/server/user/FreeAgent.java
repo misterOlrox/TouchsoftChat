@@ -2,7 +2,7 @@ package com.olrox.chat.server.user;
 
 import com.olrox.chat.server.thread.UserThread;
 import com.olrox.chat.server.message.Message;
-import com.olrox.chat.server.manager.ChatManager;
+import com.olrox.chat.server.manager.FreeUsersManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,12 +25,12 @@ public class FreeAgent implements User {
 
     public void findCompanion(){
         logger.debug("Agent " + username + " trying to find client");
-        if(ChatManager.hasFreeClient()){
-            FreeClient companion = ChatManager.pollFreeClient();
+        if(FreeUsersManager.hasFreeClient()){
+            FreeClient companion = FreeUsersManager.pollFreeClient();
             connect(companion);
         } else {
             thread.writeServerAnswer("You haven't companion. Your message will not be delivered.");
-            ChatManager.addFreeAgent(this);
+            FreeUsersManager.addFreeAgent(this);
         }
     }
 
@@ -47,6 +47,11 @@ public class FreeAgent implements User {
     @Override
     public void leave(Message message) {
         thread.writeServerAnswer("You are agent. You can't leave.");
+    }
+
+    @Override
+    public void exit() {
+        // do nothing
     }
 
     public String getUsername() {

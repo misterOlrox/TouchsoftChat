@@ -8,9 +8,9 @@ import org.apache.logging.log4j.Logger;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class ChatManager {
+public class FreeUsersManager {
 
-    private final static Logger logger = LogManager.getLogger(ChatManager.class);
+    private final static Logger logger = LogManager.getLogger(FreeUsersManager.class);
 
     private static Queue<FreeClient> freeClients = new ConcurrentLinkedQueue<>();
 

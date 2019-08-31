@@ -63,6 +63,11 @@ public class UnauthorizedUser implements User {
         writeOptions();
     }
 
+    @Override
+    public void exit() {
+        // do nothing
+    }
+
     private void writeOptions() {
         thread.writeServerAnswer("Print \"/register [agent|client] YourName\" to register");
     }

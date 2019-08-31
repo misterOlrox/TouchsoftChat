@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.concurrent.TimeUnit;
 
 public class UserThread extends Thread {
 
@@ -54,6 +55,7 @@ public class UserThread extends Thread {
                         leave(message);
                         break;
                     case EXIT:
+                        exit();
                         return;
                 }
             }
@@ -61,7 +63,8 @@ public class UserThread extends Thread {
             logger.error("Error in UserThread: ", ex);
         } finally {
             logger.info("End of run method.");
-            closeConnections();
+            // TODO ???
+            // closeConnections();
         }
     }
 
@@ -75,6 +78,10 @@ public class UserThread extends Thread {
 
     private void leave(Message message) {
         this.user.leave(message);
+    }
+
+    private void exit() {
+        this.user.exit();
     }
 
     public void writeMessageFromUser(Message message) {

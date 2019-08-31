@@ -9,4 +9,6 @@ public interface User {
 
     void leave(Message message);
 
+    void exit();
+
 }

@@ -40,6 +40,11 @@ public class BusyAgent implements User, Author {
     }
 
     @Override
+    public void exit() {
+
+    }
+
+    @Override
     public String getUsername() {
         return username;
     }

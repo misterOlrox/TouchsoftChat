@@ -34,9 +34,15 @@ public class WriteThread extends Thread{
             text = in.nextLine();
             writer.println(text);
             if(text.equals("/exit")) {
-                System.out.println("You are exited from user-app.");
                 break;
             }
         }
+
+        try {
+            socket.shutdownInput();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("You are exited from user-app.");
     }
 }
