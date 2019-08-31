@@ -12,7 +12,7 @@ public class ServerApplication{
 
     public static void main(String[] args) {
         logger.info("Server Application is starting.");
-        Server server = new Server(PORT);
+        ServerThread server = new ServerThread(PORT);
         server.start();
     }
 }

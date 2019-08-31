@@ -32,7 +32,11 @@ public class BusyAgent implements User, Author {
 
     @Override
     public void leave(Message message) {
+        this.thread.writeServerAnswer("You leaved client " + companion.getUsername());
+        companion.getThread().writeServerAnswer("Agent " + username + " leaved.");
 
+        this.setFree();
+        companion.setFree();
     }
 
     @Override
@@ -45,7 +49,9 @@ public class BusyAgent implements User, Author {
     }
 
     public void setFree(){
-        this.thread.setUserStatus(new FreeAgent(this));
+        FreeAgent freeAgent = new FreeAgent(this);
+        this.thread.setUserStatus(freeAgent);
+        freeAgent.findCompanion();
     }
 
     public UserThread getThread() {

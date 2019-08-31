@@ -7,13 +7,13 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Server {
+public class ServerThread {
 
-    private final static Logger logger = LogManager.getLogger(Server.class);
+    private final static Logger logger = LogManager.getLogger(ServerThread.class);
 
     private final int port;
 
-    public Server(int port) {
+    public ServerThread(int port) {
         this.port = port;
     }
 

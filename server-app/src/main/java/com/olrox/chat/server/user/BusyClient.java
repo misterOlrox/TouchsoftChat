@@ -1,5 +1,6 @@
 package com.olrox.chat.server.user;
 
+import com.olrox.chat.server.ChatManager;
 import com.olrox.chat.server.message.Author;
 import com.olrox.chat.server.UserThread;
 import com.olrox.chat.server.message.Message;
@@ -49,7 +50,8 @@ public class BusyClient implements User, Author {
     }
 
     public void setFree(){
-        this.thread.setUserStatus(new FreeClient(this));
+        FreeClient freeClient = new FreeClient(this);
+        this.thread.setUserStatus(freeClient);
     }
 
     public UserThread getThread() {
