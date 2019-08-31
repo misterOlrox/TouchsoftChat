@@ -1,7 +1,7 @@
 package com.olrox.chat.server.user;
 
 import com.olrox.chat.server.message.Author;
-import com.olrox.chat.server.UserThread;
+import com.olrox.chat.server.thread.UserThread;
 import com.olrox.chat.server.message.Message;
 
 public class BusyAgent implements User, Author {

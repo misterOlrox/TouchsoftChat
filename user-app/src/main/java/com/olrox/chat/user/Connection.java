@@ -1,5 +1,8 @@
 package com.olrox.chat.user;
 
+import com.olrox.chat.user.thread.ReadThread;
+import com.olrox.chat.user.thread.WriteThread;
+
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;

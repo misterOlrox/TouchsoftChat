@@ -1,5 +1,6 @@
-package com.olrox.chat.server;
+package com.olrox.chat.server.thread;
 
+import com.olrox.chat.server.ServerApplication;
 import com.olrox.chat.server.message.CommandType;
 import com.olrox.chat.server.message.Message;
 import com.olrox.chat.server.message.MessageReader;

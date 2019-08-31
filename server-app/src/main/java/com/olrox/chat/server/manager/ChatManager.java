@@ -1,4 +1,4 @@
-package com.olrox.chat.server;
+package com.olrox.chat.server.manager;
 
 import com.olrox.chat.server.user.FreeAgent;
 import com.olrox.chat.server.user.FreeClient;

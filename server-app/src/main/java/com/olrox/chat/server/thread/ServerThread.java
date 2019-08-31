@@ -1,4 +1,4 @@
-package com.olrox.chat.server;
+package com.olrox.chat.server.thread;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

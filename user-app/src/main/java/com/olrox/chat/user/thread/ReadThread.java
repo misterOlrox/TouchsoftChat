@@ -1,4 +1,6 @@
-package com.olrox.chat.user;
+package com.olrox.chat.user.thread;
+
+import com.olrox.chat.user.Connection;
 
 import java.io.BufferedReader;
 import java.io.IOException;

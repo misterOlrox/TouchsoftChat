@@ -1,6 +1,7 @@
 package com.olrox.chat.server;
 
 import com.olrox.chat.server.message.ServerAsAuthor;
+import com.olrox.chat.server.thread.ServerThread;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
