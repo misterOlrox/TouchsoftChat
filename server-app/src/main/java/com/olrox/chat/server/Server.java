@@ -1,7 +1,5 @@
 package com.olrox.chat.server;
 
-import com.olrox.chat.server.room.ChatRooms;
-import com.olrox.chat.server.user.UserThread;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,7 +15,7 @@ public class Server implements Author {
 
     private final int port;
     private final String name;
-    private ChatRooms chatRooms = new ChatRooms();
+    private ChatManager chatManager = new ChatManager();
     private Set<UserThread> userThreads = new HashSet<>();
 
     public Server(int port, String serverName) {
@@ -51,21 +49,21 @@ public class Server implements Author {
         return name;
     }
 
-    public void findCompanion(UserThread thread) {
-        for(UserThread otherThread : userThreads) {
-            if(otherThread.getRoom() == null){
-
-            }
-        }
-    }
-
-    public void disconnectFromRoom(UserThread thread) {
-        chatRooms.disconnect(thread);
-    }
-
-    public void exitFromRooms(UserThread thread) {
-        chatRooms.exit(thread);
-        userThreads.remove(thread);
-        logger.info("Removed thread " + thread);
-    }
+//    public void findCompanion(UserThread thread) {
+//        for(UserThread otherThread : userThreads) {
+//            if(otherThread.getRoom() == null){
+//
+//            }
+//        }
+//    }
+//
+//    public void disconnectFromRoom(UserThread thread) {
+//        chatManager.disconnect(thread);
+//    }
+//
+//    public void exitFromRooms(UserThread thread) {
+//        chatManager.exit(thread);
+//        userThreads.remove(thread);
+//        logger.info("Removed thread " + thread);
+//    }
 }
