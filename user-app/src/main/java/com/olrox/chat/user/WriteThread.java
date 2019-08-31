@@ -25,26 +25,16 @@ public class WriteThread extends Thread{
     }
 
     public void run() {
-
         Scanner in = new Scanner(System.in);
-
         String text;
 
         while (true) {
             text = in.nextLine();
             writer.println(text);
-
             if(text.equals("/exit")) {
+                System.out.println("You are exited from user-app.");
                 break;
             }
         }
-
-        try {
-            socket.close();
-        } catch (IOException ex) {
-            System.out.println("Error writing to server: " + ex.getMessage());
-        }
-
-        writer.println("You are exited from user-app.");
     }
 }

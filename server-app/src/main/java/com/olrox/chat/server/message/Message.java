@@ -27,7 +27,7 @@ public class Message {
 
     private CommandType checkForCommand(String text) {
         if(text == null) {
-            return CommandType.NULL;
+            return CommandType.EXIT;
         }
 
         if(!text.startsWith("/")) {

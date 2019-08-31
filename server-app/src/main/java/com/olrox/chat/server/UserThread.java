@@ -53,17 +53,13 @@ public class UserThread extends Thread {
                         leave(message);
                         break;
                     case EXIT:
-                        exit();
-                        break;
-                    case NULL:
-                        nullMessageHandle();
-                        break;
+                        return;
                 }
             }
         } catch (IOException ex) {
             logger.error("Error in UserThread: ", ex);
         } finally {
-            exit();
+            logger.info("End of run method.");
             closeConnections();
         }
     }
@@ -80,16 +76,6 @@ public class UserThread extends Thread {
         this.user.leave(message);
     }
 
-    private void exit() {
-
-    }
-
-    // FIXME another exception
-    private void nullMessageHandle() throws IOException{
-        logger.error("Null message from user.");
-        throw new IOException("Null message from user.");
-    }
-
     public void writeMessageFromUser(Message message) {
         userWriter.write(message);
     }
@@ -102,8 +88,7 @@ public class UserThread extends Thread {
         serverWriter.write(message);
     }
 
-    public synchronized void closeConnections()  {
-        logger.debug("closeConnections() method Enter");
+    public void closeConnections()  {
         if (socket != null){
             try {
                 socket.close();
@@ -124,9 +109,6 @@ public class UserThread extends Thread {
         if(serverWriter != null) {
             serverWriter.close();
         }
-
-
-        logger.debug("closeConnections() method Exit");
     }
 
     public void setUserStatus(User user) {

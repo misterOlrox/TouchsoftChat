@@ -4,8 +4,7 @@ public enum CommandType {
     MESSAGE("/message"),
     REGISTER("/register"),
     LEAVE("/leave"),
-    EXIT("/exit"),
-    NULL("/null");
+    EXIT("/exit");
 
     private String code;
 

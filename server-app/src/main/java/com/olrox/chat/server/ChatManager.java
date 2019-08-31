@@ -32,41 +32,29 @@ public class ChatManager {
 
     public static FreeClient pollFreeClient(){
         logger.debug("Free client was removed.");
-        logger.debug("Free clients: " + freeClients);
-        logger.debug("Free agents: " + freeAgents);
 
         return freeClients.poll();
     }
 
     public static FreeAgent pollFreeAgent(){
         logger.debug("Free agent was removed");
-        logger.debug("Free clients: " + freeClients);
-        logger.debug("Free agents: " + freeAgents);
 
         return freeAgents.poll();
     }
 
     public static void addFreeClient(FreeClient client){
+        freeClients.add(client);
+
         logger.debug("Free client " + client.getUsername() + " was added.");
         logger.debug("Free clients: " + freeClients);
         logger.debug("Free agents: " + freeAgents);
-
-        freeClients.add(client);
     }
 
     public static void addFreeAgent(FreeAgent agent) {
+        freeAgents.add(agent);
+
         logger.debug("Free agent " + agent.getUsername() + " was added.");
         logger.debug("Free clients: " + freeClients);
         logger.debug("Free agents: " + freeAgents);
-
-        freeAgents.add(agent);
-    }
-
-    @Override
-    public String toString() {
-        return "ChatRooms{" +
-                "freeClients=" + freeClients +
-                ", freeAgents=" + freeAgents +
-                '}';
     }
 }

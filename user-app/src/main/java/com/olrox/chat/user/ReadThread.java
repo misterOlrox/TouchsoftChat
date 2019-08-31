@@ -25,21 +25,19 @@ public class ReadThread extends Thread {
     }
 
     public void run() {
-        while (true) {
-            try {
-                if(reader.ready()) {
-                    String response = reader.readLine();
-                    if(response == null){
-                        System.out.println("Response is null. Exiting.");
-                        break;
-                    }
-                    System.out.println(response);
+        String response;
+
+        try {
+            while (true) {
+                response = reader.readLine();
+                if (response == null) {
+                    break;
                 }
-            } catch (IOException ex) {
-                System.out.println("Error reading from server: " + ex.getMessage());
-                ex.printStackTrace();
-                break;
+                System.out.println(response);
             }
+        } catch (IOException ex) {
+            System.out.println("Error reading from server: " + ex.getMessage());
+            ex.printStackTrace();
         }
     }
 }
