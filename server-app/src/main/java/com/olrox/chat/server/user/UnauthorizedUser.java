@@ -34,12 +34,16 @@ public class UnauthorizedUser implements User {
         String userType =  tokenizer.nextToken();
         String username = tokenizer.nextToken();
 
+        if(UsersManager.checkOnline(username)){
+            thread.writeServerAnswer("User with username " + username + " already exists.");
+            return;
+        }
+
         String serverAnswer = "You are successfully registered as "
                 + userType + " " + username;
         String loggerInfo = "User was registered as "
                 + userType + " " + username;
 
-        // here may be a check if username is busy
 
         if(userType.equals("agent")){
             thread.writeServerAnswer(serverAnswer);

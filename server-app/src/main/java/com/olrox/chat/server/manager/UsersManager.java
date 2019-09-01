@@ -87,4 +87,8 @@ public class UsersManager {
     public static void removeOnlineUser(String username) {
         onlineUsers.remove(username);
     }
+
+    public static boolean checkOnline(String username) {
+        return onlineUsers.contains(username);
+    }
 }
