@@ -1,7 +1,5 @@
 package com.olrox.chat.user.thread;
 
-import com.olrox.chat.user.Connection;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -11,11 +9,9 @@ import java.util.Scanner;
 public class WriteThread extends Thread{
     private PrintWriter writer;
     private Socket socket;
-    private Connection connection;
 
-    public WriteThread(Socket socket, Connection connection) {
+    public WriteThread(Socket socket) {
         this.socket = socket;
-        this.connection = connection;
 
         try {
             OutputStream output = socket.getOutputStream();
@@ -31,18 +27,23 @@ public class WriteThread extends Thread{
         String text;
 
         while (true) {
+            if(socket.isClosed()) {
+                System.out.println("Server is not available. Your last message wasn't delivered.");
+                break;
+            }
+
             text = in.nextLine();
             writer.println(text);
+
             if(text.equals("/exit")) {
+                try {
+                    socket.shutdownInput();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("You are exited from user-app.");
                 break;
             }
         }
-
-        try {
-            socket.shutdownInput();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println("You are exited from user-app.");
     }
 }

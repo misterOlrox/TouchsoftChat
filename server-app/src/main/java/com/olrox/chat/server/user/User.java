@@ -7,7 +7,7 @@ public interface User {
 
     void sendMessage(Message message);
 
-    void leave(Message message);
+    void leave();
 
     void exit();
 

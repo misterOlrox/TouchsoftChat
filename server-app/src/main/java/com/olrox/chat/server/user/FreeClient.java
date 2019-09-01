@@ -3,7 +3,7 @@ package com.olrox.chat.server.user;
 import com.olrox.chat.server.message.Author;
 import com.olrox.chat.server.thread.UserThread;
 import com.olrox.chat.server.message.Message;
-import com.olrox.chat.server.manager.FreeUsersManager;
+import com.olrox.chat.server.manager.UsersManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,12 +26,12 @@ public class FreeClient implements User, Author {
     }
 
     private void findCompanion(){
-        if(FreeUsersManager.hasFreeAgent()){
-            FreeAgent companion = FreeUsersManager.pollFreeAgent();
+        if(UsersManager.hasFreeAgent()){
+            FreeAgent companion = UsersManager.pollFreeAgent();
             connect(companion);
         } else {
             thread.writeServerAnswer("We haven't free agents. You can write messages and they will be saved.");
-            FreeUsersManager.addFreeClient(this);
+            UsersManager.addFreeClient(this);
             isWaiting = true;
         }
     }
@@ -51,13 +51,13 @@ public class FreeClient implements User, Author {
     }
 
     @Override
-    public void leave(Message message) {
+    public void leave() {
         thread.writeServerAnswer("You aren't chatting.");
     }
 
     @Override
     public void exit() {
-        // do nothing
+        UsersManager.removeOnlineUser(username);
     }
 
     @Override

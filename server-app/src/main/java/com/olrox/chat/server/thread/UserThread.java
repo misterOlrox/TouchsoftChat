@@ -1,12 +1,7 @@
 package com.olrox.chat.server.thread;
 
 import com.olrox.chat.server.ServerApplication;
-import com.olrox.chat.server.message.CommandType;
-import com.olrox.chat.server.message.Message;
-import com.olrox.chat.server.message.MessageReader;
-import com.olrox.chat.server.message.MessageWriter;
-import com.olrox.chat.server.message.AuthoredMessageWriter;
-import com.olrox.chat.server.message.UserMessageWriter;
+import com.olrox.chat.server.message.*;
 import com.olrox.chat.server.user.UnauthorizedUser;
 import com.olrox.chat.server.user.User;
 import org.apache.logging.log4j.LogManager;
@@ -14,7 +9,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.concurrent.TimeUnit;
 
 public class UserThread extends Thread {
 
@@ -52,7 +46,7 @@ public class UserThread extends Thread {
                         sendMessage(message);
                         break;
                     case LEAVE:
-                        leave(message);
+                        leave();
                         break;
                     case EXIT:
                         exit();
@@ -62,9 +56,8 @@ public class UserThread extends Thread {
         } catch (IOException ex) {
             logger.error("Error in UserThread: ", ex);
         } finally {
-            logger.info("End of run method.");
-            // TODO ???
-            // closeConnections();
+            logger.info("User " + user + " exited");
+            closeConnections();
         }
     }
 
@@ -76,8 +69,8 @@ public class UserThread extends Thread {
         this.user.sendMessage(message);
     }
 
-    private void leave(Message message) {
-        this.user.leave(message);
+    private void leave() {
+        this.user.leave();
     }
 
     private void exit() {

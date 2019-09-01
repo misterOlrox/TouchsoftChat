@@ -5,21 +5,42 @@ import com.olrox.chat.server.user.FreeClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayDeque;
+import java.util.HashSet;
 import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.Set;
 
-public class FreeUsersManager {
+// TODO synchronized?
+// TODO replace logic in another place?
+public class UsersManager {
 
-    private final static Logger logger = LogManager.getLogger(FreeUsersManager.class);
+    private final static Logger logger = LogManager.getLogger(UsersManager.class);
 
-    private static Queue<FreeClient> freeClients = new ConcurrentLinkedQueue<>();
+    private static Queue<FreeClient> freeClients = new ArrayDeque<>();
 
-    private static Queue<FreeAgent> freeAgents = new ConcurrentLinkedQueue<>();
+    private static Queue<FreeAgent> freeAgents = new ArrayDeque<>();
+
+    private static Set<String> onlineUsers = new HashSet<>();
+
+    private static void removeOfflineClients(){
+        FreeClient freeClient = freeClients.peek();
+        while(freeClient != null && !onlineUsers.contains(freeClient.getUsername())){
+            freeClient = freeClients.poll();
+        }
+    }
+
+    private static void removeOfflineAgents(){
+        FreeAgent freeAgent = freeAgents.peek();
+        while(freeAgent != null && !onlineUsers.contains(freeAgent.getUsername())){
+            freeAgent = freeAgents.poll();
+        }
+    }
 
     public static boolean hasFreeClient(){
         logger.debug("Free clients: " + freeClients);
         logger.debug("Free agents: " + freeAgents);
 
+        removeOfflineClients();
         return !freeClients.isEmpty();
     }
 
@@ -27,6 +48,7 @@ public class FreeUsersManager {
         logger.debug("Free clients: " + freeClients);
         logger.debug("Free agents: " + freeAgents);
 
+        removeOfflineAgents();
         return !freeAgents.isEmpty();
     }
 
@@ -56,5 +78,13 @@ public class FreeUsersManager {
         logger.debug("Free agent " + agent.getUsername() + " was added.");
         logger.debug("Free clients: " + freeClients);
         logger.debug("Free agents: " + freeAgents);
+    }
+
+    public static void addOnlineUser(String username) {
+        onlineUsers.add(username);
+    }
+
+    public static void removeOnlineUser(String username) {
+        onlineUsers.remove(username);
     }
 }

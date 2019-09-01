@@ -1,5 +1,6 @@
 package com.olrox.chat.server.user;
 
+import com.olrox.chat.server.manager.UsersManager;
 import com.olrox.chat.server.thread.UserThread;
 import com.olrox.chat.server.message.*;
 import org.apache.logging.log4j.LogManager;
@@ -38,16 +39,20 @@ public class UnauthorizedUser implements User {
         String loggerInfo = "User was registered as "
                 + userType + " " + username;
 
+        // here may be a check if username is busy
+
         if(userType.equals("agent")){
             thread.writeServerAnswer(serverAnswer);
             logger.info(loggerInfo);
             FreeAgent agent = new FreeAgent(this, username);
             thread.setUserStatus(agent);
+            UsersManager.addOnlineUser(username);
             agent.findCompanion();
         } else if(userType.equals("client")){
             thread.writeServerAnswer(serverAnswer);
             logger.info(loggerInfo);
             thread.setUserStatus(new FreeClient(this, username));
+            UsersManager.addOnlineUser(username);
         } else {
             thread.writeServerAnswer("Sorry. You can't register as " + userType + ". Try again");
         }
@@ -59,7 +64,7 @@ public class UnauthorizedUser implements User {
     }
 
     @Override
-    public void leave(Message message) {
+    public void leave() {
         writeOptions();
     }
 

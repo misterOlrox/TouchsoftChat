@@ -1,5 +1,6 @@
 package com.olrox.chat.server.user;
 
+import com.olrox.chat.server.manager.UsersManager;
 import com.olrox.chat.server.thread.UserThread;
 import com.olrox.chat.server.message.Author;
 import com.olrox.chat.server.message.Message;
@@ -31,7 +32,7 @@ public class BusyClient implements User, Author {
     }
 
     @Override
-    public void leave(Message message) {
+    public void leave() {
         this.thread.writeServerAnswer("You leaved agent " + companion.getUsername());
         companion.getThread().writeServerAnswer("Client " + username + " leaved.");
 
@@ -41,7 +42,9 @@ public class BusyClient implements User, Author {
 
     @Override
     public void exit() {
-
+        companion.getThread().writeServerAnswer("Client " + username + " exited.");
+        UsersManager.removeOnlineUser(username);
+        companion.setFree();
     }
 
     @Override
