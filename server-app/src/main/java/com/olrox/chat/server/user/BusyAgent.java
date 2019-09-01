@@ -6,7 +6,7 @@ import com.olrox.chat.server.thread.UserThread;
 import com.olrox.chat.server.message.Message;
 
 public class BusyAgent implements User, Author {
-    private UserThread thread;
+    private final UserThread thread;
     private String username;
     private BusyClient companion;
 
@@ -52,11 +52,11 @@ public class BusyAgent implements User, Author {
         return username;
     }
 
-    public void setCompanion(BusyClient companion) {
+    public synchronized void setCompanion(BusyClient companion) {
         this.companion = companion;
     }
 
-    public void setFree(){
+    public synchronized void setFree(){
         FreeAgent freeAgent = new FreeAgent(this);
         this.thread.setUserStatus(freeAgent);
         freeAgent.findCompanion();

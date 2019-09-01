@@ -10,85 +10,84 @@ import java.util.HashSet;
 import java.util.Queue;
 import java.util.Set;
 
-// TODO synchronized?
 // TODO replace logic in another place?
 public class UsersManager {
 
     private final static Logger logger = LogManager.getLogger(UsersManager.class);
 
-    private static Queue<FreeClient> freeClients = new ArrayDeque<>();
+    private final static Queue<FreeClient> freeClients = new ArrayDeque<>();
 
-    private static Queue<FreeAgent> freeAgents = new ArrayDeque<>();
+    private final static Queue<FreeAgent> freeAgents = new ArrayDeque<>();
 
-    private static Set<String> onlineUsers = new HashSet<>();
+    private final static Set<String> onlineUsers = new HashSet<>();
 
-    private static void removeOfflineClients(){
+    private synchronized static void removeOfflineClients(){
         FreeClient freeClient = freeClients.peek();
         while(freeClient != null && !onlineUsers.contains(freeClient.getUsername())){
             freeClient = freeClients.poll();
         }
     }
 
-    private static void removeOfflineAgents(){
+    private synchronized static void removeOfflineAgents(){
         FreeAgent freeAgent = freeAgents.peek();
         while(freeAgent != null && !onlineUsers.contains(freeAgent.getUsername())){
             freeAgent = freeAgents.poll();
         }
     }
 
-    public static boolean hasFreeClient(){
+    public synchronized static boolean hasFreeClient(){
         logger.debug("Free clients: " + freeClients);
-        logger.debug("Free agents: " + freeAgents);
 
         removeOfflineClients();
         return !freeClients.isEmpty();
     }
 
-    public static boolean hasFreeAgent(){
-        logger.debug("Free clients: " + freeClients);
+    public synchronized static boolean hasFreeAgent(){
         logger.debug("Free agents: " + freeAgents);
 
         removeOfflineAgents();
         return !freeAgents.isEmpty();
     }
 
-    public static FreeClient pollFreeClient(){
+    public synchronized static FreeClient pollFreeClient(){
         logger.debug("Free client was removed.");
 
         return freeClients.poll();
     }
 
-    public static FreeAgent pollFreeAgent(){
+    public synchronized static FreeAgent pollFreeAgent(){
         logger.debug("Free agent was removed");
 
         return freeAgents.poll();
     }
 
-    public static void addFreeClient(FreeClient client){
+    public synchronized static void addFreeClient(FreeClient client){
         freeClients.add(client);
 
         logger.debug("Free client " + client.getUsername() + " was added.");
         logger.debug("Free clients: " + freeClients);
-        logger.debug("Free agents: " + freeAgents);
     }
 
-    public static void addFreeAgent(FreeAgent agent) {
+    public synchronized static void addFreeAgent(FreeAgent agent) {
         freeAgents.add(agent);
 
         logger.debug("Free agent " + agent.getUsername() + " was added.");
-        logger.debug("Free clients: " + freeClients);
         logger.debug("Free agents: " + freeAgents);
     }
 
-    public static void addOnlineUser(String username) {
+    public synchronized static void addOnlineUser(String username) {
         onlineUsers.add(username);
+
+        logger.debug("Online user was added: " + onlineUsers);
     }
 
-    public static void removeOnlineUser(String username) {
+    public synchronized static void removeOnlineUser(String username) {
         onlineUsers.remove(username);
+
+        logger.debug("Online user was removed: " + onlineUsers);
     }
 
-    public static boolean checkOnline(String username) {
+    public synchronized static boolean checkOnline(String username) {
         return onlineUsers.contains(username);
     }
 }

@@ -10,7 +10,7 @@ public class FreeAgent implements User {
 
     private final static Logger logger = LogManager.getLogger(UnauthorizedUser.class);
 
-    private UserThread thread;
+    private final UserThread thread;
     private String username;
 
     public FreeAgent(UnauthorizedUser user, String username){
@@ -23,7 +23,7 @@ public class FreeAgent implements User {
         this.username = busyAgent.getUsername();
     }
 
-    public void findCompanion(){
+    public synchronized void findCompanion(){
         logger.debug("Agent " + username + " trying to find client");
         if(UsersManager.hasFreeClient()){
             FreeClient companion = UsersManager.pollFreeClient();
@@ -31,6 +31,24 @@ public class FreeAgent implements User {
         } else {
             thread.writeServerAnswer("You haven't companion. Your message will not be delivered.");
             UsersManager.addFreeAgent(this);
+        }
+    }
+
+    private void connect(FreeClient companion){
+        BusyClient busyClient = new BusyClient(companion);
+        BusyAgent busyAgent = new BusyAgent(this);
+
+        busyClient.setCompanion(busyAgent);
+        busyAgent.setCompanion(busyClient);
+
+        thread.setUserStatus(busyAgent);
+        companion.getThread().setUserStatus(busyClient);
+
+        thread.writeServerAnswer("Now you chatting with client " + companion.getUsername());
+        companion.getThread().writeServerAnswer("Now you chatting with agent " + this.getUsername());
+
+        for(Message message : companion.getMessages()) {
+            busyAgent.receiveFromClient(message);
         }
     }
 
@@ -56,24 +74,6 @@ public class FreeAgent implements User {
 
     public String getUsername() {
         return username;
-    }
-
-    public void connect(FreeClient companion){
-        BusyClient busyClient = new BusyClient(companion);
-        BusyAgent busyAgent = new BusyAgent(this);
-
-        busyClient.setCompanion(busyAgent);
-        busyAgent.setCompanion(busyClient);
-
-        thread.setUserStatus(busyAgent);
-        companion.getThread().setUserStatus(busyClient);
-
-        thread.writeServerAnswer("Now you chatting with client " + companion.getUsername());
-        companion.getThread().writeServerAnswer("Now you chatting with agent " + this.getUsername());
-
-        for(Message message : companion.getMessages()) {
-            busyAgent.receiveFromClient(message);
-        }
     }
 
     public UserThread getThread() {

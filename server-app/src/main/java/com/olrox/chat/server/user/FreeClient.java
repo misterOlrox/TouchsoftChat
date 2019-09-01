@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FreeClient implements User, Author {
-    private UserThread thread;
+    private final UserThread thread;
     private String username;
     private List<Message> messages = new ArrayList<>();
     private boolean isWaiting = false;
@@ -33,6 +33,24 @@ public class FreeClient implements User, Author {
             thread.writeServerAnswer("We haven't free agents. You can write messages and they will be saved.");
             UsersManager.addFreeClient(this);
             isWaiting = true;
+        }
+    }
+
+    private void connect(FreeAgent companion){
+        BusyClient busyClient = new BusyClient(this);
+        BusyAgent busyAgent = new BusyAgent(companion);
+
+        busyClient.setCompanion(busyAgent);
+        busyAgent.setCompanion(busyClient);
+
+        this.thread.setUserStatus(busyClient);
+        companion.getThread().setUserStatus(busyAgent);
+
+        thread.writeServerAnswer("Now you chatting with agent " + companion.getUsername());
+        companion.getThread().writeServerAnswer("Now you chatting with client " + this.getUsername());
+
+        for(Message message : messages) {
+            busyAgent.receiveFromClient(message);
         }
     }
 
@@ -63,24 +81,6 @@ public class FreeClient implements User, Author {
     @Override
     public String getUsername() {
         return username;
-    }
-
-    public void connect(FreeAgent companion){
-        BusyClient busyClient = new BusyClient(this);
-        BusyAgent busyAgent = new BusyAgent(companion);
-
-        busyClient.setCompanion(busyAgent);
-        busyAgent.setCompanion(busyClient);
-
-        this.thread.setUserStatus(busyClient);
-        companion.getThread().setUserStatus(busyAgent);
-
-        thread.writeServerAnswer("Now you chatting with agent " + companion.getUsername());
-        companion.getThread().writeServerAnswer("Now you chatting with client " + this.getUsername());
-
-        for(Message message : messages) {
-            busyAgent.receiveFromClient(message);
-        }
     }
 
     public UserThread getThread() {

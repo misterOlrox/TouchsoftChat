@@ -14,7 +14,7 @@ public class UserThread extends Thread {
 
     private final static Logger logger = LogManager.getLogger(UserThread.class);
 
-    private Socket socket;
+    private final Socket socket;
     private MessageReader reader;
     private MessageWriter serverWriter;
     private MessageWriter userWriter;
@@ -89,7 +89,7 @@ public class UserThread extends Thread {
         serverWriter.write(message);
     }
 
-    public void closeConnections()  {
+    private void closeConnections()  {
         if (socket != null){
             try {
                 socket.close();
@@ -112,7 +112,7 @@ public class UserThread extends Thread {
         }
     }
 
-    public void setUserStatus(User user) {
+    public synchronized void setUserStatus(User user) {
         this.user = user;
     }
 }

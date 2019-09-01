@@ -12,7 +12,7 @@ public class UnauthorizedUser implements User {
 
     private final static Logger logger = LogManager.getLogger(UnauthorizedUser.class);
 
-    private UserThread thread;
+    private final UserThread thread;
 
     public UnauthorizedUser(UserThread thread) {
         this.thread = thread;
@@ -25,7 +25,7 @@ public class UnauthorizedUser implements User {
         String response = message.getText();
         StringTokenizer tokenizer = new StringTokenizer(response, " ");
 
-        if(tokenizer.countTokens()!=3) {
+        if(tokenizer.countTokens() != 3) {
             thread.writeServerAnswer("Incorrect command.");
             return;
         }
@@ -43,7 +43,6 @@ public class UnauthorizedUser implements User {
                 + userType + " " + username;
         String loggerInfo = "User was registered as "
                 + userType + " " + username;
-
 
         if(userType.equals("agent")){
             thread.writeServerAnswer(serverAnswer);
