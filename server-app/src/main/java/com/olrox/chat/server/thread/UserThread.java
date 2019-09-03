@@ -52,7 +52,7 @@ public class UserThread extends Thread {
         } catch (IOException ex) {
             logger.error("Error in UserThread: ", ex);
         } finally {
-            logger.info("User " + user + " exited");
+            logger.info("User " + user.getUsername() + " exited");
             closeConnections();
         }
     }

@@ -5,11 +5,16 @@ import com.olrox.chat.server.manager.UsersManagerFactory;
 import com.olrox.chat.server.message.Message;
 import com.olrox.chat.server.message.author.AuthorType;
 import com.olrox.chat.server.user.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FreeClientState implements UserState {
+
+    private final static Logger logger = LogManager.getLogger(FreeClientState.class);
+
     private final User user;
     private List<Message> messages = new ArrayList<>();
     private boolean isWaiting = false;
@@ -53,10 +58,13 @@ public class FreeClientState implements UserState {
             user.receiveFromServer("Now you chatting with agent " + companion.getUsername());
             companion.receiveFromServer("Now you chatting with client " + this.user.getUsername());
 
+            logger.info("Client " + this.user.getUsername() + " start chat with agent " + companion.getUsername());
+
             for (Message message : messages) {
                 busyAgent.receiveFromClient(message);
             }
         } else {
+            // TODO
             throw new RuntimeException("Companion isn't in FreeAgentState.");
         }
     }

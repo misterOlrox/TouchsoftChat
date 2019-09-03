@@ -4,8 +4,13 @@ import com.olrox.chat.server.manager.UsersManager;
 import com.olrox.chat.server.manager.UsersManagerFactory;
 import com.olrox.chat.server.message.Message;
 import com.olrox.chat.server.user.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class BusyAgentState implements UserState {
+
+    private final static Logger logger = LogManager.getLogger(BusyAgentState.class);
+
     private final User user;
     private BusyClientState companion;
     private final UsersManager usersManager;
@@ -32,11 +37,14 @@ public class BusyAgentState implements UserState {
 
     @Override
     public void leave() {
-        this.user.receiveFromServer("You leaved client " + companion.getUser().getUsername());
-        companion.getUser().receiveFromServer("Agent " + this.user.getUsername() + " leaved.");
+        this.user.receiveFromServer("You left client " + companion.getUser().getUsername());
+        companion.getUser().receiveFromServer("Agent " + this.user.getUsername() + " left.");
 
         this.setFree();
         companion.setFree();
+
+        logger.info("Agent " + this.user.getUsername() +
+                " leave chat with client " + companion.getUser().getUsername());
     }
 
     @Override
@@ -44,6 +52,9 @@ public class BusyAgentState implements UserState {
         companion.getUser().receiveFromServer("Agent " + this.user.getUsername() + " exited.");
         usersManager.removeOnlineUser(this.user.getUsername());
         companion.setFree();
+
+        logger.info("Agent " + this.user.getUsername() +
+                " exit from chat with client " + companion.getUser().getUsername());
     }
 
     public synchronized void setCompanion(BusyClientState companion) {

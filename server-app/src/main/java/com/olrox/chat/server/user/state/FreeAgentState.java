@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 public class FreeAgentState implements UserState {
 
-    private final static Logger logger = LogManager.getLogger(UnauthorizedState.class);
+    private final static Logger logger = LogManager.getLogger(FreeAgentState.class);
 
     private final User user;
     private final UsersManager usersManager;
@@ -42,6 +42,7 @@ public class FreeAgentState implements UserState {
         if(companion.getState() instanceof FreeClientState) {
             companionState = (FreeClientState) companion.getState();
         } else {
+            // TODO another exception?
             throw new RuntimeException("Companion isn't in FreeClientState.");
         }
 
@@ -56,6 +57,8 @@ public class FreeAgentState implements UserState {
 
         user.receiveFromServer("Now you chatting with client " + companion.getUsername());
         companion.receiveFromServer("Now you chatting with agent " + this.getUser().getUsername());
+
+        logger.info("Agent " + this.user.getUsername() + " start chat with client " + companion.getUsername());
 
         for (Message message : companionState.getMessages()) {
             busyAgent.receiveFromClient(message);

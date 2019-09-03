@@ -22,14 +22,16 @@ public class UsersData {
     private synchronized static void removeOfflineClients(){
         User freeClient = freeClients.peek();
         while(freeClient != null && !onlineUsers.contains(freeClient.getUsername())){
-            freeClient = freeClients.poll();
+            freeClients.poll();
+            freeClient = freeClients.peek();
         }
     }
 
     private synchronized static void removeOfflineAgents(){
         User freeAgent = freeAgents.peek();
         while(freeAgent != null && !onlineUsers.contains(freeAgent.getUsername())){
-            freeAgent = freeAgents.poll();
+            freeAgents.poll();
+            freeAgent = freeAgents.peek();
         }
     }
 
