@@ -1,22 +1,22 @@
-package com.olrox.chat.server.user;
+package com.olrox.chat.server.user.state;
 
 import com.olrox.chat.server.manager.UsersManager;
-import com.olrox.chat.server.thread.UserThread;
-import com.olrox.chat.server.message.*;
+import com.olrox.chat.server.message.Message;
+import com.olrox.chat.server.user.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.StringTokenizer;
 
-public class UnauthorizedUser implements User {
+public class UnauthorizedState implements UserState {
 
-    private final static Logger logger = LogManager.getLogger(UnauthorizedUser.class);
+    private final static Logger logger = LogManager.getLogger(UnauthorizedState.class);
 
-    private final UserThread thread;
+    private final User user;
 
-    public UnauthorizedUser(UserThread thread) {
-        this.thread = thread;
-        thread.writeServerAnswer("Hello");
+    public UnauthorizedState(User user) {
+        this.user = user;
+        user.receiveFromServer("Hello");
         writeOptions();
     }
 
@@ -26,7 +26,7 @@ public class UnauthorizedUser implements User {
         StringTokenizer tokenizer = new StringTokenizer(response, " ");
 
         if(tokenizer.countTokens() != 3) {
-            thread.writeServerAnswer("Incorrect command.");
+            user.receiveFromServer("Incorrect command.");
             return;
         }
 
@@ -35,7 +35,7 @@ public class UnauthorizedUser implements User {
         String username = tokenizer.nextToken();
 
         if(UsersManager.checkOnline(username)){
-            thread.writeServerAnswer("User with username " + username + " already exists.");
+            user.receiveFromServer("User with username " + username + " already exists.");
             return;
         }
 
@@ -45,19 +45,21 @@ public class UnauthorizedUser implements User {
                 + userType + " " + username;
 
         if(userType.equals("agent")){
-            thread.writeServerAnswer(serverAnswer);
+            user.setUsername(username);
+            user.receiveFromServer(serverAnswer);
             logger.info(loggerInfo);
-            FreeAgent agent = new FreeAgent(this, username);
-            thread.setUserStatus(agent);
+            FreeAgentState agent = new FreeAgentState(this);
+            user.setState(agent);
             UsersManager.addOnlineUser(username);
             agent.findCompanion();
         } else if(userType.equals("client")){
-            thread.writeServerAnswer(serverAnswer);
+            user.setUsername(username);
+            user.receiveFromServer(serverAnswer);
             logger.info(loggerInfo);
-            thread.setUserStatus(new FreeClient(this, username));
+            user.setState(new FreeClientState(this));
             UsersManager.addOnlineUser(username);
         } else {
-            thread.writeServerAnswer("Sorry. You can't register as " + userType + ". Try again");
+            user.receiveFromServer("Sorry. You can't register as " + userType + ". Try again");
         }
     }
 
@@ -77,10 +79,10 @@ public class UnauthorizedUser implements User {
     }
 
     private void writeOptions() {
-        thread.writeServerAnswer("Print \"/register [agent|client] YourName\" to register");
+        user.receiveFromServer("Print \"/register [agent|client] YourName\" to register");
     }
 
-    public UserThread getThread() {
-        return thread;
+    public User getUser() {
+        return user;
     }
 }

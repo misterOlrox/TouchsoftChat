@@ -1,8 +1,6 @@
 package com.olrox.chat.server.thread;
 
-import com.olrox.chat.server.ServerApplication;
 import com.olrox.chat.server.message.*;
-import com.olrox.chat.server.user.UnauthorizedUser;
 import com.olrox.chat.server.user.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,10 +13,8 @@ public class UserThread extends Thread {
     private final static Logger logger = LogManager.getLogger(UserThread.class);
 
     private final Socket socket;
-    private MessageReader reader;
-    private MessageWriter serverWriter;
-    private MessageWriter userWriter;
     private User user;
+    private MessageReader reader;
 
     public UserThread(Socket socket) {
         this.socket = socket;
@@ -30,12 +26,12 @@ public class UserThread extends Thread {
 
         try {
             reader = new MessageReader(socket);
-            serverWriter = new AuthoredMessageWriter(socket, ServerApplication.SERVER_AS_AUTHOR);
-            userWriter = new UserMessageWriter(socket);
-            user = new UnauthorizedUser(this);
+            MessageWriter messageWriter = new MessageWriterImpl(socket);
+            user = new User(messageWriter);
 
             while (true){
                 message = reader.readMessage();
+                message.setAuthor(user);
 
                 command = message.getCommandType();
                 switch(command) {
@@ -77,18 +73,6 @@ public class UserThread extends Thread {
         this.user.exit();
     }
 
-    public void writeMessageFromUser(Message message) {
-        userWriter.write(message);
-    }
-
-    public void writeServerAnswer(String message) {
-        serverWriter.write(message);
-    }
-
-    public void writeServerAnswer(Message message) {
-        serverWriter.write(message);
-    }
-
     private void closeConnections()  {
         if (socket != null){
             try {
@@ -104,15 +88,5 @@ public class UserThread extends Thread {
                 e.printStackTrace();
             }
         }
-        if(userWriter != null) {
-            userWriter.close();
-        }
-        if(serverWriter != null) {
-            serverWriter.close();
-        }
-    }
-
-    public synchronized void setUserStatus(User user) {
-        this.user = user;
     }
 }

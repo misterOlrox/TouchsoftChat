@@ -1,7 +1,8 @@
 package com.olrox.chat.server.manager;
 
-import com.olrox.chat.server.user.FreeAgent;
-import com.olrox.chat.server.user.FreeClient;
+import com.olrox.chat.server.user.User;
+import com.olrox.chat.server.user.state.FreeAgentState;
+import com.olrox.chat.server.user.state.FreeClientState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,21 +16,21 @@ public class UsersManager {
 
     private final static Logger logger = LogManager.getLogger(UsersManager.class);
 
-    private final static Queue<FreeClient> freeClients = new ArrayDeque<>();
+    private final static Queue<User> freeClients = new ArrayDeque<>();
 
-    private final static Queue<FreeAgent> freeAgents = new ArrayDeque<>();
+    private final static Queue<User> freeAgents = new ArrayDeque<>();
 
     private final static Set<String> onlineUsers = new HashSet<>();
 
     private synchronized static void removeOfflineClients(){
-        FreeClient freeClient = freeClients.peek();
+        User freeClient = freeClients.peek();
         while(freeClient != null && !onlineUsers.contains(freeClient.getUsername())){
             freeClient = freeClients.poll();
         }
     }
 
     private synchronized static void removeOfflineAgents(){
-        FreeAgent freeAgent = freeAgents.peek();
+        User freeAgent = freeAgents.peek();
         while(freeAgent != null && !onlineUsers.contains(freeAgent.getUsername())){
             freeAgent = freeAgents.poll();
         }
@@ -49,26 +50,26 @@ public class UsersManager {
         return !freeAgents.isEmpty();
     }
 
-    public synchronized static FreeClient pollFreeClient(){
+    public synchronized static User pollFreeClient(){
         logger.debug("Free client was removed.");
 
         return freeClients.poll();
     }
 
-    public synchronized static FreeAgent pollFreeAgent(){
+    public synchronized static User pollFreeAgent(){
         logger.debug("Free agent was removed");
 
         return freeAgents.poll();
     }
 
-    public synchronized static void addFreeClient(FreeClient client){
+    public synchronized static void addFreeClient(User client){
         freeClients.add(client);
 
         logger.debug("Free client " + client.getUsername() + " was added.");
         logger.debug("Free clients: " + freeClients);
     }
 
-    public synchronized static void addFreeAgent(FreeAgent agent) {
+    public synchronized static void addFreeAgent(User agent) {
         freeAgents.add(agent);
 
         logger.debug("Free agent " + agent.getUsername() + " was added.");

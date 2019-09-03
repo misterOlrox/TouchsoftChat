@@ -1,4 +1,4 @@
-package com.olrox.chat.server.message;
+package com.olrox.chat.server.message.author;
 
 public class ServerAsAuthor implements Author {
     private final String username;
@@ -10,5 +10,10 @@ public class ServerAsAuthor implements Author {
     @Override
     public String getUsername() {
         return username;
+    }
+
+    @Override
+    public AuthorType getAuthorType() {
+        return AuthorType.SERVER;
     }
 }

@@ -1,5 +1,7 @@
 package com.olrox.chat.server.message;
 
+import com.olrox.chat.server.message.author.Author;
+
 import java.time.LocalDateTime;
 
 public class Message {
@@ -9,10 +11,6 @@ public class Message {
     private LocalDateTime sendTime;
     private CommandType commandType;
 
-    public Message (){
-
-    }
-
     public Message(String text) {
         this.text = text;
         sendTime = LocalDateTime.now();
@@ -20,9 +18,12 @@ public class Message {
         commandType = checkForCommand(text);
     }
 
-    public Message(Author author, String text) {
-        this(text);
+    public Message(String text, Author author) {
+        this.text = text;
         this.author = author;
+        sendTime = LocalDateTime.now();
+        isViewed = false;
+        commandType = checkForCommand(text);
     }
 
     private CommandType checkForCommand(String text) {

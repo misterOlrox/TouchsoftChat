@@ -1,5 +1,7 @@
 package com.olrox.chat.server.thread;
 
+import com.olrox.chat.server.manager.UsersManager;
+import com.olrox.chat.server.message.author.ServerAsAuthor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -11,7 +13,13 @@ public class ServerThread {
 
     private final static Logger logger = LogManager.getLogger(ServerThread.class);
 
+    public final static ServerAsAuthor SERVER_AS_AUTHOR = new ServerAsAuthor("Server");
+
     private final int port;
+
+    static {
+        UsersManager.addOnlineUser(SERVER_AS_AUTHOR.getUsername());
+    }
 
     public ServerThread(int port) {
         this.port = port;

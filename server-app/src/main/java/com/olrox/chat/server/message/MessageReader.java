@@ -15,9 +15,9 @@ public class MessageReader {
     }
 
     public Message readMessage() throws IOException{
-        String data = reader.readLine();
+        String text = reader.readLine();
 
-        Message message = new Message(data);
+        Message message = new Message(text);
 
         return message;
     }
