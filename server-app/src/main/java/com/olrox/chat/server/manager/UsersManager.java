@@ -1,8 +1,6 @@
 package com.olrox.chat.server.manager;
 
 import com.olrox.chat.server.user.User;
-import com.olrox.chat.server.user.state.FreeAgentState;
-import com.olrox.chat.server.user.state.FreeClientState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
