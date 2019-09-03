@@ -1,6 +1,7 @@
 package com.olrox.chat.server.user.state;
 
 import com.olrox.chat.server.manager.UsersManager;
+import com.olrox.chat.server.manager.UsersManagerFactory;
 import com.olrox.chat.server.message.Message;
 import com.olrox.chat.server.user.User;
 import org.apache.logging.log4j.LogManager;
@@ -13,9 +14,11 @@ public class UnauthorizedState implements UserState {
     private final static Logger logger = LogManager.getLogger(UnauthorizedState.class);
 
     private final User user;
+    private final UsersManager usersManager;
 
     public UnauthorizedState(User user) {
         this.user = user;
+        usersManager = UsersManagerFactory.createUsersManager();
         user.receiveFromServer("Hello");
         writeOptions();
     }
@@ -34,7 +37,7 @@ public class UnauthorizedState implements UserState {
         String userType =  tokenizer.nextToken();
         String username = tokenizer.nextToken();
 
-        if(UsersManager.checkOnline(username)){
+        if(usersManager.checkIfOnline(username)){
             user.receiveFromServer("User with username " + username + " already exists.");
             return;
         }
@@ -50,14 +53,14 @@ public class UnauthorizedState implements UserState {
             logger.info(loggerInfo);
             FreeAgentState agent = new FreeAgentState(this);
             user.setState(agent);
-            UsersManager.addOnlineUser(username);
+            usersManager.addOnlineUser(username);
             agent.findCompanion();
         } else if(userType.equals("client")){
             user.setUsername(username);
             user.receiveFromServer(serverAnswer);
             logger.info(loggerInfo);
             user.setState(new FreeClientState(this));
-            UsersManager.addOnlineUser(username);
+            usersManager.addOnlineUser(username);
         } else {
             user.receiveFromServer("Sorry. You can't register as " + userType + ". Try again");
         }

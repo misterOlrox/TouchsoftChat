@@ -1,6 +1,7 @@
 package com.olrox.chat.server.user.state;
 
 import com.olrox.chat.server.manager.UsersManager;
+import com.olrox.chat.server.manager.UsersManagerFactory;
 import com.olrox.chat.server.message.Message;
 import com.olrox.chat.server.message.author.AuthorType;
 import com.olrox.chat.server.user.User;
@@ -12,24 +13,27 @@ public class FreeAgentState implements UserState {
     private final static Logger logger = LogManager.getLogger(UnauthorizedState.class);
 
     private final User user;
+    private final UsersManager usersManager;
 
     public FreeAgentState(UnauthorizedState user){
         this.user = user.getUser();
         this.user.setAuthorType(AuthorType.AGENT);
+        usersManager = UsersManagerFactory.createUsersManager();
     }
 
     public FreeAgentState(BusyAgentState busyAgent) {
         this.user = busyAgent.getUser();
+        usersManager = UsersManagerFactory.createUsersManager();
     }
 
     public synchronized void findCompanion(){
         logger.debug("Agent " + this.user.getUsername() + " trying to find client");
-        if(UsersManager.hasFreeClient()){
-            User companion = UsersManager.pollFreeClient();
+        if(usersManager.hasFreeClient()){
+            User companion = usersManager.pollFreeClient();
             connect(companion);
         } else {
             user.receiveFromServer("You haven't companion. Your message will not be delivered.");
-            UsersManager.addFreeAgent(this.user);
+            usersManager.addFreeAgent(this.user);
         }
     }
 
@@ -75,7 +79,7 @@ public class FreeAgentState implements UserState {
 
     @Override
     public void exit() {
-        UsersManager.removeOnlineUser(this.user.getUsername());
+        usersManager.removeOnlineUser(this.user.getUsername());
     }
 
     public User getUser() {

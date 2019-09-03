@@ -1,6 +1,7 @@
 package com.olrox.chat.server.user.state;
 
 import com.olrox.chat.server.manager.UsersManager;
+import com.olrox.chat.server.manager.UsersManagerFactory;
 import com.olrox.chat.server.message.Message;
 import com.olrox.chat.server.message.author.AuthorType;
 import com.olrox.chat.server.user.User;
@@ -12,24 +13,27 @@ public class FreeClientState implements UserState {
     private final User user;
     private List<Message> messages = new ArrayList<>();
     private boolean isWaiting = false;
+    private final UsersManager usersManager;
 
     public FreeClientState(UnauthorizedState previousState){
         this.user = previousState.getUser();
         this.user.setAuthorType(AuthorType.CLIENT);
         this.user.receiveFromServer("Type your messages and we will find you an agent.");
+        usersManager = UsersManagerFactory.createUsersManager();
     }
 
     public FreeClientState(BusyClientState busyClientState) {
         this.user = busyClientState.getUser();
+        usersManager = UsersManagerFactory.createUsersManager();
     }
 
     private void findCompanion(){
-        if(UsersManager.hasFreeAgent()){
-            User companion = UsersManager.pollFreeAgent();
+        if(usersManager.hasFreeAgent()){
+            User companion = usersManager.pollFreeAgent();
             connect(companion);
         } else {
             user.receiveFromServer("We haven't free agents. You can write messages and they will be saved.");
-            UsersManager.addFreeClient(this.user);
+            usersManager.addFreeClient(this.user);
             isWaiting = true;
         }
     }
@@ -77,7 +81,7 @@ public class FreeClientState implements UserState {
 
     @Override
     public void exit() {
-        UsersManager.removeOnlineUser(user.getUsername());
+        usersManager.removeOnlineUser(user.getUsername());
     }
 
     public User getUser() {

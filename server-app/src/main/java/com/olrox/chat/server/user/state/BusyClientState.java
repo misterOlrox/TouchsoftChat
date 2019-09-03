@@ -1,15 +1,18 @@
 package com.olrox.chat.server.user.state;
 
 import com.olrox.chat.server.manager.UsersManager;
+import com.olrox.chat.server.manager.UsersManagerFactory;
 import com.olrox.chat.server.message.Message;
 import com.olrox.chat.server.user.User;
 
 public class BusyClientState implements UserState {
     private final User user;
     private BusyAgentState companion;
+    private final UsersManager usersManager;
 
     public BusyClientState(FreeClientState client) {
         this.user = client.getUser();
+        usersManager = UsersManagerFactory.createUsersManager();
     }
 
     @Override
@@ -39,7 +42,7 @@ public class BusyClientState implements UserState {
     @Override
     public void exit() {
         companion.getUser().receiveFromServer("Client " + this.user.getUsername() + " exited.");
-        UsersManager.removeOnlineUser(this.user.getUsername());
+        usersManager.removeOnlineUser(this.user.getUsername());
         companion.setFree();
     }
 
