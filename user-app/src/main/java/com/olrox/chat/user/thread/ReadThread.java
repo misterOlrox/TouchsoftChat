@@ -31,7 +31,8 @@ public class ReadThread extends Thread {
                 if (response == null) {
                     break;
                 }
-                System.out.println(response);
+
+                System.out.println("\033[35m" + response +"\033[m");
             }
 
             socket.close();
