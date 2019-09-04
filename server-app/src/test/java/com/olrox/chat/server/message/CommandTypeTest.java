@@ -8,9 +8,9 @@ class CommandTypeTest {
 
     @Test
     void getCode() {
-        assertEquals(CommandType.REGISTER.getCode(), "/register");
-        assertEquals(CommandType.MESSAGE.getCode(), "/message");
-        assertEquals(CommandType.LEAVE.getCode(), "/leave");
-        assertEquals(CommandType.EXIT.getCode(), "/exit");
+        assertEquals("/register", CommandType.REGISTER.getCode());
+        assertEquals("/message", CommandType.MESSAGE.getCode());
+        assertEquals("/leave", CommandType.LEAVE.getCode());
+        assertEquals("/exit", CommandType.EXIT.getCode());
     }
 }

@@ -1,3 +1,4 @@
-[[36mDEBUG[m] 2019-09-04 21:35:28,837 [thread main] UsersData.addFreeClient() - Free client null was added.
-[[36mDEBUG[m] 2019-09-04 21:35:29,369 [thread main] UsersData.addFreeClient() - Free clients: [Mock for User, hashCode: 392403246]
-[[36mDEBUG[m] 2019-09-04 21:35:38,288 [thread main] UsersData.hasFreeClient() - Free clients: [Mock for User, hashCode: 392403246]
+[[32mINFO [m] 2019-09-04 23:59:42,663 [thread main] UnauthorizedState.register() - User was registered as agent Mike
+[[36mDEBUG[m] 2019-09-04 23:59:42,668 [thread main] UsersData.addOnlineUser() - Online user was added: [Mike]
+[[36mDEBUG[m] 2019-09-04 23:59:42,668 [thread main] FreeAgentState.findCompanion() - Agent null trying to find client
+[[36mDEBUG[m] 2019-09-04 23:59:42,669 [thread main] UsersData.hasFreeClient() - Free clients: []

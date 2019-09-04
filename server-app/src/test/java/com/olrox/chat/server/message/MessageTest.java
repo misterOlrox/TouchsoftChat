@@ -13,9 +13,9 @@ class MessageTest {
         Message message3 = new Message("/leave");
         Message message4 = new Message("/exit");
 
-        assertEquals(message1.getCommandType(), CommandType.MESSAGE);
-        assertEquals(message2.getCommandType(), CommandType.REGISTER);
-        assertEquals(message3.getCommandType(), CommandType.LEAVE);
-        assertEquals(message4.getCommandType(), CommandType.EXIT);
+        assertEquals(CommandType.MESSAGE, message1.getCommandType());
+        assertEquals(CommandType.REGISTER, message2.getCommandType());
+        assertEquals(CommandType.LEAVE, message3.getCommandType());
+        assertEquals(CommandType.EXIT, message4.getCommandType());
     }
 }

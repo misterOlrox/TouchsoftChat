@@ -11,21 +11,21 @@ class ServerAsAuthorTest {
     void getUsernameTest1() {
         ServerAsAuthor serverAsAuthor = new ServerAsAuthor("SERVER");
 
-        assertEquals(serverAsAuthor.getUsername(), "SERVER");
+        assertEquals("SERVER", serverAsAuthor.getUsername());
     }
 
     @Test
     void getUsernameTest2() {
         ServerAsAuthor serverAsAuthor = new ServerAsAuthor("server");
 
-        assertNotEquals(serverAsAuthor.getUsername(), "SERVER");
+        assertNotEquals("SERVER", serverAsAuthor.getUsername());
     }
 
     @Test
     void getAuthorType() {
         ServerAsAuthor serverAsAuthor = new ServerAsAuthor("SERVER");
 
-        assertEquals(serverAsAuthor.getAuthorType(), AuthorType.SERVER);
-        assertNotEquals(serverAsAuthor.getAuthorType(), AuthorType.AGENT);
+        assertEquals(AuthorType.SERVER, serverAsAuthor.getAuthorType());
+        assertNotEquals(AuthorType.AGENT, serverAsAuthor.getAuthorType());
     }
 }
