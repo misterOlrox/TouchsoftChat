@@ -1,9 +1,0 @@
-[[36mDEBUG[m] 2019-09-05 01:17:24,101 [thread main] UsersData.addOnlineUser() - Online user was added: [Server]
-[[32mINFO [m] 2019-09-05 01:17:24,111 [thread main] UnauthorizedState.register() - User was registered as client Alice
-[[36mDEBUG[m] 2019-09-05 01:17:24,115 [thread main] UsersData.addOnlineUser() - Online user was added: [Server, Alice]
-[[32mINFO [m] 2019-09-05 01:17:24,130 [thread main] UnauthorizedState.register() - User was registered as agent Mike
-[[36mDEBUG[m] 2019-09-05 01:17:24,134 [thread main] UsersData.addOnlineUser() - Online user was added: [Mike, Server, Alice]
-[[36mDEBUG[m] 2019-09-05 01:17:24,134 [thread main] FreeAgentState.findCompanion() - Agent Mike trying to find client
-[[36mDEBUG[m] 2019-09-05 01:17:24,135 [thread main] UsersData.hasFreeClient() - Free clients: []
-[[36mDEBUG[m] 2019-09-05 01:17:24,135 [thread main] UsersData.addFreeAgent() - Free agent Mike was added.
-[[36mDEBUG[m] 2019-09-05 01:17:24,135 [thread main] UsersData.addFreeAgent() - Free agents: [com.olrox.chat.server.user.User@4df5bcb4]
