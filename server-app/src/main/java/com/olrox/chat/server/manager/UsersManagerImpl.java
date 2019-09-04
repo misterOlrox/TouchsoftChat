@@ -3,48 +3,50 @@ package com.olrox.chat.server.manager;
 import com.olrox.chat.server.user.User;
 
 public class UsersManagerImpl implements UsersManager{
+    private final static UsersData usersData = new UsersData();
+
     @Override
     public boolean hasFreeClient() {
-        return UsersData.hasFreeClient();
+        return usersData.hasFreeClient();
     }
 
     @Override
     public boolean hasFreeAgent() {
-        return UsersData.hasFreeAgent();
+        return usersData.hasFreeAgent();
     }
 
     @Override
     public User pollFreeClient() {
-        return UsersData.pollFreeClient();
+        return usersData.pollFreeClient();
     }
 
     @Override
     public User pollFreeAgent() {
-        return UsersData.pollFreeAgent();
+        return usersData.pollFreeAgent();
     }
 
     @Override
     public void addFreeClient(User client) {
-        UsersData.addFreeClient(client);
+        usersData.addFreeClient(client);
     }
 
     @Override
     public void addFreeAgent(User agent) {
-        UsersData.addFreeAgent(agent);
+        usersData.addFreeAgent(agent);
     }
 
     @Override
     public void addOnlineUser(String username) {
-        UsersData.addOnlineUser(username);
+        usersData.addOnlineUser(username);
     }
 
     @Override
     public void removeOnlineUser(String username) {
-        UsersData.removeOnlineUser(username);
+        usersData.removeOnlineUser(username);
     }
 
     @Override
     public boolean checkIfOnline(String username) {
-        return UsersData.checkIfOnline(username);
+        return usersData.checkIfOnline(username);
     }
 }
