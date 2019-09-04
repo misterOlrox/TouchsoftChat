@@ -1,6 +1,9 @@
 package com.olrox.chat.server.manager;
 
+import com.olrox.chat.server.exception.InvalidStateException;
 import com.olrox.chat.server.user.User;
+import com.olrox.chat.server.user.state.FreeAgentState;
+import com.olrox.chat.server.user.state.FreeClientState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,9 +17,7 @@ class UsersData {
     private final static Logger logger = LogManager.getLogger(UsersData.class);
 
     private final Queue<User> freeClients = new ArrayDeque<>();
-
     private final Queue<User> freeAgents = new ArrayDeque<>();
-
     private final Set<String> onlineUsers = new HashSet<>();
 
     private synchronized void removeOfflineClients(){
@@ -62,6 +63,9 @@ class UsersData {
     }
 
     public synchronized void addFreeClient(User client){
+        if(!(client.getState() instanceof FreeClientState)) {
+            throw new InvalidStateException("User isn't in FreeClientState.");
+        }
         freeClients.add(client);
 
         logger.debug("Free client " + client.getUsername() + " was added.");
@@ -69,6 +73,9 @@ class UsersData {
     }
 
     public synchronized void addFreeAgent(User agent) {
+        if(!(agent.getState() instanceof FreeAgentState)) {
+            throw new InvalidStateException("User isn't in FreeAgentState.");
+        }
         freeAgents.add(agent);
 
         logger.debug("Free agent " + agent.getUsername() + " was added.");
