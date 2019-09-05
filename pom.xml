@@ -12,6 +12,7 @@
     <modules>
         <module>server-app</module>
         <module>user-app</module>
+        <module>nio-server-app</module>
     </modules>
 
     <dependencies>
