@@ -7,10 +7,10 @@ import org.apache.logging.log4j.Logger;
 public class ServerApplication{
 
     private final static int PORT = 50000;
-    private final static Logger logger = LogManager.getLogger(ServerApplication.class);
+    private final static Logger LOGGER = LogManager.getLogger(ServerApplication.class);
 
     public static void main(String[] args) {
-        logger.info("Server Application is starting.");
+        LOGGER.info("Server Application is starting.");
         ServerThread server = new ServerThread(PORT);
         server.start();
     }

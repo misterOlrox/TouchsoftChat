@@ -10,7 +10,7 @@ import java.net.Socket;
 
 public class UserThread extends Thread {
 
-    private final static Logger logger = LogManager.getLogger(UserThread.class);
+    private final static Logger LOGGER = LogManager.getLogger(UserThread.class);
 
     private final Socket socket;
     private User user;
@@ -50,9 +50,9 @@ public class UserThread extends Thread {
                 }
             }
         } catch (IOException ex) {
-            logger.error("Error in UserThread: ", ex);
+            LOGGER.error("Error in UserThread: ", ex);
         } finally {
-            logger.info("User " + user.getUsername() + " exited");
+            LOGGER.info("User " + user.getUsername() + " exited");
             closeConnections();
         }
     }

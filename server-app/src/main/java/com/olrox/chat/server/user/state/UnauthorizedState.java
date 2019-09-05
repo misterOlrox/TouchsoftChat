@@ -11,7 +11,7 @@ import java.util.StringTokenizer;
 
 public class UnauthorizedState implements UserState {
 
-    private final static Logger logger = LogManager.getLogger(UnauthorizedState.class);
+    private final static Logger LOGGER = LogManager.getLogger(UnauthorizedState.class);
 
     private final User user;
     private final UsersManager usersManager;
@@ -50,7 +50,7 @@ public class UnauthorizedState implements UserState {
         if(userType.equals("agent")){
             user.setUsername(username);
             user.receiveFromServer(serverAnswer);
-            logger.info(loggerInfo);
+            LOGGER.info(loggerInfo);
             FreeAgentState agent = new FreeAgentState(this);
             user.setState(agent);
             usersManager.addOnlineUser(username);
@@ -58,7 +58,7 @@ public class UnauthorizedState implements UserState {
         } else if(userType.equals("client")){
             user.setUsername(username);
             user.receiveFromServer(serverAnswer);
-            logger.info(loggerInfo);
+            LOGGER.info(loggerInfo);
             user.setState(new FreeClientState(this));
             usersManager.addOnlineUser(username);
         } else {

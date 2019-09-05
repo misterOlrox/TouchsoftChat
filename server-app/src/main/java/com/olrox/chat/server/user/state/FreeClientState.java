@@ -13,7 +13,7 @@ import java.util.List;
 
 public class FreeClientState implements UserState {
 
-    private final static Logger logger = LogManager.getLogger(FreeClientState.class);
+    private final static Logger LOGGER = LogManager.getLogger(FreeClientState.class);
 
     private final User user;
     private List<Message> messages = new ArrayList<>();
@@ -58,7 +58,7 @@ public class FreeClientState implements UserState {
             user.receiveFromServer("Now you chatting with agent " + companion.getUsername());
             companion.receiveFromServer("Now you chatting with client " + this.user.getUsername());
 
-            logger.info("Client " + this.user.getUsername() + " start chat with agent " + companion.getUsername());
+            LOGGER.info("Client " + this.user.getUsername() + " start chat with agent " + companion.getUsername());
 
             for (Message message : messages) {
                 busyAgent.receiveFromClient(message);

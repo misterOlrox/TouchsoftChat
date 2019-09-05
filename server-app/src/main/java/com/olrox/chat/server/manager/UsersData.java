@@ -14,7 +14,7 @@ import java.util.Set;
 
 class UsersData {
 
-    private final static Logger logger = LogManager.getLogger(UsersData.class);
+    private final static Logger LOGGER = LogManager.getLogger(UsersData.class);
 
     private final Queue<User> freeClients = new ArrayDeque<>();
     private final Queue<User> freeAgents = new ArrayDeque<>();
@@ -37,27 +37,27 @@ class UsersData {
     }
 
     public synchronized boolean hasFreeClient(){
-        logger.debug("Free clients: " + freeClients);
+        LOGGER.debug("Free clients: " + freeClients);
 
         removeOfflineClients();
         return !freeClients.isEmpty();
     }
 
     public synchronized boolean hasFreeAgent(){
-        logger.debug("Free agents: " + freeAgents);
+        LOGGER.debug("Free agents: " + freeAgents);
 
         removeOfflineAgents();
         return !freeAgents.isEmpty();
     }
 
     public synchronized User pollFreeClient(){
-        logger.debug("Free client was removed.");
+        LOGGER.debug("Free client was removed.");
 
         return freeClients.poll();
     }
 
     public synchronized User pollFreeAgent(){
-        logger.debug("Free agent was removed");
+        LOGGER.debug("Free agent was removed");
 
         return freeAgents.poll();
     }
@@ -68,8 +68,8 @@ class UsersData {
         }
         freeClients.add(client);
 
-        logger.debug("Free client " + client.getUsername() + " was added.");
-        logger.debug("Free clients: " + freeClients);
+        LOGGER.debug("Free client " + client.getUsername() + " was added.");
+        LOGGER.debug("Free clients: " + freeClients);
     }
 
     public synchronized void addFreeAgent(User agent) {
@@ -78,20 +78,20 @@ class UsersData {
         }
         freeAgents.add(agent);
 
-        logger.debug("Free agent " + agent.getUsername() + " was added.");
-        logger.debug("Free agents: " + freeAgents);
+        LOGGER.debug("Free agent " + agent.getUsername() + " was added.");
+        LOGGER.debug("Free agents: " + freeAgents);
     }
 
     public synchronized void addOnlineUser(String username) {
         onlineUsers.add(username);
 
-        logger.debug("Online user was added: " + onlineUsers);
+        LOGGER.debug("Online user was added: " + onlineUsers);
     }
 
     public synchronized void removeOnlineUser(String username) {
         onlineUsers.remove(username);
 
-        logger.debug("Online user was removed: " + onlineUsers);
+        LOGGER.debug("Online user was removed: " + onlineUsers);
     }
 
     public synchronized boolean checkIfOnline(String username) {

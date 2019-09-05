@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 public class FreeAgentState implements UserState {
 
-    private final static Logger logger = LogManager.getLogger(FreeAgentState.class);
+    private final static Logger LOGGER = LogManager.getLogger(FreeAgentState.class);
 
     private final User user;
     private final UsersManager usersManager;
@@ -27,7 +27,7 @@ public class FreeAgentState implements UserState {
     }
 
     public synchronized void findCompanion(){
-        logger.debug("Agent " + this.user.getUsername() + " trying to find client");
+        LOGGER.debug("Agent " + this.user.getUsername() + " trying to find client");
         if(usersManager.hasFreeClient()){
             User companion = usersManager.pollFreeClient();
             connect(companion);
@@ -58,7 +58,7 @@ public class FreeAgentState implements UserState {
         user.receiveFromServer("Now you chatting with client " + companion.getUsername());
         companion.receiveFromServer("Now you chatting with agent " + this.getUser().getUsername());
 
-        logger.info("Agent " + this.user.getUsername() + " start chat with client " + companion.getUsername());
+        LOGGER.info("Agent " + this.user.getUsername() + " start chat with client " + companion.getUsername());
 
         for (Message message : companionState.getMessages()) {
             busyAgent.receiveFromClient(message);

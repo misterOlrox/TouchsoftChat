@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Logger;
 
 public class BusyAgentState implements UserState {
 
-    private final static Logger logger = LogManager.getLogger(BusyAgentState.class);
+    private final static Logger LOGGER = LogManager.getLogger(BusyAgentState.class);
 
     private final User user;
     private BusyClientState companion;
@@ -43,7 +43,7 @@ public class BusyAgentState implements UserState {
         this.setFree();
         companion.setFree();
 
-        logger.info("Agent " + this.user.getUsername() +
+        LOGGER.info("Agent " + this.user.getUsername() +
                 " leave chat with client " + companion.getUser().getUsername());
     }
 
@@ -53,7 +53,7 @@ public class BusyAgentState implements UserState {
         usersManager.removeOnlineUser(this.user.getUsername());
         companion.setFree();
 
-        logger.info("Agent " + this.user.getUsername() +
+        LOGGER.info("Agent " + this.user.getUsername() +
                 " exit from chat with client " + companion.getUser().getUsername());
     }
 
