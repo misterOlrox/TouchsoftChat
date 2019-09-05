@@ -7,14 +7,12 @@ import java.time.LocalDateTime;
 public class Message {
     private Author author;
     private String text;
-    private boolean isViewed;
     private LocalDateTime sendTime;
     private CommandType commandType;
 
     public Message(String text) {
         this.text = text;
         sendTime = LocalDateTime.now();
-        isViewed = false;
         commandType = checkForCommand(text);
     }
 
@@ -22,7 +20,6 @@ public class Message {
         this.text = text;
         this.author = author;
         sendTime = LocalDateTime.now();
-        isViewed = false;
         commandType = checkForCommand(text);
     }
 
@@ -60,14 +57,6 @@ public class Message {
         this.text = text;
     }
 
-    public boolean isViewed() {
-        return isViewed;
-    }
-
-    public void setViewed(boolean viewed) {
-        isViewed = viewed;
-    }
-
     public LocalDateTime getSendTime() {
         return sendTime;
     }
@@ -85,16 +74,6 @@ public class Message {
     }
 
     public String show() {
-        //return toString();
         return "[" + author.getUsername() + "] : " + text;
-    }
-
-    @Override
-    public String toString() {
-        return "Message{" +
-                "author=" + author +
-                ", text='" + text + '\'' +
-                ", commandType=" + commandType +
-                '}';
     }
 }
