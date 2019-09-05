@@ -15,6 +15,13 @@ public class BusyAgentState implements UserState {
     private BusyClientState companion;
     private final UsersManager usersManager;
 
+    // for testing
+    public BusyAgentState(User user, BusyClientState companion, UsersManager usersManager) {
+        this.user = user;
+        this.companion = companion;
+        this.usersManager = usersManager;
+    }
+
     public BusyAgentState(FreeAgentState agent) {
         this.user = agent.getUser();
         usersManager = UsersManagerFactory.createUsersManager();

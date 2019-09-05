@@ -15,6 +15,12 @@ public class BusyClientState implements UserState {
     private BusyAgentState companion;
     private final UsersManager usersManager;
 
+    public BusyClientState(User user, BusyAgentState companion, UsersManager usersManager) {
+        this.user = user;
+        this.companion = companion;
+        this.usersManager = usersManager;
+    }
+
     public BusyClientState(FreeClientState client) {
         this.user = client.getUser();
         usersManager = UsersManagerFactory.createUsersManager();
