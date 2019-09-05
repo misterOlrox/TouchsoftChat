@@ -23,6 +23,13 @@ public class User implements Author {
         this.state = state;
     }
 
+    public User(UserState state, AuthorType authorType, String username, MessageWriter messageWriter) {
+        this.state = state;
+        this.authorType = authorType;
+        this.username = username;
+        this.messageWriter = messageWriter;
+    }
+
     public UserState getState() {
         return state;
     }

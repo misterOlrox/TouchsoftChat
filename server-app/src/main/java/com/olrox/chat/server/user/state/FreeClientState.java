@@ -33,6 +33,11 @@ public class FreeClientState implements UserState {
         usersManager = UsersManagerFactory.createUsersManager();
     }
 
+    public FreeClientState(User user) {
+        this.user = user;
+        usersManager = UsersManagerFactory.createUsersManager();
+    }
+
     private void findCompanion() {
         if (usersManager.hasFreeAgent()) {
             User companion = usersManager.pollFreeAgent();

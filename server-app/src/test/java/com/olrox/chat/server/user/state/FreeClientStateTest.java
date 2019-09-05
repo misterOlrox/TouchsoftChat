@@ -1,23 +1,19 @@
 package com.olrox.chat.server.user.state;
 
-import com.olrox.chat.server.manager.UsersManager;
-import com.olrox.chat.server.manager.UsersManagerFactory;
 import com.olrox.chat.server.message.Message;
 import com.olrox.chat.server.message.MessageWriter;
-import com.olrox.chat.server.message.author.AuthorType;
 import com.olrox.chat.server.user.User;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.mockito.stubbing.OngoingStubbing;
-
-import javax.jnlp.UnavailableServiceException;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.mockito.Mockito.mock;
 
+@ExtendWith(MockitoExtension.class)
 class FreeClientStateTest {
 
     @Test
@@ -42,24 +38,5 @@ class FreeClientStateTest {
         state.sendMessage(message4);
 
         assertIterableEquals(expected, state.getMessages());
-    }
-
-    @Test
-    void sendMessageToOnlineFreeAgent() {
-//        User client = new User(mock(MessageWriter.class));
-//        UnauthorizedState prevState = new UnauthorizedState(client);
-//        FreeClientState state = new FreeClientState(prevState);
-//        client.setState(state);
-//        UsersManager usersManager = UsersManagerFactory.createUsersManager();
-//        User agent = new User(mock(MessageWriter.class));
-//        agent.setState(mock(FreeAgentState.class));
-//        usersManager.addOnlineUser(agent.getUsername());
-//        usersManager.addFreeAgent(agent);
-//        Message message1 = new Message("MESSAGE1", client);
-//        User mockedAgent = spy(agent);
-//
-//        client.sendMessage(message1);
-//
-//        verify(mockedAgent, times(1)).receiveFromUser(message1);
     }
 }

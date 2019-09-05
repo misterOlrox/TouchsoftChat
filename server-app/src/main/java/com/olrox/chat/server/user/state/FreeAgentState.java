@@ -27,6 +27,11 @@ public class FreeAgentState implements UserState {
         usersManager = UsersManagerFactory.createUsersManager();
     }
 
+    public FreeAgentState(User user) {
+        this.user = user;
+        usersManager = UsersManagerFactory.createUsersManager();
+    }
+
     public synchronized void findCompanion(){
         LOGGER.debug("Agent " + this.user.getUsername() + " trying to find client");
         if(usersManager.hasFreeClient()){
