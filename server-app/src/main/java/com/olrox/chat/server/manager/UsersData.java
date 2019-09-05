@@ -1,6 +1,6 @@
 package com.olrox.chat.server.manager;
 
-import com.olrox.chat.server.exception.InvalidStateException;
+import com.olrox.chat.server.exception.InvalidUserStateException;
 import com.olrox.chat.server.user.User;
 import com.olrox.chat.server.user.state.FreeAgentState;
 import com.olrox.chat.server.user.state.FreeClientState;
@@ -64,7 +64,7 @@ class UsersData {
 
     public synchronized void addFreeClient(User client){
         if(!(client.getState() instanceof FreeClientState)) {
-            throw new InvalidStateException("User isn't in FreeClientState.");
+            throw new InvalidUserStateException("User isn't in FreeClientState.");
         }
         freeClients.add(client);
 
@@ -74,7 +74,7 @@ class UsersData {
 
     public synchronized void addFreeAgent(User agent) {
         if(!(agent.getState() instanceof FreeAgentState)) {
-            throw new InvalidStateException("User isn't in FreeAgentState.");
+            throw new InvalidUserStateException("User isn't in FreeAgentState.");
         }
         freeAgents.add(agent);
 

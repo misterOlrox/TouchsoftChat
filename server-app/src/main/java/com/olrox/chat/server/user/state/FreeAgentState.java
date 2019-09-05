@@ -1,5 +1,6 @@
 package com.olrox.chat.server.user.state;
 
+import com.olrox.chat.server.exception.InvalidUserStateException;
 import com.olrox.chat.server.manager.UsersManager;
 import com.olrox.chat.server.manager.UsersManagerFactory;
 import com.olrox.chat.server.message.Message;
@@ -42,8 +43,7 @@ public class FreeAgentState implements UserState {
         if(companion.getState() instanceof FreeClientState) {
             companionState = (FreeClientState) companion.getState();
         } else {
-            // TODO another exception?
-            throw new RuntimeException("Companion isn't in FreeClientState.");
+            throw new InvalidUserStateException("Companion isn't in FreeClientState.");
         }
 
         BusyClientState busyClient = new BusyClientState(companionState);

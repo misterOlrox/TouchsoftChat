@@ -5,6 +5,9 @@ import com.olrox.chat.server.user.User;
 public class UsersManagerImpl implements UsersManager{
     private final static UsersData usersData = new UsersData();
 
+    UsersManagerImpl() {
+    }
+
     @Override
     public boolean hasFreeClient() {
         return usersData.hasFreeClient();

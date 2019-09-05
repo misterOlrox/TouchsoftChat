@@ -27,4 +27,12 @@ public class MessageWriterImpl implements MessageWriter{
     public void close() {
         writer.close();
     }
+
+    PrintWriter getWriter() {
+        return writer;
+    }
+
+    void setWriter(PrintWriter writer) {
+        this.writer = writer;
+    }
 }

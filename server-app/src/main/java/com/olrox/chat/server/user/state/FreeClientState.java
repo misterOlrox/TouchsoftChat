@@ -1,5 +1,6 @@
 package com.olrox.chat.server.user.state;
 
+import com.olrox.chat.server.exception.InvalidUserStateException;
 import com.olrox.chat.server.manager.UsersManager;
 import com.olrox.chat.server.manager.UsersManagerFactory;
 import com.olrox.chat.server.message.Message;
@@ -20,7 +21,7 @@ public class FreeClientState implements UserState {
     private boolean isWaiting = false;
     private final UsersManager usersManager;
 
-    public FreeClientState(UnauthorizedState previousState){
+    public FreeClientState(UnauthorizedState previousState) {
         this.user = previousState.getUser();
         this.user.setAuthorType(AuthorType.CLIENT);
         this.user.receiveFromServer("Type your messages and we will find you an agent.");
@@ -32,8 +33,8 @@ public class FreeClientState implements UserState {
         usersManager = UsersManagerFactory.createUsersManager();
     }
 
-    private void findCompanion(){
-        if(usersManager.hasFreeAgent()){
+    private void findCompanion() {
+        if (usersManager.hasFreeAgent()) {
             User companion = usersManager.pollFreeAgent();
             connect(companion);
         } else {
@@ -43,11 +44,11 @@ public class FreeClientState implements UserState {
         }
     }
 
-    private void connect(User companion){
+    private void connect(User companion) {
         UserState companionState = companion.getState();
-        if(companionState instanceof FreeAgentState) {
+        if (companionState instanceof FreeAgentState) {
             BusyClientState busyClient = new BusyClientState(this);
-            BusyAgentState busyAgent = new BusyAgentState((FreeAgentState)companionState);
+            BusyAgentState busyAgent = new BusyAgentState((FreeAgentState) companionState);
 
             busyClient.setCompanion(busyAgent);
             busyAgent.setCompanion(busyClient);
@@ -64,8 +65,7 @@ public class FreeClientState implements UserState {
                 busyAgent.receiveFromClient(message);
             }
         } else {
-            // TODO
-            throw new RuntimeException("Companion isn't in FreeAgentState.");
+            throw new InvalidUserStateException("Companion isn't in FreeAgentState.");
         }
     }
 

@@ -44,7 +44,7 @@ class UnauthorizedStateTest {
     }
 
     @Test
-    void registerFail() {
+    void registerFail1() {
         Message message = new Message("/register cvbcbcv Alice");
         User user = new User(Mockito.mock(MessageWriter.class));
         UnauthorizedState state = new UnauthorizedState(user);
@@ -57,14 +57,28 @@ class UnauthorizedStateTest {
     }
 
     @Test
-    void sendMessage() {
+    void registerFail2() {
+        Message message = new Message("/register agent");
+        User user = new User(Mockito.mock(MessageWriter.class));
+        UnauthorizedState state = new UnauthorizedState(user);
+
+        state.register(message);
+
+        assertNull(user.getUsername());
+        assertNull(user.getAuthorType());
+        assertTrue(user.getState() instanceof UnauthorizedState);
     }
 
     @Test
-    void leave() {
-    }
+    void registerFail3() {
+        Message message = new Message("/register wrongtype Alex");
+        User user = new User(Mockito.mock(MessageWriter.class));
+        UnauthorizedState state = new UnauthorizedState(user);
 
-    @Test
-    void exit() {
+        state.register(message);
+
+        assertNull(user.getUsername());
+        assertNull(user.getAuthorType());
+        assertTrue(user.getState() instanceof UnauthorizedState);
     }
 }
