@@ -1,5 +1,9 @@
 package com.olrox.chat.server.nio;
 
+import com.olrox.chat.server.thread.ServerThread;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.channels.SelectionKey;
@@ -10,6 +14,8 @@ import java.util.Iterator;
 import java.util.Set;
 
 public class Reactor implements Runnable {
+
+    private final static Logger LOGGER = LogManager.getLogger(Reactor.class);
 
     final Selector selector;
     final ServerSocketChannel serverSocketChannel;
@@ -56,12 +62,12 @@ public class Reactor implements Runnable {
             try {
                 SocketChannel socketChannel = serverSocketChannel.accept();
                 if (socketChannel != null) {
-                    if (isWithThreadPool)
-                        new HandlerWithThreadPool(selector, socketChannel);
-                    else
+//                    if (isWithThreadPool)
+//                        new HandlerWithThreadPool(selector, socketChannel);
+//                    else
                         new Handler(selector, socketChannel);
                 }
-                System.out.println("Connection Accepted by Reactor");
+                LOGGER.info("Connection Accepted by Reactor");
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
