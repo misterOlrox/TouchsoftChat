@@ -5,6 +5,7 @@ import com.olrox.chat.server.message.author.Author;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.ByteBuffer;
+import java.nio.channels.ClosedChannelException;
 import java.nio.channels.SocketChannel;
 
 public class MessageWriterNio implements MessageWriter{
@@ -23,6 +24,8 @@ public class MessageWriterNio implements MessageWriter{
         ByteBuffer output = ByteBuffer.wrap((message.show() + "\n").getBytes());
         try {
             socketChannel.write(output);
+        } catch (ClosedChannelException e) {
+            // FIXME
         } catch (IOException e) {
             e.printStackTrace();
         }

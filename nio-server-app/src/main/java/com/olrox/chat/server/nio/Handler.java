@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.ClosedChannelException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
@@ -80,6 +81,7 @@ public class Handler implements Runnable {
                 break;
             case EXIT:
                 exit();
+                return;
         }
 
         selectionKey.interestOps(SelectionKey.OP_READ);
@@ -101,8 +103,9 @@ public class Handler implements Runnable {
     private void exit() {
         this.user.exit();
         try {
-
             socketChannel.close();
+            messageWriter.close();
+            messageReader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

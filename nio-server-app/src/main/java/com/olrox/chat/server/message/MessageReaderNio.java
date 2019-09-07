@@ -16,6 +16,7 @@ public class MessageReaderNio implements MessageReader{
     @Override
     public Message readMessage() throws IOException {
         int readCount = socketChannel.read(input);
+        data = null;
         if (readCount > 0) {
             readProcess(readCount);
         }
