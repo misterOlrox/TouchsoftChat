@@ -5,9 +5,9 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
 public class MessageReaderNio implements MessageReader{
-    SocketChannel socketChannel;
-    ByteBuffer input = ByteBuffer.allocate(1024);
-    String data;
+    private SocketChannel socketChannel;
+    private ByteBuffer input = ByteBuffer.allocate(1024);
+    private String data;
 
     public MessageReaderNio(SocketChannel socketChannel) {
         this.socketChannel = socketChannel;
@@ -29,14 +29,14 @@ public class MessageReaderNio implements MessageReader{
         byte[] subStringBytes = new byte[readCount];
         byte[] array = input.array();
         System.arraycopy(array, 0, subStringBytes, 0, readCount);
-        // Assuming ASCII (bad assumption but simplifies the example)
+        // TODO: Assuming ASCII (bad assumption but simplifies the example)
         sb.append(new String(subStringBytes));
         input.clear();
         data = sb.toString().trim();
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
 
     }
 }

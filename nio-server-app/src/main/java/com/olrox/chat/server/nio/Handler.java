@@ -14,13 +14,12 @@ public class Handler implements Runnable {
 
     private final static Logger LOGGER = LogManager.getLogger(Handler.class);
 
-    final SocketChannel socketChannel;
-    final SelectionKey selectionKey;
-    static final int READING = 0, SENDING = 1;
-    int state = READING;
-    final MessageReader messageReader;
-    final MessageWriter messageWriter;
-    User user;
+    private final SocketChannel socketChannel;
+    private final SelectionKey selectionKey;
+    private static final int READING = 0, SENDING = 1;
+    private int state = READING;
+    private final MessageReader messageReader;
+    private User user;
 
     Handler(Selector selector, SocketChannel c) throws IOException {
 
@@ -33,7 +32,7 @@ public class Handler implements Runnable {
         selectionKey.interestOps(SelectionKey.OP_READ);
         selector.wakeup();
         messageReader = new MessageReaderNio(socketChannel);
-        messageWriter = new MessageWriterNio(socketChannel);
+        MessageWriter messageWriter = new MessageWriterNio(socketChannel);
         user = new User(messageWriter);
     }
 
@@ -46,13 +45,13 @@ public class Handler implements Runnable {
                 send();
             }
         } catch (IOException ex) {
-            ex.printStackTrace();
+            LOGGER.error("Error in Handler: ", ex);
         }
     }
 
-    Message message;
+    private Message message;
 
-    void read() throws IOException {
+    private void read() throws IOException {
         message = messageReader.readMessage();
 
         state = SENDING;
@@ -60,7 +59,7 @@ public class Handler implements Runnable {
         selectionKey.interestOps(SelectionKey.OP_WRITE);
     }
 
-    void send(){
+    private void send(){
         message.setAuthor(user);
 
         CommandType command = message.getCommandType();
@@ -83,6 +82,7 @@ public class Handler implements Runnable {
         state = READING;
     }
 
+
     private void register(Message message){
         this.user.register(message);
     }
@@ -99,10 +99,9 @@ public class Handler implements Runnable {
         this.user.exit();
         try {
             socketChannel.close();
-            messageWriter.close();
             messageReader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ex) {
+            LOGGER.error("Error in Handler: ", ex);
         }
     }
 }

@@ -7,8 +7,13 @@ import com.olrox.chat.server.message.author.AuthorType;
 import com.olrox.chat.server.nio.Reactor;
 import com.olrox.chat.server.user.state.UnauthorizedState;
 import com.olrox.chat.server.user.state.UserState;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class User implements Author {
+
+    private final static Logger LOGGER = LogManager.getLogger(User.class);
+
     private UserState state;
     private AuthorType authorType;
     private String username;
@@ -70,6 +75,7 @@ public class User implements Author {
 
     public void exit() {
         this.state.exit();
+        LOGGER.info("User " + username + " exited");
         messageWriter.close();
     }
 

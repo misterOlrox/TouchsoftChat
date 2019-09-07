@@ -1,5 +1,7 @@
 package com.olrox.chat.server.nio;
 
+import com.olrox.chat.server.manager.UsersManager;
+import com.olrox.chat.server.manager.UsersManagerFactory;
 import com.olrox.chat.server.message.author.ServerAsAuthor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,9 +20,14 @@ public class Reactor implements Runnable {
     private final static Logger LOGGER = LogManager.getLogger(Reactor.class);
     public final static ServerAsAuthor SERVER_AS_AUTHOR = new ServerAsAuthor("Server");
 
-    final Selector selector;
-    final ServerSocketChannel serverSocketChannel;
-    final boolean isWithThreadPool;
+    static {
+        UsersManager usersManager = UsersManagerFactory.createUsersManager();
+        usersManager.addOnlineUser(SERVER_AS_AUTHOR.getUsername());
+    }
+
+    private final Selector selector;
+    private final ServerSocketChannel serverSocketChannel;
+    private final boolean isWithThreadPool;
 
     public Reactor(int port, boolean isWithThreadPool) throws IOException {
 
@@ -35,7 +42,7 @@ public class Reactor implements Runnable {
 
 
     public void run() {
-        System.out.println("Server listening to port: " + serverSocketChannel.socket().getLocalPort());
+        LOGGER.info("Chat Server is listening on port " + serverSocketChannel.socket().getLocalPort());
         try {
             while (!Thread.interrupted()) {
                 selector.select();
@@ -47,18 +54,18 @@ public class Reactor implements Runnable {
                 selected.clear();
             }
         } catch (IOException ex) {
-            ex.printStackTrace();
+            LOGGER.error("Error in the reactor: ", ex);
         }
     }
 
-    void dispatch(SelectionKey k) {
+    private void dispatch(SelectionKey k) {
         Runnable r = (Runnable) (k.attachment());
         if (r != null) {
             r.run();
         }
     }
 
-    class Acceptor implements Runnable {
+    private class Acceptor implements Runnable {
         public void run() {
             try {
                 SocketChannel socketChannel = serverSocketChannel.accept();
@@ -68,9 +75,9 @@ public class Reactor implements Runnable {
 //                    else
                         new Handler(selector, socketChannel);
                 }
-                LOGGER.info("Connection Accepted by Reactor");
+                LOGGER.info("New connection accepted by Reactor");
             } catch (IOException ex) {
-                ex.printStackTrace();
+                LOGGER.error("Error in the reactor: ", ex);
             }
         }
     }

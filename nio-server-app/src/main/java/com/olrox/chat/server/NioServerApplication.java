@@ -1,13 +1,19 @@
 package com.olrox.chat.server;
 
 import com.olrox.chat.server.nio.Reactor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
 public class NioServerApplication {
-    public static void main(String[] args) throws IOException {
 
-        Reactor reactor  = new Reactor(50000, false);
+    private final static int PORT = 50000;
+    private final static Logger LOGGER = LogManager.getLogger(NioServerApplication.class);
+
+    public static void main(String[] args) throws IOException {
+        LOGGER.info("Server Application is starting.");
+        Reactor reactor = new Reactor(PORT, false);
         new Thread(reactor).start();
     }
 }

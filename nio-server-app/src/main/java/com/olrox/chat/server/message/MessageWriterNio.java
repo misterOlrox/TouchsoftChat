@@ -1,6 +1,8 @@
 package com.olrox.chat.server.message;
 
 import com.olrox.chat.server.message.author.Author;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -9,7 +11,10 @@ import java.nio.channels.ClosedChannelException;
 import java.nio.channels.SocketChannel;
 
 public class MessageWriterNio implements MessageWriter{
-    SocketChannel socketChannel;
+
+    private final static Logger LOGGER = LogManager.getLogger(MessageWriterNio.class);
+
+    private SocketChannel socketChannel;
 
     public MessageWriterNio(SocketChannel socketChannel) {
         this.socketChannel = socketChannel;
@@ -25,17 +30,17 @@ public class MessageWriterNio implements MessageWriter{
         try {
             socketChannel.write(output);
         } catch (ClosedChannelException e) {
-            // FIXME
-        } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.warn("Channel already closed.");
+        } catch (IOException ex) {
+            LOGGER.error("Exception while writing a message: " + ex);
         }
     }
 
     public void close() {
         try {
             socketChannel.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ex) {
+            LOGGER.error("Exception while closing: " + ex);
         }
     }
 }
