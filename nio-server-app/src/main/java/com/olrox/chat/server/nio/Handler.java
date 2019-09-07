@@ -1,19 +1,14 @@
 package com.olrox.chat.server.nio;
 
 import com.olrox.chat.server.message.*;
-import com.olrox.chat.server.thread.ServerThread;
 import com.olrox.chat.server.user.User;
-import com.olrox.chat.server.user.state.UnauthorizedState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.channels.ClosedChannelException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
-import java.util.HashSet;
 
 public class Handler implements Runnable {
 

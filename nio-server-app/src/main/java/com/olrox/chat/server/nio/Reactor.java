@@ -1,6 +1,6 @@
 package com.olrox.chat.server.nio;
 
-import com.olrox.chat.server.thread.ServerThread;
+import com.olrox.chat.server.message.author.ServerAsAuthor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,12 +16,13 @@ import java.util.Set;
 public class Reactor implements Runnable {
 
     private final static Logger LOGGER = LogManager.getLogger(Reactor.class);
+    public final static ServerAsAuthor SERVER_AS_AUTHOR = new ServerAsAuthor("Server");
 
     final Selector selector;
     final ServerSocketChannel serverSocketChannel;
     final boolean isWithThreadPool;
 
-    Reactor(int port, boolean isWithThreadPool) throws IOException {
+    public Reactor(int port, boolean isWithThreadPool) throws IOException {
 
         this.isWithThreadPool = isWithThreadPool;
         selector = Selector.open();

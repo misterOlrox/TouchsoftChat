@@ -1,4 +1,6 @@
-package com.olrox.chat.server.nio;
+package com.olrox.chat.server;
+
+import com.olrox.chat.server.nio.Reactor;
 
 import java.io.IOException;
 

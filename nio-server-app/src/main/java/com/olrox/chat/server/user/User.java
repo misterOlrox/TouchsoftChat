@@ -1,10 +1,10 @@
 package com.olrox.chat.server.user;
 
-import com.olrox.chat.server.message.author.Author;
 import com.olrox.chat.server.message.Message;
 import com.olrox.chat.server.message.MessageWriter;
+import com.olrox.chat.server.message.author.Author;
 import com.olrox.chat.server.message.author.AuthorType;
-import com.olrox.chat.server.thread.ServerThread;
+import com.olrox.chat.server.nio.Reactor;
 import com.olrox.chat.server.user.state.UnauthorizedState;
 import com.olrox.chat.server.user.state.UserState;
 
@@ -78,6 +78,6 @@ public class User implements Author {
     }
 
     public void receiveFromServer(String text) {
-        messageWriter.write(new Message(text, ServerThread.SERVER_AS_AUTHOR));
+        messageWriter.write(new Message(text, Reactor.SERVER_AS_AUTHOR));
     }
 }
