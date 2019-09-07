@@ -43,24 +43,24 @@ public class BusyClientState implements UserState {
 
     @Override
     public void leave() {
+        LOGGER.info("Client " + this.user.getUsername() +
+                " leave chat with agent " + companion.getUser().getUsername());
+
         this.user.receiveFromServer("You left agent " + companion.getUser().getUsername());
         companion.getUser().receiveFromServer("Client " + this.user.getUsername() + " left.");
 
         this.setFree();
         companion.setFree();
-
-        LOGGER.info("Client " + this.user.getUsername() +
-                " leave chat with agent " + companion.getUser().getUsername());
     }
 
     @Override
     public void exit() {
+        LOGGER.info("Client " + this.user.getUsername() +
+                " exit from chat with agent " + companion.getUser().getUsername());
+
         companion.getUser().receiveFromServer("Client " + this.user.getUsername() + " exited.");
         usersManager.removeOnlineUser(this.user.getUsername());
         companion.setFree();
-
-        LOGGER.info("Client " + this.user.getUsername() +
-                " exit from chat with agent " + companion.getUser().getUsername());
     }
 
     public synchronized void setCompanion(BusyAgentState companion) {
