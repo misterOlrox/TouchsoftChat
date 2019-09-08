@@ -20,25 +20,13 @@ class UsersData {
     private final Queue<User> freeAgents = new ArrayDeque<>();
     private final Set<String> onlineUsers = new HashSet<>();
 
+
     private synchronized void removeOfflineClients(){
         User freeClient = freeClients.peek();
         while(freeClient != null && !onlineUsers.contains(freeClient.getUsername())){
             freeClients.poll();
             freeClient = freeClients.peek();
         }
-    }
-
-    public synchronized boolean hasFreeClient(){
-        LOGGER.debug("Free clients: " + freeClients);
-
-        removeOfflineClients();
-        return !freeClients.isEmpty();
-    }
-
-    public synchronized User pollFreeClient(){
-        LOGGER.debug("Free client was removed.");
-
-        return freeClients.poll();
     }
 
     private synchronized void removeOfflineAgents(){
@@ -49,15 +37,24 @@ class UsersData {
         }
     }
 
+    public synchronized User pollFreeClient(){
+        removeOfflineClients();
+        LOGGER.debug("Free clients: " + freeClients);
+
+        User client = freeClients.poll();
+
+        if(client != null) {
+            LOGGER.debug("Free client was removed.");
+        } else {
+            LOGGER.debug("No free client in queue.");
+        }
+
+        return client;
+    }
+
     public synchronized User pollFreeAgent(){
         removeOfflineAgents();
         LOGGER.debug("Free agents: " + freeAgents);
-
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
         User agent = freeAgents.poll();
 

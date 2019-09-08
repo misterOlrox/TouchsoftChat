@@ -9,11 +9,6 @@ public class UsersManagerImpl implements UsersManager{
     }
 
     @Override
-    public boolean hasFreeClient() {
-        return usersData.hasFreeClient();
-    }
-
-    @Override
     public User pollFreeClient() {
         return usersData.pollFreeClient();
     }
