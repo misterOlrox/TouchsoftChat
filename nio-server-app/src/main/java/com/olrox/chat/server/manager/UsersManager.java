@@ -5,8 +5,6 @@ import com.olrox.chat.server.user.User;
 public interface UsersManager {
     boolean hasFreeClient();
 
-    boolean hasFreeAgent();
-
     User pollFreeClient();
 
     User pollFreeAgent();

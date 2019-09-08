@@ -28,26 +28,11 @@ class UsersData {
         }
     }
 
-    private synchronized void removeOfflineAgents(){
-        User freeAgent = freeAgents.peek();
-        while(freeAgent != null && !onlineUsers.contains(freeAgent.getUsername())){
-            freeAgents.poll();
-            freeAgent = freeAgents.peek();
-        }
-    }
-
     public synchronized boolean hasFreeClient(){
         LOGGER.debug("Free clients: " + freeClients);
 
         removeOfflineClients();
         return !freeClients.isEmpty();
-    }
-
-    public synchronized boolean hasFreeAgent(){
-        LOGGER.debug("Free agents: " + freeAgents);
-
-        removeOfflineAgents();
-        return !freeAgents.isEmpty();
     }
 
     public synchronized User pollFreeClient(){
@@ -56,10 +41,33 @@ class UsersData {
         return freeClients.poll();
     }
 
-    public synchronized User pollFreeAgent(){
-        LOGGER.debug("Free agent was removed");
+    private synchronized void removeOfflineAgents(){
+        User freeAgent = freeAgents.peek();
+        while(freeAgent != null && !onlineUsers.contains(freeAgent.getUsername())){
+            freeAgents.poll();
+            freeAgent = freeAgents.peek();
+        }
+    }
 
-        return freeAgents.poll();
+    public synchronized User pollFreeAgent(){
+        removeOfflineAgents();
+        LOGGER.debug("Free agents: " + freeAgents);
+
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        User agent = freeAgents.poll();
+
+        if(agent != null) {
+            LOGGER.debug("Free agent was removed.");
+        } else {
+            LOGGER.debug("No free agent in queue.");
+        }
+
+        return agent;
     }
 
     public synchronized void addFreeClient(User client){
@@ -95,14 +103,7 @@ class UsersData {
     }
 
     public synchronized void removeOnlineUser(String username) {
-        try {
-            Thread.sleep(30000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         onlineUsers.remove(username);
-
         LOGGER.debug("Online user " + username + " was removed: " + onlineUsers);
     }
 }

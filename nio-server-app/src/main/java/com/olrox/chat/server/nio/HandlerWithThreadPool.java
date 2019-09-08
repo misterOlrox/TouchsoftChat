@@ -33,7 +33,6 @@ public class HandlerWithThreadPool extends Handler {
 
     class Processor implements Runnable {
         public void run() {
-            LOGGER.info("Process runs in processor.");
             processAndHandOff();
         }
     }
