@@ -5,8 +5,11 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
 public class MessageReaderNio implements MessageReader{
+
+    private final static int MESSAGE_MAX_LENGTH = 1024 * 4;
+
     private SocketChannel socketChannel;
-    private ByteBuffer input = ByteBuffer.allocate(1024);
+    private ByteBuffer input = ByteBuffer.allocate(MESSAGE_MAX_LENGTH);
     private String data;
 
     public MessageReaderNio(SocketChannel socketChannel) {
@@ -16,10 +19,12 @@ public class MessageReaderNio implements MessageReader{
     @Override
     public Message readMessage() throws IOException {
         int readCount = socketChannel.read(input);
-        data = null;
         if (readCount > 0) {
             readProcess(readCount);
+        } else {
+            data = null;
         }
+
         return new Message(data);
     }
 

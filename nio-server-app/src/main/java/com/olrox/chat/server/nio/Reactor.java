@@ -70,9 +70,9 @@ public class Reactor implements Runnable {
             try {
                 SocketChannel socketChannel = serverSocketChannel.accept();
                 if (socketChannel != null) {
-//                    if (isWithThreadPool)
-//                        new HandlerWithThreadPool(selector, socketChannel);
-//                    else
+                    if (isWithThreadPool)
+                        new HandlerWithThreadPool(selector, socketChannel);
+                    else
                         new Handler(selector, socketChannel);
                 }
                 LOGGER.info("New connection accepted by Reactor");

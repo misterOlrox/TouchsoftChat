@@ -14,11 +14,11 @@ public class Handler implements Runnable {
 
     private final static Logger LOGGER = LogManager.getLogger(Handler.class);
 
-    private final SocketChannel socketChannel;
-    private final SelectionKey selectionKey;
-    private static final int READING = 0, SENDING = 1;
-    private int state = READING;
-    private final MessageReader messageReader;
+    final SocketChannel socketChannel;
+    final SelectionKey selectionKey;
+    static final int READING = 0, SENDING = 1;
+    int state = READING;
+    final MessageReader messageReader;
     private User user;
 
     Handler(Selector selector, SocketChannel c) throws IOException {
@@ -49,9 +49,9 @@ public class Handler implements Runnable {
         }
     }
 
-    private Message message;
+    Message message;
 
-    private void read() throws IOException {
+    void read() throws IOException {
         message = messageReader.readMessage();
 
         state = SENDING;

@@ -13,7 +13,7 @@ public class NioServerApplication {
 
     public static void main(String[] args) throws IOException {
         LOGGER.info("Server Application is starting.");
-        Reactor reactor = new Reactor(PORT, false);
+        Reactor reactor = new Reactor(PORT, true);
         new Thread(reactor).start();
     }
 }
