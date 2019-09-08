@@ -39,17 +39,12 @@ public class UsersManagerImpl implements UsersManager{
     }
 
     @Override
-    public void addOnlineUser(String username) {
-        usersData.addOnlineUser(username);
+    public boolean addOnlineUser(String username) {
+        return usersData.addOnlineUser(username);
     }
 
     @Override
     public void removeOnlineUser(String username) {
         usersData.removeOnlineUser(username);
-    }
-
-    @Override
-    public boolean checkIfOnline(String username) {
-        return usersData.checkIfOnline(username);
     }
 }

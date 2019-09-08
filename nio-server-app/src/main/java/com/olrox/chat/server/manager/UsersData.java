@@ -82,19 +82,27 @@ class UsersData {
         LOGGER.debug("Free agents: " + freeAgents);
     }
 
-    public synchronized void addOnlineUser(String username) {
-        onlineUsers.add(username);
+    public synchronized boolean addOnlineUser(String username) {
+        boolean isNewUser = onlineUsers.add(username);
 
-        LOGGER.debug("Online user was added: " + onlineUsers);
+        if(isNewUser) {
+            LOGGER.debug("Online user " + username + " was added: " + onlineUsers);
+        } else {
+            LOGGER.debug("Online user " + username + " already registered: " + onlineUsers);
+        }
+
+        return isNewUser;
     }
 
     public synchronized void removeOnlineUser(String username) {
+        try {
+            Thread.sleep(30000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         onlineUsers.remove(username);
 
-        LOGGER.debug("Online user was removed: " + onlineUsers);
-    }
-
-    public synchronized boolean checkIfOnline(String username) {
-        return onlineUsers.contains(username);
+        LOGGER.debug("Online user " + username + " was removed: " + onlineUsers);
     }
 }

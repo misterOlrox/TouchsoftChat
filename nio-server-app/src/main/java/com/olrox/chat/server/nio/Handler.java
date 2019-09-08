@@ -59,7 +59,7 @@ public class Handler implements Runnable {
         selectionKey.interestOps(SelectionKey.OP_WRITE);
     }
 
-    private void send(){
+    void send(){
         message.setAuthor(user);
 
         CommandType command = message.getCommandType();

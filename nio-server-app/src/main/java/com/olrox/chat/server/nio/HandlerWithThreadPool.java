@@ -21,30 +21,20 @@ public class HandlerWithThreadPool extends Handler {
         super(sel, c);
     }
 
-    void read() {
+    void read() throws IOException {
+        message = messageReader.readMessage();
         state = PROCESSING;
         pool.execute(new Processor());
-
-        selectionKey.interestOps(SelectionKey.OP_WRITE);
     }
 
-    //Start processing in a new Processer Thread and Hand off to the reactor thread.
-    private synchronized void processAndHandOff() throws IOException {
-        message = messageReader.readMessage();
-
-        //Read processing done. Now the server is ready to send a message to the client.
-        state = SENDING;
+    private synchronized void processAndHandOff() {
+        send();
     }
 
     class Processor implements Runnable {
         public void run() {
-            try {
-                LOGGER.info("Process runs in processor.");
-
-                processAndHandOff();
-            } catch (IOException ex) {
-                LOGGER.error("Error in Processer: ", ex);
-            }
+            LOGGER.info("Process runs in processor.");
+            processAndHandOff();
         }
     }
 }

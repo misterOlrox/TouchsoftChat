@@ -15,9 +15,7 @@ public interface UsersManager {
 
     void addFreeAgent(User agent);
 
-    void addOnlineUser(String username);
+    boolean addOnlineUser(String username);
 
     void removeOnlineUser(String username);
-
-    boolean checkIfOnline(String username);
 }
