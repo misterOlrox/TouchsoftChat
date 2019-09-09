@@ -13,32 +13,12 @@ public class Message {
     public Message(String text) {
         this.text = text;
         sendTime = LocalDateTime.now();
-        commandType = checkForCommand(text);
     }
 
     public Message(String text, Author author) {
         this.text = text;
         this.author = author;
         sendTime = LocalDateTime.now();
-        commandType = checkForCommand(text);
-    }
-
-    private CommandType checkForCommand(String text) {
-        if(text == null) {
-            return CommandType.EXIT;
-        }
-
-        if(!text.startsWith("/")) {
-            return CommandType.MESSAGE;
-        }
-
-        for(CommandType command : CommandType.values()){
-            if(text.startsWith(command.getCode())) {
-                return command;
-            }
-        }
-
-        return CommandType.MESSAGE;
     }
 
     public Author getAuthor() {

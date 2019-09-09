@@ -19,7 +19,8 @@ public class UnauthorizedState implements UserState {
     public UnauthorizedState(User user) {
         this.user = user;
         usersManager = UsersManagerFactory.createUsersManager();
-        user.receiveFromServer("Hello");
+
+        user.receiveFromServer("Hello ಠ_ಠ");
         writeOptions();
     }
 

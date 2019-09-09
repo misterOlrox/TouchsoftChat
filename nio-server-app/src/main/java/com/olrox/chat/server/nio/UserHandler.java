@@ -10,9 +10,9 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 
-public class Handler implements Runnable {
+public class UserHandler implements Runnable {
 
-    private final static Logger LOGGER = LogManager.getLogger(Handler.class);
+    private final static Logger LOGGER = LogManager.getLogger(UserHandler.class);
 
     final SocketChannel socketChannel;
     final SelectionKey selectionKey;
@@ -21,7 +21,7 @@ public class Handler implements Runnable {
     final MessageReader messageReader;
     private User user;
 
-    Handler(Selector selector, SocketChannel c) throws IOException {
+    UserHandler(Selector selector, SocketChannel c) throws IOException {
 
         LOGGER.info("Handler was created.");
 

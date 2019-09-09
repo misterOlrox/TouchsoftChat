@@ -3,6 +3,7 @@ package com.olrox.chat.server.message;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.nio.charset.StandardCharsets;
 
 public class MessageReaderNio implements MessageReader{
 
@@ -25,19 +26,23 @@ public class MessageReaderNio implements MessageReader{
             data = null;
         }
 
-        return new Message(data);
+        Message message = new Message(data);
+
+        message.setCommandType(CommandParser.parse(data));
+        return message;
     }
 
     private synchronized void readProcess(int readCount) {
         StringBuilder sb = new StringBuilder();
         input.flip();
-        byte[] subStringBytes = new byte[readCount];
-        byte[] array = input.array();
-        System.arraycopy(array, 0, subStringBytes, 0, readCount);
-        // TODO: Assuming ASCII (bad assumption but simplifies the example)
-        sb.append(new String(subStringBytes));
+//        byte[] subStringBytes = new byte[readCount];
+//        byte[] array = input.array();
+//        System.arraycopy(array, 0, subStringBytes, 0, readCount);
+//        sb.append(new String(subStringBytes));
+//        input.clear();
+//        data = sb.toString().trim();
+        data = StandardCharsets.UTF_8.decode(input).toString().trim();
         input.clear();
-        data = sb.toString().trim();
     }
 
     @Override
