@@ -1,8 +1,5 @@
 package com.olrox.chat.server.thread;
 
-import com.olrox.chat.server.manager.UsersManager;
-import com.olrox.chat.server.manager.UsersManagerFactory;
-import com.olrox.chat.server.message.author.ServerAsAuthor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,13 +11,7 @@ public class ServerThread {
 
     private final static Logger LOGGER = LogManager.getLogger(ServerThread.class);
 
-    public final static ServerAsAuthor SERVER_AS_AUTHOR = new ServerAsAuthor("Server");
     private final int port;
-
-    static {
-        UsersManager usersManager = UsersManagerFactory.createUsersManager();
-        usersManager.addOnlineUser(SERVER_AS_AUTHOR.getUsername());
-    }
 
     public ServerThread(int port) {
         this.port = port;
@@ -31,7 +22,7 @@ public class ServerThread {
 
             LOGGER.info("Chat Server is listening on port " + port);
 
-            while (true) {
+            while (!Thread.interrupted()) {
                 Socket socket = serverSocket.accept();
 
                 LOGGER.info("New user connected");

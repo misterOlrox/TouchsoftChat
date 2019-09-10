@@ -5,7 +5,6 @@ import com.olrox.chat.server.message.MessageWriter;
 import com.olrox.chat.server.message.author.Author;
 import com.olrox.chat.server.message.author.AuthorType;
 import com.olrox.chat.server.message.author.ServerAsAuthor;
-import com.olrox.chat.server.nio.Reactor;
 import com.olrox.chat.server.user.state.UnauthorizedState;
 import com.olrox.chat.server.user.state.UserState;
 import org.apache.logging.log4j.LogManager;

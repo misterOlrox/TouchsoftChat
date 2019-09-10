@@ -13,6 +13,7 @@
         <module>server-app</module>
         <module>user-app</module>
         <module>nio-server-app</module>
+        <module>server-lib</module>
     </modules>
 
     <dependencies>
@@ -27,6 +28,19 @@
             <artifactId>mockito-junit-jupiter</artifactId>
             <version>3.0.0</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.12.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.12.1</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
