@@ -1,14 +1,18 @@
 package com.olrox.chat.server.user;
 
-import com.olrox.chat.server.message.author.Author;
 import com.olrox.chat.server.message.Message;
 import com.olrox.chat.server.message.MessageWriter;
+import com.olrox.chat.server.message.author.Author;
 import com.olrox.chat.server.message.author.AuthorType;
-import com.olrox.chat.server.thread.ServerThread;
 import com.olrox.chat.server.user.state.UnauthorizedState;
 import com.olrox.chat.server.user.state.UserState;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class User implements Author {
+
+    private final static Logger LOGGER = LogManager.getLogger(User.class);
+
     private UserState state;
     private AuthorType authorType;
     private String username;
@@ -70,6 +74,7 @@ public class User implements Author {
 
     public void exit() {
         this.state.exit();
+        LOGGER.info("User " + username + " exited");
         messageWriter.close();
     }
 
@@ -78,6 +83,6 @@ public class User implements Author {
     }
 
     public void receiveFromServer(String text) {
-        messageWriter.write(new Message(text, ServerThread.SERVER_AS_AUTHOR));
+        messageWriter.write(new Message(text, Reactor.SERVER_AS_AUTHOR));
     }
 }

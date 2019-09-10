@@ -19,6 +19,8 @@ public class MessageReaderImpl implements MessageReader{
 
         Message message = new Message(text);
 
+        message.setCommandType(CommandParser.parse(text));
+
         return message;
     }
 

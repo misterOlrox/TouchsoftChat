@@ -18,12 +18,7 @@ import java.util.Set;
 public class Reactor implements Runnable {
 
     private final static Logger LOGGER = LogManager.getLogger(Reactor.class);
-    public final static ServerAsAuthor SERVER_AS_AUTHOR = new ServerAsAuthor("Server");
 
-    static {
-        UsersManager usersManager = UsersManagerFactory.createUsersManager();
-        usersManager.addOnlineUser(SERVER_AS_AUTHOR.getUsername());
-    }
 
     private final Selector selector;
     private final ServerSocketChannel serverSocketChannel;

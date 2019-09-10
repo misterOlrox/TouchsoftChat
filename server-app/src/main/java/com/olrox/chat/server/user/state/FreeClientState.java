@@ -39,8 +39,8 @@ public class FreeClientState implements UserState {
     }
 
     private void findCompanion() {
-        if (usersManager.hasFreeAgent()) {
-            User companion = usersManager.pollFreeAgent();
+        User companion = usersManager.pollFreeAgent();
+        if (companion != null) {
             connect(companion);
         } else {
             user.receiveFromServer("We haven't free agents. You can write messages and they will be saved.");

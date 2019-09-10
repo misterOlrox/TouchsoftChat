@@ -3,9 +3,6 @@ package com.olrox.chat.server.manager;
 import com.olrox.chat.server.user.User;
 
 public interface UsersManager {
-    boolean hasFreeClient();
-
-    boolean hasFreeAgent();
 
     User pollFreeClient();
 
@@ -15,9 +12,7 @@ public interface UsersManager {
 
     void addFreeAgent(User agent);
 
-    void addOnlineUser(String username);
+    boolean addOnlineUser(String username);
 
     void removeOnlineUser(String username);
-
-    boolean checkIfOnline(String username);
 }

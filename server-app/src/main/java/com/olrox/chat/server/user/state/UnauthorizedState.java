@@ -19,7 +19,8 @@ public class UnauthorizedState implements UserState {
     public UnauthorizedState(User user) {
         this.user = user;
         usersManager = UsersManagerFactory.createUsersManager();
-        user.receiveFromServer("Hello");
+
+        user.receiveFromServer("Hello ಠ_ಠ");
         writeOptions();
     }
 
@@ -37,7 +38,14 @@ public class UnauthorizedState implements UserState {
         String userType =  tokenizer.nextToken();
         String username = tokenizer.nextToken();
 
-        if(usersManager.checkIfOnline(username)){
+        if(!userType.equals("agent") && !userType.equals("client")){
+            user.receiveFromServer("Sorry. You can't register as " + userType + ". Try again");
+            return;
+        }
+
+        boolean isNewUser = usersManager.addOnlineUser(username);
+
+        if(!isNewUser){
             user.receiveFromServer("User with username " + username + " already exists.");
             return;
         }
@@ -47,22 +55,17 @@ public class UnauthorizedState implements UserState {
         String loggerInfo = "User was registered as "
                 + userType + " " + username;
 
+        user.setUsername(username);
+        user.receiveFromServer(serverAnswer);
+        LOGGER.info(loggerInfo);
+
         if(userType.equals("agent")){
-            user.setUsername(username);
-            user.receiveFromServer(serverAnswer);
-            LOGGER.info(loggerInfo);
-            FreeAgentState agent = new FreeAgentState(this);
-            user.setState(agent);
-            usersManager.addOnlineUser(username);
-            agent.findCompanion();
-        } else if(userType.equals("client")){
-            user.setUsername(username);
-            user.receiveFromServer(serverAnswer);
-            LOGGER.info(loggerInfo);
+            FreeAgentState state = new FreeAgentState(this);
+            user.setState(state);
+            state.findCompanion();
+        }
+        if(userType.equals("client")){
             user.setState(new FreeClientState(this));
-            usersManager.addOnlineUser(username);
-        } else {
-            user.receiveFromServer("Sorry. You can't register as " + userType + ". Try again");
         }
     }
 

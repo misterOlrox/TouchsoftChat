@@ -34,11 +34,11 @@ public class FreeAgentState implements UserState {
 
     public synchronized void findCompanion(){
         LOGGER.debug("Agent " + this.user.getUsername() + " trying to find client");
-        if(usersManager.hasFreeClient()){
-            User companion = usersManager.pollFreeClient();
+        User companion = usersManager.pollFreeClient();
+        if(companion != null){
             connect(companion);
         } else {
-            user.receiveFromServer("You haven't companion. Your message will not be delivered.");
+            user.receiveFromServer("Wait for your companion.");
             usersManager.addFreeAgent(this.user);
         }
     }

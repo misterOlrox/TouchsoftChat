@@ -20,6 +20,7 @@ class UsersData {
     private final Queue<User> freeAgents = new ArrayDeque<>();
     private final Set<String> onlineUsers = new HashSet<>();
 
+
     private synchronized void removeOfflineClients(){
         User freeClient = freeClients.peek();
         while(freeClient != null && !onlineUsers.contains(freeClient.getUsername())){
@@ -36,30 +37,34 @@ class UsersData {
         }
     }
 
-    public synchronized boolean hasFreeClient(){
+    public synchronized User pollFreeClient(){
+        removeOfflineClients();
         LOGGER.debug("Free clients: " + freeClients);
 
-        removeOfflineClients();
-        return !freeClients.isEmpty();
-    }
+        User client = freeClients.poll();
 
-    public synchronized boolean hasFreeAgent(){
-        LOGGER.debug("Free agents: " + freeAgents);
+        if(client != null) {
+            LOGGER.debug("Free client was removed.");
+        } else {
+            LOGGER.debug("No free client in queue.");
+        }
 
-        removeOfflineAgents();
-        return !freeAgents.isEmpty();
-    }
-
-    public synchronized User pollFreeClient(){
-        LOGGER.debug("Free client was removed.");
-
-        return freeClients.poll();
+        return client;
     }
 
     public synchronized User pollFreeAgent(){
-        LOGGER.debug("Free agent was removed");
+        removeOfflineAgents();
+        LOGGER.debug("Free agents: " + freeAgents);
 
-        return freeAgents.poll();
+        User agent = freeAgents.poll();
+
+        if(agent != null) {
+            LOGGER.debug("Free agent was removed.");
+        } else {
+            LOGGER.debug("No free agent in queue.");
+        }
+
+        return agent;
     }
 
     public synchronized void addFreeClient(User client){
@@ -82,19 +87,20 @@ class UsersData {
         LOGGER.debug("Free agents: " + freeAgents);
     }
 
-    public synchronized void addOnlineUser(String username) {
-        onlineUsers.add(username);
+    public synchronized boolean addOnlineUser(String username) {
+        boolean isNewUser = onlineUsers.add(username);
 
-        LOGGER.debug("Online user was added: " + onlineUsers);
+        if(isNewUser) {
+            LOGGER.debug("Online user " + username + " was added: " + onlineUsers);
+        } else {
+            LOGGER.debug("Online user " + username + " already registered: " + onlineUsers);
+        }
+
+        return isNewUser;
     }
 
     public synchronized void removeOnlineUser(String username) {
         onlineUsers.remove(username);
-
-        LOGGER.debug("Online user was removed: " + onlineUsers);
-    }
-
-    public synchronized boolean checkIfOnline(String username) {
-        return onlineUsers.contains(username);
+        LOGGER.debug("Online user " + username + " was removed: " + onlineUsers);
     }
 }
