@@ -12,14 +12,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class MessageReaderImplTest {
+class MessageReaderIoTest {
 
     @Test
     void closeTest() throws IOException {
         Socket socket = Mockito.mock(Socket.class);
         InputStream inputStream = Mockito.mock(InputStream.class);
         Mockito.when(socket.getInputStream()).thenReturn(inputStream);
-        MessageReader messageReader = new MessageReaderImpl(socket);
+        MessageReader messageReader = new MessageReaderIo(socket);
 
         messageReader.close();
 
@@ -34,7 +34,7 @@ class MessageReaderImplTest {
         BufferedReader bufferedReader = mock(BufferedReader.class);
         String text = "Text from Message";
         when(bufferedReader.readLine()).thenReturn(text);
-        MessageReaderImpl messageReader = new MessageReaderImpl(socket);
+        MessageReaderIo messageReader = new MessageReaderIo(socket);
         messageReader.setReader(bufferedReader);
 
         Message message = messageReader.readMessage();

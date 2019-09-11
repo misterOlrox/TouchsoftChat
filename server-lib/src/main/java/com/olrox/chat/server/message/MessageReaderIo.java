@@ -6,10 +6,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
-public class MessageReaderImpl implements MessageReader{
+public class MessageReaderIo implements MessageReader{
     private BufferedReader reader;
 
-    public MessageReaderImpl(Socket socket) throws IOException {
+    public MessageReaderIo(Socket socket) throws IOException {
         InputStream input = socket.getInputStream();
         reader = new BufferedReader(new InputStreamReader(input));
     }

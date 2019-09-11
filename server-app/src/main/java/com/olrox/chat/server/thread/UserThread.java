@@ -25,8 +25,8 @@ public class UserThread extends Thread {
         CommandType command;
 
         try {
-            reader = new MessageReaderImpl(socket);
-            MessageWriter messageWriter = new MessageWriterImpl(socket);
+            reader = new MessageReaderIo(socket);
+            MessageWriter messageWriter = new MessageWriterIo(socket);
             user = new User(messageWriter);
 
             while (true){

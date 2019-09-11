@@ -7,10 +7,10 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class MessageWriterImpl implements MessageWriter{
+public class MessageWriterIo implements MessageWriter{
     private PrintWriter writer;
 
-    public MessageWriterImpl(Socket socket) throws IOException {
+    public MessageWriterIo(Socket socket) throws IOException {
         OutputStream output = socket.getOutputStream();
         writer = new PrintWriter(output, true);
     }

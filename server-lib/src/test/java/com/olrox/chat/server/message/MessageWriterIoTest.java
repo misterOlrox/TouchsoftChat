@@ -11,14 +11,14 @@ import java.net.Socket;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 
-class MessageWriterImplTest {
+class MessageWriterIoTest {
 
     @Test
     void close() throws IOException {
         Socket socket = mock(Socket.class);
         OutputStream out = mock(OutputStream.class);
         Mockito.when(socket.getOutputStream()).thenReturn(out);
-        MessageWriter messageWriter = new MessageWriterImpl(socket);
+        MessageWriter messageWriter = new MessageWriterIo(socket);
 
         messageWriter.close();
 
@@ -30,7 +30,7 @@ class MessageWriterImplTest {
         Socket socket = mock(Socket.class);
         OutputStream out = mock(OutputStream.class);
         Mockito.when(socket.getOutputStream()).thenReturn(out);
-        MessageWriterImpl messageWriter = new MessageWriterImpl(socket);
+        MessageWriterIo messageWriter = new MessageWriterIo(socket);
         Message message = mock(Message.class);
         PrintWriter printWriter = mock(PrintWriter.class);
         messageWriter.setWriter(printWriter);
