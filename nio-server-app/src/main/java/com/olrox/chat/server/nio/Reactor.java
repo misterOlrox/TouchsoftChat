@@ -1,8 +1,5 @@
 package com.olrox.chat.server.nio;
 
-import com.olrox.chat.server.manager.UsersManager;
-import com.olrox.chat.server.manager.UsersManagerFactory;
-import com.olrox.chat.server.message.author.ServerAsAuthor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -66,9 +63,9 @@ public class Reactor implements Runnable {
                 SocketChannel socketChannel = serverSocketChannel.accept();
                 if (socketChannel != null) {
                     if (isWithThreadPool)
-                        new UserHandlerWithThreadPool(selector, socketChannel);
+                        new SocketChannelHandlerWithThreadPool(selector, socketChannel);
                     else
-                        new UserHandler(selector, socketChannel);
+                        new SocketChannelHandler(selector, socketChannel);
                 }
                 LOGGER.info("New connection accepted by Reactor");
             } catch (IOException ex) {

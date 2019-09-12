@@ -7,6 +7,8 @@ import org.apache.logging.log4j.Logger;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.util.log.Log;
+import org.eclipse.jetty.util.log.Slf4jLog;
 
 /**
  * The executable main class.
@@ -15,7 +17,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 public class MessagingServer {
 
     private final static int PORT = 50000;
-    private final static Logger LOGGER = LogManager.getLogger(NioServerApplication.class);
+    private final static Logger LOGGER = LogManager.getLogger(MessagingServer.class);
 
     private Server server;
 
@@ -34,7 +36,7 @@ public class MessagingServer {
 
     public void start() throws Exception {
         server.start();
-        server.dump(System.err);
+        //server.dump(System.err);
         server.join();
     }
 

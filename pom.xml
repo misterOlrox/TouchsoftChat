@@ -10,10 +10,10 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>server-app</module>
-        <module>user-app</module>
+        <module>io-server-app</module>
+        <module>user-console-app</module>
         <module>nio-server-app</module>
-        <module>server-lib</module>
+        <module>server-logic</module>
         <module>web-server</module>
     </modules>
 

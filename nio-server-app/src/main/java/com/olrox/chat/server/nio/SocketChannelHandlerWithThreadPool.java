@@ -9,14 +9,14 @@ import java.nio.channels.SocketChannel;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class UserHandlerWithThreadPool extends UserHandler {
+public class SocketChannelHandlerWithThreadPool extends SocketChannelHandler {
 
-    private final static Logger LOGGER = LogManager.getLogger(UserHandlerWithThreadPool.class);
+    private final static Logger LOGGER = LogManager.getLogger(SocketChannelHandlerWithThreadPool.class);
 
     static ExecutorService pool = Executors.newFixedThreadPool(2);
     static final int PROCESSING = 2;
 
-    public UserHandlerWithThreadPool(Selector sel, SocketChannel c) throws IOException {
+    public SocketChannelHandlerWithThreadPool(Selector sel, SocketChannel c) throws IOException {
         super(sel, c);
     }
 
