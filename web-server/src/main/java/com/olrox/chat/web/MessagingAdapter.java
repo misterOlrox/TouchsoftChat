@@ -1,11 +1,9 @@
-package com.olrox.chat.server.web;
+package com.olrox.chat.web;
 
 import com.olrox.chat.server.message.*;
 import com.olrox.chat.server.user.User;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;
-
-import java.io.IOException;
 
 /**
  * MessagingAdapter responsible to handle connection, receiving data, forward

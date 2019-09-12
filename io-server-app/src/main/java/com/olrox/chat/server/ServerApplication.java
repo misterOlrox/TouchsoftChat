@@ -1,6 +1,6 @@
 package com.olrox.chat.server;
 
-import com.olrox.chat.server.thread.ServerThread;
+import com.olrox.chat.server.io.IoServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -11,7 +11,7 @@ public class ServerApplication{
 
     public static void main(String[] args) {
         LOGGER.info("Server Application is starting.");
-        ServerThread server = new ServerThread(PORT);
+        IoServer server = new IoServer(PORT);
         server.start();
     }
 }

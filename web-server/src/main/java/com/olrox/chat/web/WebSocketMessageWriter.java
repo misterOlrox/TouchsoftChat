@@ -1,4 +1,4 @@
-package com.olrox.chat.server.web;
+package com.olrox.chat.web;
 
 import com.olrox.chat.server.message.Message;
 import com.olrox.chat.server.message.MessageWriter;

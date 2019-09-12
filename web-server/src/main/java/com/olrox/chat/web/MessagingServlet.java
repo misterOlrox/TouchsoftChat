@@ -1,4 +1,4 @@
-package com.olrox.chat.server.web;
+package com.olrox.chat.web;
 
 import org.eclipse.jetty.websocket.servlet.WebSocketServlet;
 import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;

@@ -1,4 +1,4 @@
-package com.olrox.chat.server.thread;
+package com.olrox.chat.server.io;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -7,13 +7,13 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class ServerThread {
+public class IoServer {
 
-    private final static Logger LOGGER = LogManager.getLogger(ServerThread.class);
+    private final static Logger LOGGER = LogManager.getLogger(IoServer.class);
 
     private final int port;
 
-    public ServerThread(int port) {
+    public IoServer(int port) {
         this.port = port;
     }
 
@@ -27,8 +27,8 @@ public class ServerThread {
 
                 LOGGER.info("New user connected");
 
-                UserThread newUserThread = new UserThread(socket);
-                newUserThread.start();
+                SocketConnectionHandler handler = new SocketConnectionHandler(socket);
+                handler.start();
             }
         } catch (IOException ex) {
             LOGGER.error("Error in the server: ", ex);

@@ -1,4 +1,4 @@
-package com.olrox.chat.server.thread;
+package com.olrox.chat.server.io;
 
 import com.olrox.chat.server.message.*;
 import com.olrox.chat.server.user.User;
@@ -8,15 +8,15 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.net.Socket;
 
-public class UserThread extends Thread {
+public class SocketConnectionHandler extends Thread {
 
-    private final static Logger LOGGER = LogManager.getLogger(UserThread.class);
+    private final static Logger LOGGER = LogManager.getLogger(SocketConnectionHandler.class);
 
     private final Socket socket;
     private User user;
     private MessageReader reader;
 
-    public UserThread(Socket socket) {
+    public SocketConnectionHandler(Socket socket) {
         this.socket = socket;
     }
 
