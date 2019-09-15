@@ -13,7 +13,7 @@ id("message").addEventListener("keypress", function (e) {
     if (e.keyCode === 13) { sendMessage(e.target.value); }
 });
 
-//Send a message if it's not empty, then clear the input field
+// FIXME time 05=5, refactor
 function sendMessage(message) {
     if (message !== "") {
         webSocket.send(message);
