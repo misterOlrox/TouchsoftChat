@@ -10,6 +10,10 @@ public class Message {
     private LocalDateTime sendTime;
     private CommandType commandType;
 
+    public Message() {
+
+    }
+
     public Message(String text) {
         this.text = text;
         sendTime = LocalDateTime.now();

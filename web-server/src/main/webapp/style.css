@@ -65,7 +65,7 @@ li {
     word-wrap: break-word;
 }
 
-#chat article:first-of-type {
+#chat article:last-of-type {
     background: #c9edc3;
     border-left-color: #74a377;
     animation: enter .2s 1;

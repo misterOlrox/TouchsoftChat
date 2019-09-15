@@ -18,22 +18,42 @@ function sendMessage(message) {
     if (message !== "") {
         webSocket.send(message);
         id("message").value = "";
+
     }
+
+    var author = '<b> ' + 'You' + '</b>';
+
+    var currentTime = new Date();
+    var time = '<span class="timestamp">'
+        + currentTime.getHours() + ':'
+        + currentTime.getMinutes()
+        + '</span>';
+
+    var text = '<p>' + message + '</p>';
+
+    var article = '<article>' + author + time + text + '</article>';
+
+    id('chat').innerHTML += article;
+    id('message').scrollIntoView();
 }
 
 //Update the chat-panel, and the list of connected users
 function updateChat(msg) {
     var data = JSON.parse(msg.data);
-    insert("chat", data.userMessage);
-    id("userlist").innerHTML = "";
-    data.userlist.forEach(function (user) {
-        insert("userlist", "<li>" + user + "</li>");
-    });
+    insertMessage("chat", data);
 }
 
 //Helper function for inserting HTML as the first child of an element
-function insert(targetId, message) {
-    id(targetId).insertAdjacentHTML("afterbegin", message);
+function insertMessage(targetId, data) {
+
+    var author = '<b>' + data.author + '</b>';
+    var time = '<span class="timestamp">' + data.time + '</span>';
+    var text = '<p>' + data.text + '</p>';
+
+    var article = '<article>' + author + time + text + '</article>';
+
+    id('chat').innerHTML += article;
+    id('message').scrollIntoView();
 }
 
 //Helper function for selecting element by id

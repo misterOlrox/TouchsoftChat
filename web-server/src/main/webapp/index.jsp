@@ -8,12 +8,11 @@
   </style>
 </head>
 <body>
+<div id="chat">    <!-- Built by JS --> </div>
 <div id="chatControls">
   <input id="message" placeholder="Type your message">
   <button id="send">Send</button>
 </div>
-<ul id="userlist"> <!-- Built by JS --> </ul>
-<div id="chat">    <!-- Built by JS --> </div>
 <script><%@include file="websocketDemo.js" %></script>
 </body>
 </html>
