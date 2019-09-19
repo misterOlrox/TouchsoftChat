@@ -21,7 +21,7 @@ public class WebSocketMessageWriter implements MessageWriter {
 
         try {
             session.getBasicRemote().sendText(String.valueOf(new JSONObject()
-                    .put("author", message.getAuthor().getUsername())
+                    .put("author", message.getAuthor().getName())
                     .put("text", message.getText())
                     .put("time", message.getSendTime())
             ));

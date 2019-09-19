@@ -59,10 +59,10 @@ public class FreeClientState implements UserState {
         this.user.setState(busyClient);
         companion.setState(busyAgent);
 
-        user.receiveFromServer("Now you chatting with agent " + companion.getUsername());
-        companion.receiveFromServer("Now you chatting with client " + this.user.getUsername());
+        user.receiveFromServer("Now you chatting with agent " + companion.getName());
+        companion.receiveFromServer("Now you chatting with client " + this.user.getName());
 
-        LOGGER.info("Client " + this.user.getUsername() + " start chat with agent " + companion.getUsername());
+        LOGGER.info("Client " + this.user.getName() + " start chat with agent " + companion.getName());
 
         for (Message message : messages) {
             busyAgent.receiveFromClient(message);
@@ -71,7 +71,7 @@ public class FreeClientState implements UserState {
 
     @Override
     public void register(Message message) {
-        user.receiveFromServer("You are already registered as client " + user.getUsername());
+        user.receiveFromServer("You are already registered as client " + user.getName());
     }
 
     @Override
@@ -89,7 +89,7 @@ public class FreeClientState implements UserState {
 
     @Override
     public void exit() {
-        usersManager.removeOnlineUser(user.getUsername());
+        usersManager.removeOnlineUser(user.getName());
     }
 
     public User getUser() {

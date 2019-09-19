@@ -8,7 +8,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
 
@@ -34,7 +33,7 @@ class BusyClientStateTest {
     @Test
     void exit() {
         User client = new User(mock(MessageWriter.class));
-        client.setUsername("testing");
+        client.setName("testing");
         User agent = new User(mock(MessageWriter.class));
         BusyAgentState agentState = spy(new BusyAgentState(agent, mock(BusyClientState.class), usersManagerMock));
         BusyClientState clientState = spy(new BusyClientState(client, agentState, usersManagerMock));
@@ -42,6 +41,6 @@ class BusyClientStateTest {
         clientState.exit();
 
         verify(agentState, times(1)).setFree();
-        verify(usersManagerMock, times(1)).removeOnlineUser(client.getUsername());
+        verify(usersManagerMock, times(1)).removeOnlineUser(client.getName());
     }
 }

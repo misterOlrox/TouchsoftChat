@@ -32,7 +32,7 @@ public class FreeAgentState implements UserState {
     }
 
     public synchronized void findCompanion(){
-        LOGGER.debug("Agent " + this.user.getUsername() + " trying to find client");
+        LOGGER.debug("Agent " + this.user.getName() + " trying to find client");
         User companion = usersManager.pollFreeClient();
         if(companion != null){
             connect(companion);
@@ -54,10 +54,10 @@ public class FreeAgentState implements UserState {
         user.setState(busyAgent);
         companion.setState(busyClient);
 
-        user.receiveFromServer("Now you chatting with client " + companion.getUsername());
-        companion.receiveFromServer("Now you chatting with agent " + this.getUser().getUsername());
+        user.receiveFromServer("Now you chatting with client " + companion.getName());
+        companion.receiveFromServer("Now you chatting with agent " + this.getUser().getName());
 
-        LOGGER.info("Agent " + this.user.getUsername() + " start chat with client " + companion.getUsername());
+        LOGGER.info("Agent " + this.user.getName() + " start chat with client " + companion.getName());
 
         for (Message message : companionState.getMessages()) {
             busyAgent.receiveFromClient(message);
@@ -66,7 +66,7 @@ public class FreeAgentState implements UserState {
 
     @Override
     public void register(Message message) {
-        user.receiveFromServer("You are already registered as agent " + this.user.getUsername());
+        user.receiveFromServer("You are already registered as agent " + this.user.getName());
     }
 
     @Override
@@ -81,7 +81,7 @@ public class FreeAgentState implements UserState {
 
     @Override
     public void exit() {
-        usersManager.removeOnlineUser(this.user.getUsername());
+        usersManager.removeOnlineUser(this.user.getName());
     }
 
     public User getUser() {

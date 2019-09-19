@@ -52,7 +52,7 @@ public class SocketConnectionHandler extends Thread {
         } catch (IOException ex) {
             LOGGER.error("Error in UserThread: ", ex);
         } finally {
-            LOGGER.info("User " + user.getUsername() + " exited");
+            LOGGER.info("User " + user.getName() + " exited");
             closeConnections();
         }
     }

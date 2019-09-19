@@ -51,11 +51,11 @@ class FreeClientStateTest {
         client.setState(freeClientState);
         User agent = spy(new User(agentMessageWriter));
         FreeAgentState agentState = new FreeAgentState(agent);
-        agent.setUsername("Mike");
+        agent.setName("Mike");
         agent.setState(agentState);
         UsersManager usersManager = UsersManagerFactory.createUsersManager();
         usersManager.addFreeAgent(agent);
-        usersManager.addOnlineUser(agent.getUsername());
+        usersManager.addOnlineUser(agent.getName());
         Message mockedMessage = spy(Message.class);
 
         freeClientState.sendMessage(mockedMessage);

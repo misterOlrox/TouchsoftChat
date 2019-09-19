@@ -16,7 +16,7 @@ public class User implements Author {
 
     private UserState state;
     private AuthorType authorType;
-    private String username;
+    private String name;
     private MessageWriter messageWriter;
 
     public User(MessageWriter messageWriter) {
@@ -28,10 +28,10 @@ public class User implements Author {
         this.state = state;
     }
 
-    public User(UserState state, AuthorType authorType, String username, MessageWriter messageWriter) {
+    public User(UserState state, AuthorType authorType, String name, MessageWriter messageWriter) {
         this.state = state;
         this.authorType = authorType;
-        this.username = username;
+        this.name = name;
         this.messageWriter = messageWriter;
     }
 
@@ -44,12 +44,12 @@ public class User implements Author {
     }
 
     @Override
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -83,7 +83,7 @@ public class User implements Author {
 
     public void exit() {
         this.state.exit();
-        LOGGER.info("User " + username + " exited");
+        LOGGER.info("User " + name + " exited");
         messageWriter.close();
     }
 

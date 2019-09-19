@@ -19,7 +19,7 @@ class UnauthorizedStateTest {
 
         state.register(message);
 
-        assertEquals("Mike1", user.getUsername());
+        assertEquals("Mike1", user.getName());
         assertEquals(AuthorType.AGENT, user.getAuthorType());
         assertTrue(user.getState() instanceof FreeAgentState || user.getState() instanceof BusyAgentState);
     }
@@ -32,7 +32,7 @@ class UnauthorizedStateTest {
 
         state.register(message);
 
-        assertEquals("Alice", user.getUsername());
+        assertEquals("Alice", user.getName());
         assertEquals(AuthorType.CLIENT, user.getAuthorType());
         assertTrue(user.getState() instanceof FreeClientState);
     }
@@ -45,7 +45,7 @@ class UnauthorizedStateTest {
 
         state.register(message);
 
-        assertNull(user.getUsername());
+        assertNull(user.getName());
         assertNull(user.getAuthorType());
         assertTrue(user.getState() instanceof UnauthorizedState);
     }
@@ -58,7 +58,7 @@ class UnauthorizedStateTest {
 
         state.register(message);
 
-        assertNull(user.getUsername());
+        assertNull(user.getName());
         assertNull(user.getAuthorType());
         assertTrue(user.getState() instanceof UnauthorizedState);
     }
@@ -71,7 +71,7 @@ class UnauthorizedStateTest {
 
         state.register(message);
 
-        assertNull(user.getUsername());
+        assertNull(user.getName());
         assertNull(user.getAuthorType());
         assertTrue(user.getState() instanceof UnauthorizedState);
     }
@@ -89,7 +89,7 @@ class UnauthorizedStateTest {
         state1.register(message1);
         state2.register(message2);
 
-        assertEquals("Alex", user1.getUsername());
+        assertEquals("Alex", user1.getName());
         assertEquals(AuthorType.AGENT, user1.getAuthorType());
         assertTrue(user1.getState() instanceof FreeAgentState);
         Mockito.verify(mockedUser).receiveFromServer("User with username " + "Alex" + " already exists.");

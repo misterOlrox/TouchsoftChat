@@ -29,8 +29,8 @@ public class BusyAgentState implements UserState {
 
     @Override
     public void register(Message message) {
-        user.receiveFromServer("You are agent " + this.user.getUsername() + " chatting with client " +
-                companion.getUser().getUsername() + ". You needn't to register.");
+        user.receiveFromServer("You are agent " + this.user.getName() + " chatting with client " +
+                companion.getUser().getName() + ". You needn't to register.");
     }
 
     @Override
@@ -44,11 +44,11 @@ public class BusyAgentState implements UserState {
 
     @Override
     public void leave() {
-        LOGGER.info("Agent " + this.user.getUsername() +
-                " leave chat with client " + companion.getUser().getUsername());
+        LOGGER.info("Agent " + this.user.getName() +
+                " leave chat with client " + companion.getUser().getName());
 
-        this.user.receiveFromServer("You left client " + companion.getUser().getUsername());
-        companion.getUser().receiveFromServer("Agent " + this.user.getUsername() + " left.");
+        this.user.receiveFromServer("You left client " + companion.getUser().getName());
+        companion.getUser().receiveFromServer("Agent " + this.user.getName() + " left.");
 
         this.setFree();
         companion.setFree();
@@ -56,11 +56,11 @@ public class BusyAgentState implements UserState {
 
     @Override
     public void exit() {
-        LOGGER.info("Agent " + this.user.getUsername() +
-                " exit from chat with client " + companion.getUser().getUsername());
+        LOGGER.info("Agent " + this.user.getName() +
+                " exit from chat with client " + companion.getUser().getName());
 
-        companion.getUser().receiveFromServer("Agent " + this.user.getUsername() + " exited.");
-        usersManager.removeOnlineUser(this.user.getUsername());
+        companion.getUser().receiveFromServer("Agent " + this.user.getName() + " exited.");
+        usersManager.removeOnlineUser(this.user.getName());
         companion.setFree();
     }
 

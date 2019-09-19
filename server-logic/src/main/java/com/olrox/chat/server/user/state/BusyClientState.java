@@ -28,8 +28,8 @@ public class BusyClientState implements UserState {
 
     @Override
     public void register(Message message) {
-        user.receiveFromServer("You are client " + this.user.getUsername() + " chatting with agent " +
-                companion.getUser().getUsername() + ". You needn't to register.");
+        user.receiveFromServer("You are client " + this.user.getName() + " chatting with agent " +
+                companion.getUser().getName() + ". You needn't to register.");
     }
 
     @Override
@@ -43,11 +43,11 @@ public class BusyClientState implements UserState {
 
     @Override
     public void leave() {
-        LOGGER.info("Client " + this.user.getUsername() +
-                " leave chat with agent " + companion.getUser().getUsername());
+        LOGGER.info("Client " + this.user.getName() +
+                " leave chat with agent " + companion.getUser().getName());
 
-        this.user.receiveFromServer("You left agent " + companion.getUser().getUsername());
-        companion.getUser().receiveFromServer("Client " + this.user.getUsername() + " left.");
+        this.user.receiveFromServer("You left agent " + companion.getUser().getName());
+        companion.getUser().receiveFromServer("Client " + this.user.getName() + " left.");
 
         this.setFree();
         companion.setFree();
@@ -55,11 +55,11 @@ public class BusyClientState implements UserState {
 
     @Override
     public void exit() {
-        LOGGER.info("Client " + this.user.getUsername() +
-                " exit from chat with agent " + companion.getUser().getUsername());
+        LOGGER.info("Client " + this.user.getName() +
+                " exit from chat with agent " + companion.getUser().getName());
 
-        companion.getUser().receiveFromServer("Client " + this.user.getUsername() + " exited.");
-        usersManager.removeOnlineUser(this.user.getUsername());
+        companion.getUser().receiveFromServer("Client " + this.user.getName() + " exited.");
+        usersManager.removeOnlineUser(this.user.getName());
         companion.setFree();
     }
 

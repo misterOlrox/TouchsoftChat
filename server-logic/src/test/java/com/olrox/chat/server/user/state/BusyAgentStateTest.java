@@ -46,7 +46,7 @@ class BusyAgentStateTest {
     @Test
     void exit() {
         User agent = new User(mock(MessageWriter.class));
-        agent.setUsername("testing");
+        agent.setName("testing");
         User client = new User(mock(MessageWriter.class));
         BusyClientState clientState = spy(new BusyClientState(client, mock(BusyAgentState.class), usersManagerMock));
         BusyAgentState agentState = spy(new BusyAgentState(agent, clientState, usersManagerMock));
@@ -54,6 +54,6 @@ class BusyAgentStateTest {
         agentState.exit();
 
         verify(clientState, times(1)).setFree();
-        verify(usersManagerMock, times(1)).removeOnlineUser(agent.getUsername());
+        verify(usersManagerMock, times(1)).removeOnlineUser(agent.getName());
     }
 }

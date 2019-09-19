@@ -9,7 +9,7 @@ public class ServerAsAuthor implements Author {
 
     private ServerAsAuthor(){
         UsersManager usersManager = UsersManagerFactory.createUsersManager();
-        usersManager.addOnlineUser(this.getUsername());
+        usersManager.addOnlineUser(this.getName());
     }
 
     public static ServerAsAuthor getInstance(){
@@ -17,7 +17,7 @@ public class ServerAsAuthor implements Author {
     }
 
     @Override
-    public String getUsername() {
+    public String getName() {
         return NAME;
     }
 

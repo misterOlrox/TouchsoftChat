@@ -58,6 +58,6 @@ public class Message {
     }
 
     public String show() {
-        return "[" + author.getUsername() + "] : " + text;
+        return "[" + author.getName() + "] : " + text;
     }
 }

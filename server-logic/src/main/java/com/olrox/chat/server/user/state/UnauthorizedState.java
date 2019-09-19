@@ -55,7 +55,7 @@ public class UnauthorizedState implements UserState {
         String loggerInfo = "User was registered as "
                 + userType + " " + username;
 
-        user.setUsername(username);
+        user.setName(username);
         user.receiveFromServer(serverAnswer);
         LOGGER.info(loggerInfo);
 

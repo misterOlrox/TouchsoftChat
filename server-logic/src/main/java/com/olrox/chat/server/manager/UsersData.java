@@ -24,7 +24,7 @@ class UsersData {
     private synchronized void removeOfflineClients(){
         User freeClient = freeClients.peek();
         while(freeClient != null &&
-                !(onlineUsers.contains(freeClient.getUsername())
+                !(onlineUsers.contains(freeClient.getName())
                         && (freeClient.getState() instanceof FreeClientState)) ){
 
             freeClients.poll();
@@ -35,7 +35,7 @@ class UsersData {
     private synchronized void removeOfflineAgents(){
         User freeAgent = freeAgents.peek();
         while(freeAgent != null &&
-                !(onlineUsers.contains(freeAgent.getUsername())
+                !(onlineUsers.contains(freeAgent.getName())
                         && (freeAgent.getState() instanceof FreeAgentState))){
 
             freeAgents.poll();
@@ -79,7 +79,7 @@ class UsersData {
         }
         freeClients.add(client);
 
-        LOGGER.debug("Free client " + client.getUsername() + " was added.");
+        LOGGER.debug("Free client " + client.getName() + " was added.");
         LOGGER.debug("Free clients: " + freeClients);
     }
 
@@ -89,7 +89,7 @@ class UsersData {
         }
         freeAgents.add(agent);
 
-        LOGGER.debug("Free agent " + agent.getUsername() + " was added.");
+        LOGGER.debug("Free agent " + agent.getName() + " was added.");
         LOGGER.debug("Free agents: " + freeAgents);
     }
 
