@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class IoServer {
+public class IoServer extends Thread{
 
     private final static Logger LOGGER = LogManager.getLogger(IoServer.class);
 
@@ -17,7 +17,7 @@ public class IoServer {
         this.port = port;
     }
 
-    public void start() {
+    public void run() {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
 
             LOGGER.info("Chat Server is listening on port " + port);
