@@ -23,7 +23,10 @@ class UsersData {
 
     private synchronized void removeOfflineClients(){
         User freeClient = freeClients.peek();
-        while(freeClient != null && !onlineUsers.contains(freeClient.getUsername())){
+        while(freeClient != null &&
+                !(onlineUsers.contains(freeClient.getUsername())
+                        && (freeClient.getState() instanceof FreeClientState)) ){
+
             freeClients.poll();
             freeClient = freeClients.peek();
         }
@@ -31,7 +34,10 @@ class UsersData {
 
     private synchronized void removeOfflineAgents(){
         User freeAgent = freeAgents.peek();
-        while(freeAgent != null && !onlineUsers.contains(freeAgent.getUsername())){
+        while(freeAgent != null &&
+                !(onlineUsers.contains(freeAgent.getUsername())
+                        && (freeAgent.getState() instanceof FreeAgentState))){
+
             freeAgents.poll();
             freeAgent = freeAgents.peek();
         }

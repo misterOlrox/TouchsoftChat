@@ -1,6 +1,5 @@
 package com.olrox.chat.server.user.state;
 
-import com.olrox.chat.server.exception.InvalidUserStateException;
 import com.olrox.chat.server.manager.UsersManager;
 import com.olrox.chat.server.manager.UsersManagerFactory;
 import com.olrox.chat.server.message.Message;
@@ -13,7 +12,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.mockito.Mockito.*;
 
@@ -63,26 +61,5 @@ class FreeClientStateTest {
         freeClientState.sendMessage(mockedMessage);
 
         verify(agent).receiveFromUser(mockedMessage);
-    }
-
-    void exceptionTest(){
-        MessageWriter clientMessageWriter = spy(MessageWriter.class);
-        MessageWriter agentMessageWriter = spy(MessageWriter.class);
-        User client = new User(clientMessageWriter);
-        FreeClientState freeClientState = new FreeClientState(client);
-        client.setState(freeClientState);
-        User agent = spy(new User(agentMessageWriter));
-        FreeAgentState agentState = new FreeAgentState(agent);
-        agent.setUsername("Mike");
-        UsersManager usersManager = UsersManagerFactory.createUsersManager();
-        usersManager.addFreeAgent(agent);
-        usersManager.addOnlineUser(agent.getUsername());
-        Message mockedMessage = spy(Message.class);
-
-        try {
-            freeClientState.sendMessage(mockedMessage);
-        } catch (InvalidUserStateException ex){
-            assertEquals(ex.getMessage(), "Companion isn't in FreeAgentState.");
-        }
     }
 }
