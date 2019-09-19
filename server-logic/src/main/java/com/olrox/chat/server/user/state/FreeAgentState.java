@@ -44,12 +44,7 @@ public class FreeAgentState implements UserState {
     }
 
     private void connect(User companion){
-        FreeClientState companionState;
-        if(companion.getState() instanceof FreeClientState) {
-            companionState = (FreeClientState) companion.getState();
-        } else {
-            throw new InvalidUserStateException("Companion isn't in FreeClientState.");
-        }
+        FreeClientState companionState = (FreeClientState) companion.getState();
 
         BusyClientState busyClient = new BusyClientState(companionState);
         BusyAgentState busyAgent = new BusyAgentState(this);

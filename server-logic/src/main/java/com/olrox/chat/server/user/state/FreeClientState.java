@@ -51,26 +51,22 @@ public class FreeClientState implements UserState {
 
     private void connect(User companion) {
         UserState companionState = companion.getState();
-        if (companionState instanceof FreeAgentState) {
-            BusyClientState busyClient = new BusyClientState(this);
-            BusyAgentState busyAgent = new BusyAgentState((FreeAgentState) companionState);
+        BusyClientState busyClient = new BusyClientState(this);
+        BusyAgentState busyAgent = new BusyAgentState((FreeAgentState) companionState);
 
-            busyClient.setCompanion(busyAgent);
-            busyAgent.setCompanion(busyClient);
+        busyClient.setCompanion(busyAgent);
+        busyAgent.setCompanion(busyClient);
 
-            this.user.setState(busyClient);
-            companion.setState(busyAgent);
+        this.user.setState(busyClient);
+        companion.setState(busyAgent);
 
-            user.receiveFromServer("Now you chatting with agent " + companion.getUsername());
-            companion.receiveFromServer("Now you chatting with client " + this.user.getUsername());
+        user.receiveFromServer("Now you chatting with agent " + companion.getUsername());
+        companion.receiveFromServer("Now you chatting with client " + this.user.getUsername());
 
-            LOGGER.info("Client " + this.user.getUsername() + " start chat with agent " + companion.getUsername());
+        LOGGER.info("Client " + this.user.getUsername() + " start chat with agent " + companion.getUsername());
 
-            for (Message message : messages) {
-                busyAgent.receiveFromClient(message);
-            }
-        } else {
-            throw new InvalidUserStateException("Companion isn't in FreeAgentState.");
+        for (Message message : messages) {
+            busyAgent.receiveFromClient(message);
         }
     }
 

@@ -13,13 +13,13 @@ class UnauthorizedStateTest {
 
     @Test
     void registerAsAgent() {
-        Message message = new Message("/register agent Mike");
+        Message message = new Message("/register agent Mike1");
         User user = new User(Mockito.mock(MessageWriter.class));
         UnauthorizedState state = new UnauthorizedState(user);
 
         state.register(message);
 
-        assertEquals("Mike", user.getUsername());
+        assertEquals("Mike1", user.getUsername());
         assertEquals(AuthorType.AGENT, user.getAuthorType());
         assertTrue(user.getState() instanceof FreeAgentState || user.getState() instanceof BusyAgentState);
     }
