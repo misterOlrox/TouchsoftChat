@@ -75,4 +75,23 @@ class UnauthorizedStateTest {
         assertNull(user.getAuthorType());
         assertTrue(user.getState() instanceof UnauthorizedState);
     }
+
+    @Test
+    void registerFail4() {
+        Message message1 = new Message("/register agent Alex");
+        Message message2 = new Message("/register client Alex");
+        User user1 = new User(Mockito.mock(MessageWriter.class));
+        User user2 = new User(Mockito.mock(MessageWriter.class));
+        User mockedUser = Mockito.spy(user2);
+        UnauthorizedState state1 = new UnauthorizedState(user1);
+        UnauthorizedState state2 = new UnauthorizedState(mockedUser);
+
+        state1.register(message1);
+        state2.register(message2);
+
+        assertEquals("Alex", user1.getUsername());
+        assertEquals(AuthorType.AGENT, user1.getAuthorType());
+        assertTrue(user1.getState() instanceof FreeAgentState);
+        Mockito.verify(mockedUser).receiveFromServer("User with username " + "Alex" + " already exists.");
+    }
 }
