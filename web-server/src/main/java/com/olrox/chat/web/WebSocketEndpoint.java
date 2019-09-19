@@ -2,15 +2,20 @@ package com.olrox.chat.web;
 
 import com.olrox.chat.server.message.*;
 import com.olrox.chat.server.user.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
+import java.io.IOException;
 
 @ServerEndpoint("/chat")
 public class WebSocketEndpoint {
+
+    private final static Logger LOGGER = LogManager.getLogger(WebSocketEndpoint.class);
 
     private Session session;
     private User currentUser;
@@ -25,8 +30,7 @@ public class WebSocketEndpoint {
 
     @OnClose
     public void onClose() {
-        this.session = null;
-        exit();
+        this.currentUser.exit();
     }
 
     @OnMessage
@@ -66,7 +70,11 @@ public class WebSocketEndpoint {
     }
 
     private void exit() {
-        this.currentUser.exit();
+        try {
+            session.close();
+        } catch (IOException e) {
+            LOGGER.error(e);
+        }
     }
 
 }
