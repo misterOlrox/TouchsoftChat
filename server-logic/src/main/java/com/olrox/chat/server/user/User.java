@@ -61,6 +61,14 @@ public class User implements Author {
         this.authorType = authorType;
     }
 
+    public MessageWriter getMessageWriter() {
+        return messageWriter;
+    }
+
+    public void setMessageWriter(MessageWriter messageWriter) {
+        this.messageWriter = messageWriter;
+    }
+
     public void register(Message message){
         this.state.register(message);
     }
