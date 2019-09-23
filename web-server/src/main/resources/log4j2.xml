@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
     <Properties>
-        <Property name="logPath">/home/nikita/TouchsoftProjects/TouchsoftChat/logs/nio-server-app-logs</Property>
-        <Property name="rollingFileName">server-app</Property>
+        <Property name="logPath">logs/web-server-logs</Property>
+        <Property name="rollingFileName">web-server</Property>
     </Properties>
     <Appenders>
         <Console name="console" target="SYSTEM_OUT">
-            <PatternLayout pattern="[%highlight{%-5level}] %d{DEFAULT} [thread %t] %c{1}.%M() - %msg%n%throwable{short.lineNumber}" />
+            <PatternLayout pattern="[%highlight{%-5level}] %d{DEFAULT} [thread %t] %c{1}.%M() - %msg%n" />
         </Console>
         <RollingFile name="rollingFile" fileName="${logPath}/${rollingFileName}.log" filePattern="${logPath}/${rollingFileName}_%d{yyyy-MM-dd}.log">
-            <PatternLayout pattern="[%highlight{%-5level}] %d{DEFAULT} [thread %t] %c{1}.%M() - %msg%n%throwable{short.lineNumber}" />
+            <PatternLayout pattern="[%highlight{%-5level}] %d{DEFAULT} [thread %t] %c{1}.%M() - %msg%n" />
             <Policies>
                 <!-- Causes a rollover if the log file is older than the current JVM's start time -->
                 <OnStartupTriggeringPolicy />

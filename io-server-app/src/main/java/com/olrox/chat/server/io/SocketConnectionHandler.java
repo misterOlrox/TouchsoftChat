@@ -45,14 +45,13 @@ public class SocketConnectionHandler extends Thread {
                         leave();
                         break;
                     case EXIT:
-                        exit();
                         return;
                 }
             }
         } catch (IOException ex) {
             LOGGER.error("Error in UserThread: ", ex);
         } finally {
-            LOGGER.info("User " + user.getName() + " exited");
+            exit();
             closeConnections();
         }
     }
