@@ -15,4 +15,6 @@ public interface UsersManager {
     boolean addOnlineUser(String username);
 
     void removeOnlineUser(String username);
+
+    void clearAll();
 }

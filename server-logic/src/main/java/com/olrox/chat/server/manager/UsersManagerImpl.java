@@ -37,4 +37,9 @@ public class UsersManagerImpl implements UsersManager{
     public void removeOnlineUser(String username) {
         usersData.removeOnlineUser(username);
     }
+
+    @Override
+    public void clearAll() {
+        usersData.clearAll();
+    }
 }

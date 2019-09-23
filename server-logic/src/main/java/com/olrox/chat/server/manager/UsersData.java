@@ -109,4 +109,10 @@ class UsersData {
         onlineUsers.remove(username);
         LOGGER.debug("Online user " + username + " was removed: " + onlineUsers);
     }
+
+    public synchronized void clearAll(){
+        freeClients.clear();
+        freeAgents.clear();
+        onlineUsers.clear();
+    }
 }

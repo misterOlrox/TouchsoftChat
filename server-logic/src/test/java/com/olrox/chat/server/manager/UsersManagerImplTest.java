@@ -15,6 +15,7 @@ class UsersManagerImplTest {
     @Test
     void test() {
         UsersManagerImpl usersManager = new UsersManagerImpl();
+        usersManager.clearAll();
         User user1 = new User(mock(MessageWriter.class));
         User user2 = new User(mock(MessageWriter.class));
         User user3 = new User(mock(MessageWriter.class));
