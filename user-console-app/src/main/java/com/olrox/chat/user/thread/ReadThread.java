@@ -1,7 +1,5 @@
 package com.olrox.chat.user.thread;
 
-import com.olrox.chat.user.MessageColorizer;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,7 +24,6 @@ public class ReadThread extends Thread {
 
     public void run() {
         String response;
-        MessageColorizer colorizer = new MessageColorizer();
 
         try {
             while (true) {
@@ -35,7 +32,7 @@ public class ReadThread extends Thread {
                     break;
                 }
 
-                System.out.println(colorizer.coloredMessage(response));
+                System.out.println(response);
             }
 
             socket.close();
