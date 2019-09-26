@@ -1,3 +1,4 @@
+//what is this class needed
 package com.olrox.chat.server.manager;
 
 public class UsersManagerFactory {
