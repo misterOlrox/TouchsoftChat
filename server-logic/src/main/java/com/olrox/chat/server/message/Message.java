@@ -56,8 +56,4 @@ public class Message {
     public void setCommandType(CommandType commandType) {
         this.commandType = commandType;
     }
-
-    public String show() {
-        return "[" + author.getName() + "] : " + text;
-    }
 }

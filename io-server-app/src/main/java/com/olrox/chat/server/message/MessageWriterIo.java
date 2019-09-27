@@ -21,15 +21,12 @@ public class MessageWriterIo implements MessageWriter{
     }
 
     public void write(Message message) {
-        writer.println(message.show());
+        String data = MessageUtils.createDataToSocket(message);
+        writer.println(data);
     }
 
     public void close() {
         writer.close();
-    }
-
-    PrintWriter getWriter() {
-        return writer;
     }
 
     void setWriter(PrintWriter writer) {

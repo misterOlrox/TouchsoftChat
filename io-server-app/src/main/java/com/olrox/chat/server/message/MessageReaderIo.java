@@ -28,10 +28,6 @@ public class MessageReaderIo implements MessageReader{
         reader.close();
     }
 
-    BufferedReader getReader() {
-        return reader;
-    }
-
     void setReader(BufferedReader reader) {
         this.reader = reader;
     }

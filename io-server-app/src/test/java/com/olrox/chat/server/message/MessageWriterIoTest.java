@@ -1,5 +1,6 @@
 package com.olrox.chat.server.message;
 
+import com.olrox.chat.server.user.User;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -31,12 +32,15 @@ class MessageWriterIoTest {
         OutputStream out = mock(OutputStream.class);
         Mockito.when(socket.getOutputStream()).thenReturn(out);
         MessageWriterIo messageWriter = new MessageWriterIo(socket);
-        Message message = mock(Message.class);
+        Message message = new Message();
         PrintWriter printWriter = mock(PrintWriter.class);
         messageWriter.setWriter(printWriter);
+        User author = new User(mock(MessageWriter.class));
+        message.setAuthor(author);
+        message.setText("text");
 
         messageWriter.write(message);
 
-        Mockito.verify(printWriter, times(1)).println(message.show());
+        Mockito.verify(printWriter, times(1)).println(MessageUtils.createDataToSocket(message));
     }
 }

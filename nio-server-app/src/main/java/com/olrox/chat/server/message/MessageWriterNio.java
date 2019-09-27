@@ -5,7 +5,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.nio.ByteBuffer;
 import java.nio.channels.ClosedChannelException;
 import java.nio.channels.SocketChannel;
@@ -26,7 +25,7 @@ public class MessageWriterNio implements MessageWriter{
     }
 
     public void write(Message message) {
-        ByteBuffer output = ByteBuffer.wrap((message.show() + "\n").getBytes());
+        ByteBuffer output = ByteBuffer.wrap((MessageUtils.createDataToSocket(message) + "\n").getBytes());
         try {
             socketChannel.write(output);
         } catch (ClosedChannelException e) {
