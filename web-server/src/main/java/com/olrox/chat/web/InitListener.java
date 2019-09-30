@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebListener;
 public class InitListener implements ServletContextListener {
 
     private final static Logger LOGGER = LogManager.getLogger(InitListener.class);
+    //this port can be busy so app wil always crash
     private final static int TCP_PORT = 50000;
 
     @Override
